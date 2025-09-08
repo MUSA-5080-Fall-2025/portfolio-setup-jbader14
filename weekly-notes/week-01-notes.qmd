@@ -65,7 +65,7 @@ date: "2025-09-08"
       - Rename(): renames column: rename(df, new = old)
       - Remove a column: select(df, -col)
     - %>% or |>: Pipes -> combines lines of codes, pass outputs through each pipe
-- Quatro:
+- Quarto:
   - 
 
 ## Questions & Challenges
@@ -73,8 +73,8 @@ date: "2025-09-08"
 
 ## Connections to Policy
 - We learned how to clean data, transforming it to drive actionable insights. Datasets can be messy, and by learning these skills, we build foundational knowledge on how we can improve the quality of data for future analyses.
-- We learned how to create a Quatro portfolio as a professional way to organize and present our work. This is highly valuable for making our findings professional, clean, and easily accessible to peers, future employers, etc.
+- We learned how to create a Quarto portfolio as a professional way to organize and present our work. This is highly valuable for making our findings professional, clean, and easily accessible to peers, future employers, etc.
 
 ## Reflection
-- I found the Quatro portfolio the most fascinating part of this lecture. It displays our work in a much cleaner format than in R-Markdown.
+- I found the Quarto portfolio the most fascinating part of this lecture. It displays our work in a much cleaner format than in R-Markdown.
 - I will be using this portfolio to highlight the work in this course. Additionally, I can use skills in making a Quatro portfolio for personal projects as well!

@@ -16,7 +16,7 @@ Advanced spatial analysis and data science for urban planning and public policy.
 
 ## About Me
 - Name: Henry (Jack) Bader
-- Why I am taking this course: I want to deepen my understanding of geospatial data science techniques in th public sector that provides a different perspective than typical engineering data science courses.
+- Why I am taking this course: I want to deepen my understanding of geospatial data science techniques in the public sector that provides a different perspective than typical engineering data science courses.
 
 ## Contact
 - Email: jbader14@seas.upenn.edu
