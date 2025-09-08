@@ -15,8 +15,9 @@ Advanced spatial analysis and data science for urban planning and public policy.
 - **Final Project:** Capstone modeling challenge
 
 ## About Me
-[Students will customize this section]
+- Name: Henry (Jack) Bader
+- Why I am taking this course: I want to deepen my understanding of geospatial data science techniques in th public sector that provides a different perspective than typical engineering data science courses.
 
 ## Contact
-- Email: [your.email@upenn.edu]
-- GitHub: [@your-username]
+- Email: jbader14@seas.upenn.edu
+- GitHub: jbader14
