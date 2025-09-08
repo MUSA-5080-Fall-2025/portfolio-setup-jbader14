@@ -25,14 +25,6 @@ date: "2025-09-08"
   - Creates individual repos for each student
   - Distributes assignments automatically
   - TAs can provide feedback
-- Quarto (better version of R Markdown): publishing system that combines
-  - Code (R, Python, etc.), Text (explanations, analysis, etc.), Output (plots, tables results, etc.)
-  - Benefits:
-    - Reproducible research: Ccde and explanation in one place, others can re-run analysis, professional presentation
-  - Components:
-    - YAML header: title, author, date, format
-    - R code chunks: load library, read_csv, etc.
-    - Text (formatting: bold, italic, etc.)
 - Lists syntax
 - Links / Images syntax
 
@@ -65,8 +57,14 @@ date: "2025-09-08"
       - Rename(): renames column: rename(df, new = old)
       - Remove a column: select(df, -col)
     - %>% or |>: Pipes -> combines lines of codes, pass outputs through each pipe
-- Quarto:
-  - 
+- Quarto (better version of R Markdown) - publishing system that combines:
+  - Code (R, Python, etc.), Text (explanations, analysis, etc.), Output (plots, tables results, etc.)
+  - Benefits:
+    - Reproducible research: Ccde and explanation in one place, others can re-run analysis, professional presentation
+  - Components:
+    - YAML header: title, author, date, format
+    - R code chunks: load library, read_csv, etc.
+    - Text (formatting: bold, italic, etc.)
 
 ## Questions & Challenges
 - Nothing!
