@@ -1,0 +1,10 @@
+---
+title: "Labs"
+listing:
+  contents: "**/*.qmd"       
+  type: table              
+  sort: "title"             
+  fields: [title]       
+---
+
+Select a lab below.

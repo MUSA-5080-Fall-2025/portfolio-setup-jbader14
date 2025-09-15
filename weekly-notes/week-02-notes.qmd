@@ -1,20 +1,169 @@
 ---
-title: "Week 2 Notes"
-format: html
+title: "Week 2 - Algorithmic Decision Making & Census Data"
+date: "2025-09-15"
 ---
 
 ## Key Concepts Learned
-
-
+- Clone Repo Workflow: 
+    - Navigate to repository
+    - Click <> code: green button
+    - Open with Github Desktop
+    - Copy over data, template scripts, etc. over from cloned class repo to personal repo
+    - OTHER METHOD: Use terminal
+      - cd ~/file location
+      - git clone https://github.com/MUSA-5080-Fall-2025/MUSA-5080-Fall-2025.git
+- ALGORITHM: Set of rules/instructions for solving a problem or completing a task.
+  - In Government: Systems used to assist / replace human decision-makers.
+    - Based on predictions from models that process historical data:
+    - Inputs: features/predictors/independent variables/x
+    - Outputs: labels/outcome/dependent variable/y
+    - Helps eliminate human bias / subjectivity
+    - Examples: criminal justice (bail, sentencing), housing and finance (whether or not to rent), healthcare (prioritization, resource allocation)
+      - Healthcare Algorithmic Bias: Algorithm used to identify high-risk patients for additional care systematically discriminated against Black patients.
+        - Algorithm used healthcare costs as a proxy for need / risk.
+        - Historical inequity: Black patients typically incur lower costs due to systematic inequities in access.
+        - Result: Black patients under-prioritized despite equivalent levels of illness.
+        - Scale: Used by hospitals and insurers for over 200 million people annually.
+      - COMPAS Recidivism Prediction (Criminal Justice):
+        - Algorithm twice as likely to flag Black defendants as high risk.
+        - Historical arrest data reflects biased policing patterns.
+      - Dutch Welfare Fraud Detection:
+        - "Black Box" secret system
+        - Disproportionally targeted vulnerable populations
+- Terms:
+  - Data Science: Computer science/engineering focus on algorithms and methods.
+  - Data Analytics: Application of data science methods to other disciplines.
+  - Machine Learning: Algorithms for classification and prediction that learn from data.
+  - AI: Algorithms that adjust and improve across iterations (neural nets, etc.).
+- Public Sector context:
+  - Long history of govt data collection:
+    - Civic registration systems
+    - Census data
+    - Administrative records
+    - Operations research (post-WWII)
+  - What's new?
+    - More data (official and "accidental" such as social media data)
+    - Focus on prediction rather than explanation
+    - Harder to interpret and explain
+  - Why govt use algorithms:
+      - Govts have limited budgets and need to serve everyone.
+      - Algorithmic decision making is appealing because it promises:
+      - Efficiency: faster
+      - Consistency: established methods
+      - Objectivity: less human bias
+      - Cost savings: less staff
+- Data Analytics is subjective:
+  - Every step involves human choices (embedded values and biases):
+    - Data cleaning
+    - Data coding / classification
+    - Data collection - use of imperfect proxies
+    - How you interpret results
+    - What variables you use in the model
+- Scenario Example: Housing assistance allocation
+  - Proxy: median household income
+  - Blind spots: 
+    - Lower income communities: median is a central measure.
+    - High rent/demand communities (NYC): median is a central measure.
+  - Harm + Fixes:
+    - Upper bound for hh income (well under city median income) to provide more housing assistance.
+    - Neighborhood housing price scale (divide income by housing price) to see how well off a hh is compared to the relative neighborhood.
+    - Guardrail:
+      - Rent control
+      - Housing stipends / upper bounded interest rates
+- CENSUS:
+  - Foundation for:
+    - Understanding community demographics
+    - Allocating government resources
+    - Tracking neighborhood change
+    - Designing fair algorithms (like those we just discussed)
+  - Decennial Census (2020)
+    - Everyone counted every 10 years (full population)
+    - 9 basic questions: age, race, sex, housing
+    - Constitutional requirement
+    - Determines political representation
+- American Community Survey (ACS):
+    - What it is:
+      - 3% of households surveyed annually
+      - Detailed questions: income, education, employment, housing costs
+      - Replaced old "long form" in 2005
+    - 1-Year estimates (areas > 65K people)
+      - Most current data, smallest sample
+      - Take with grain of salt (only aggregate levels, not neighborhood)
+    - 5-Year estimates (all areas including census tracts)
+      - Most reliable data, largest sample
+      - Key point: All ACS data comes with margins of error (since samples) - uncertainty
+- Census Geography Hierarchy:
+  - County level: state and regional planning 
+  - Census tract level: neighborhood analysis (1500 - 8000 people)
+  - Block group level: very local analysis (huge MOEs) (600 - 3000)
+    - Blocks: decennial only, 85 people
+- 2020 Census Innovation: Differential Privacy
+  - Challenge: Modern computing can re-identify individuals from census data.
+  - Solution: Add mathematical noise to protect privacy while preserving overall patterns.
+  - Controversy: Some places now show impossible results in populations (ex. living underwater).
+  - Why this matters: Even objective data involves subjective choices about privacy vs. accuracy (can cause errors).
+- Margin of Error (MOE)
+  - Large MOE relative to estimate = less reliable
+  - In analysis:
+    - Always report MOE alongside estimates.
+    - Be cautious comparing estimates with overlapping error margins.
+    - Consider using 5-year estimates for greater reliability
+      - Date intervals can be affected by new advancements during that time.
+- Two Types of Census Data:
+  - Summary Tables (what we’ll use mostly)
+    - Pre-calculated statistics by geography
+    - Median income, percent college-educated, etc.
+    - Good for: Mapping, comparing places
+  - PUMS: Individual Records
+    - Anonymous individual/household responses
+    - Good for: Custom analysis, regression models
+    - More complex but more flexible
+- Data Sources you'll use:
+  - TIGER/Line Files
+    - Geographic boundaries (shapefiles)
+    - Census tracts, counties, states
+    - Now released as shapefiles (easier to use!)
+  - Historical Data Sources:
+    - NHGIS (nhgis.org): Historical census data
+    - Neighborhood Change Database
+    - Longitudinal Tract Database: Track changes over time'
+    
 ## Coding Techniques
-
+- new dplyr functions:
+  - glimpse(): brief overview of df (num rows/cols, col name/type, some row examples)
+  - colnames(): column names of df
+  - between(x, lower bound, upper bound): use w/ case_when + mutate
+  - filter(): Joint string conditions
+    - filter(Manufacturer %in% c("Honda", "Nissan"))
+  - Piping: |> chain together dplyr commands on a single dataframe
+- Accessing Census Data in R:
+  - Modern approach: use R packages to access data directly.
+    - Always get latest data
+    - Reproducible workflows
+    - Automatic geographic boundaries
+    - Built-in error handling
+  - Use tidycensus package
+  - Table organization:
+    - B19013: Median Household Income
+    - B25003:  Housing Tenure (Own/Rent)
+    - B15003:  Educational Attainment
+    - B08301:  Commuting to Work
+  - Variable Examples: E (Estimate), M (Margin of Error)
+    - B19013_001E = Median household income (estimate)
+    - B19013_001M = Median household income (margin of error)
+- SAMPLE CODE:
+  - census_api_key(): access data
+  - get_acs(geography, variables, year, state, survey, output): get the data into file
+  - str_remove(var, str_to_remove): remove substrings of original string in column
 
 ## Questions & Challenges
 - Nothing!
 
 ## Connections to Policy
-
+- The examples provided context to how we use data science skills and techniques to apply in a real-world setting.
+- The conversations around algorithmic biases and biased data is important to consider when making policy considerations. It is extremely important to understand our data and recognize flaws in algorithms that can perpetuate bias, which usually harm marginalized groups of people.
+- The Census data provides valuable information (ACS) for us to analyze with data-driven methods in formulating policies that solve problems in bettering communities.
 
 ## Reflection
-
-
+- I had not had a formal introduction to Census data before. Sometimes, working with assigned datasets in class overlook a key aspect being data collection, which is a key decision in framing an analytics problem with human choice.
+- I think that it is very valuable to go over biases in algorithms and data. One saying that I was taught is "Data is never neutral", highlighting that there are many subjective human decisions that go into creating data-driven solutions. It is crucial that we recognize these risks in our problem-solving process to mitigate risk of biases in our policy decisions to protect at-risk groups of people.
