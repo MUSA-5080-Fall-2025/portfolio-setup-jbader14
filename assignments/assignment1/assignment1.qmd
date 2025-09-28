@@ -186,8 +186,6 @@ kable(nj_top_moe,
 
 **Data Quality Commentary:**
 
-[Write 2-3 sentences explaining what these results mean for algorithmic decision-making. Consider: Which counties might be poorly served by algorithms that rely on this income data? What factors might contribute to higher uncertainty?]
-
 In New Jersey, all counties have a median income MOE % below our threshold of 5%, indicating that the reporting of income date is highly reliable based on our standards. Even though these fall within high confidence, we should still proceed with caution when using this data for algorithmic decision-making. A pattern amongst the top highest MOE % revealed that all five counties make up the most southern counties in New Jersey. 
 
 For Cape May and Atlantic counties, a potential cause for higher MOE % stems from their economies being highly reliant on tourism for many residents. Especially, when you consider their location at the Jersey Shore, the flow of tourists is highly dependent on the season (notably, Summer), which can lead to further uncertainty in income reporting.
@@ -429,11 +427,15 @@ From the clear imbalance of our high and low MOE classes for the tracts in our s
 
 **Your Task:** Write an executive summary that integrates findings from all four analyses.
 
-**Executive Summary Requirements:**
-1. **Overall Pattern Identification**: What are the systematic patterns across all your analyses?
-2. **Equity Assessment**: Which communities face the greatest risk of algorithmic bias based on your findings?
-3. **Root Cause Analysis**: What underlying factors drive both data quality issues and bias risk?
-4. **Strategic Recommendations**: What should the Department implement to address these systematic issues?
+**Executive Summary Requirements:** 
+
+- **Overall Pattern Identification**: What are the systematic patterns across all your analyses?
+
+- **Equity Assessment**: Which communities face the greatest risk of algorithmic bias based on your findings?
+
+- **Root Cause Analysis**: What underlying factors drive both data quality issues and bias risk?
+
+- **Strategic Recommendations**: What should the Department implement to address these systematic issues?
 
 **Executive Summary:**
 
@@ -443,14 +445,20 @@ Three significant systematic patterns arose across our analyses. The first patte
 **Equity Assessment**: 
 Diverse communities with higher population percentages of people of color (Black, Hispanic) are most at risk of algorithmic biases. In our tract-level analysis, we saw more confident aggregate results among communities that were predominantly White rather than diverse. In addition, a majority of the missing data in these tracts came from the Black and Hispanic population estimates and margins. These discrepancies could cause further inequity in these diverse communities when using this tract-level data without caution in our algorithmic decision-making.
 
-**Root Cause Analysis**:
+**Root Cause Analysis**:  
+
 - Counties with more variable income flow such as Cape May or Atlantic are likely to have less reliable survey responses, possibly skewing our data depending on when they are surveyed. For example, imagine an ice cream salesman at the Beach is asked about his income in July vs. December. 
+
 - The effect of a smaller sample size in our tract data compared to county data is the main cause of less reliability in our MOE estimates. Smaller sample sizes leads to fewer survey responses, which leads to greater variability causing more uncertainty.
+
 - The effect of sparse or missing data at the tract-level is another potential cause for biased estimates in the reliability of our tract analysis. Since most of the "low MOE" tracts had missing demographic data for either the Black or Hispanic demographics, this made it easier for these tracts to pass our threshold test.
 
-**Strategic Recommendations**:
+**Strategic Recommendations**:  
+
 - Reliability Thresholds: We should establish more realistic reliability thresholds at both the county and tract level. It is evident that our current decision boundary is not insightful with all counties having high reliability and 98% of tracts having low reliability. We should tighten the threshold for county data in New Jersey. For tract data, it would be valuable to split up reliability by race rather than testing if at least one race fails the threshold. It is also important to highlight which counties have missing data and exclude them from this analysis or state their omission.
+
 - Improved Efforts in Surveying Diverse Tracts & Country Clusters: We saw that diverse tracts had less reliability than predominantly White tracts. Policymakers should make a stronger effort at reaching these communities to ensure that we are obtaining accurate data to prevent drawing biased conclusions about these demographic groups without proper representation. Additionally, we saw that there were clusters of counties that showed higher uncertainty than the rest of the state. It would be beneficial to address these clusters by promoting survey participation to aid policymakers.
+
 - Higher Frequency Monitoring: For immediate policy considerations, it would be helpful to have more frequent data collection such as every three months or even every month if possible. This would be very beneficial to counties like Cape May or Atlantic but others as well. It would identify problems in communities much faster and allow for more actionable, targeted intervention in policy making.
 
 
