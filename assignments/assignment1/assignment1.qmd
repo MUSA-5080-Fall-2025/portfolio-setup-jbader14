@@ -1,0 +1,549 @@
+---
+title: "Assignment 1: Census Data Quality for Policy Decisions"
+subtitle: "Evaluating Data Reliability for Algorithmic Decision-Making"
+author: "Henry (Jack) Bader"
+date: today
+format: 
+  html:
+    code-fold: false
+    toc: true
+    toc-location: left
+    theme: cosmo
+execute:
+  warning: false
+  message: false
+---
+
+# Assignment Overview
+
+## Scenario
+
+You are a data analyst for the **NJ Department of Human Services**. The department is considering implementing an algorithmic system to identify communities that should receive priority for social service funding and outreach programs. Your supervisor has asked you to evaluate the quality and reliability of available census data to inform this decision.
+
+Drawing on our Week 2 discussion of algorithmic bias, you need to assess not just what the data shows, but how reliable it is and what communities might be affected by data quality issues.
+
+## Learning Objectives
+
+- Apply dplyr functions to real census data for policy analysis
+- Evaluate data quality using margins of error 
+- Connect technical analysis to algorithmic decision-making
+- Identify potential equity implications of data reliability issues
+- Create professional documentation for policy stakeholders
+
+## Submission Instructions
+
+**Submit by posting your updated portfolio link on Canvas.** Your assignment should be accessible at `your-portfolio-url/assignments/assignment_1/`
+
+Make sure to update your `_quarto.yml` navigation to include this assignment under an "Assignments" menu.
+
+# Part 1: Portfolio Integration
+
+Create this assignment in your portfolio repository under an `assignments/assignment_1/` folder structure. Update your navigation menu to include:
+
+```
+- text: Assignments
+  menu:
+    - href: assignments/assignment_1/your_file_name.qmd
+      text: "Assignment 1: Census Data Exploration"
+```
+If there is a special character like comma, you need use double quote mark so that the quarto can identify this as text
+
+# Setup
+
+```{r setup}
+# Load required packages (hint: you need tidycensus, tidyverse, and knitr)
+library(tidycensus)
+library(tidyverse)
+library(knitr)
+library(scales) # For 6.3 
+# Set your Census API key
+key <- "773d2e38e1329313f36161c1ebc2a8861d99f570"
+census_api_key(key)
+# Choose your state for analysis - assign it to a variable called my_state
+my_state <- "NJ"
+```
+
+**State Selection:** I have chosen **New Jersey** for this analysis because: I grew up in New Jersey and would like to delve into the census data for my home state!
+
+# Part 2: County-Level Resource Assessment
+
+## 2.1 Data Retrieval
+
+**Your Task:** Use `get_acs()` to retrieve county-level data for your chosen state.
+
+**Requirements:**
+- Geography: county level
+- Variables: median household income (B19013_001) and total population (B01003_001)  
+- Year: 2022
+- Survey: acs5
+- Output format: wide
+
+**Hint:** Remember to give your variables descriptive names using the `variables = c(name = "code")` syntax.
+
+```{r county-data}
+# Write your get_acs() code here
+nj_inc_pop <- get_acs(
+  geography = "county",
+  variables = c(
+        median_income = "B19013_001",
+        total_pop = "B01003_001"
+  ),
+  state = my_state,
+  year = 2022,
+  survey = "acs5",
+  output = "wide"
+)
+
+# Clean the county names to remove state name and "County" 
+# Hint: use mutate() with str_remove()
+nj_inc_pop <- nj_inc_pop |>
+  # Remove state name and "County"
+  mutate(
+    county_name = str_remove(NAME, ", New Jersey"),
+    county_name = str_remove(county_name, " County")
+  ) |>
+  # Drop NAME column
+  select(-NAME)
+
+# Display the first few rows
+head(nj_inc_pop, 5)
+```
+
+## 2.2 Data Quality Assessment
+
+**Your Task:** Calculate margin of error percentages and create reliability categories.
+
+**Requirements:**
+- Calculate MOE percentage: (margin of error / estimate) * 100
+- Create reliability categories:
+  - High Confidence: MOE < 5%
+  - Moderate Confidence: MOE 5-10%  
+  - Low Confidence: MOE > 10%
+- Create a flag for unreliable estimates (MOE > 10%)
+
+**Hint:** Use `mutate()` with `case_when()` for the categories.
+
+```{r income-reliability}
+# Calculate MOE percentage and reliability categories using mutate()
+nj_reli <- nj_inc_pop |>
+  mutate(
+    # Compute MOE percentage
+    moe_percent = round((median_incomeM / median_incomeE) * 100, 2),
+    # Create reliability categories
+    reliability = case_when(
+      moe_percent < 5 ~ "High Confidence",
+      moe_percent >= 5 & moe_percent <= 10 ~ "Moderate",
+      moe_percent > 10 ~ "Low Confidence"
+    ),
+    # Flag when MOE is greater than 10%
+    moe_flag = moe_percent > 10
+  )
+# Create a summary showing count of counties in each reliability category
+# Hint: use count() and mutate() to add percentages
+nj_reli_summary <- nj_reli |>
+  # Count the number of counties per reliability category
+  count(reliability, name = "n") |>
+  # Add percentages - count(county) / count(all)
+  mutate(
+  reliability_percent = round(100 * n / sum(n), 1),
+  reliability_percent = paste0(reliability_percent, "%")
+  ) 
+
+# Display summary table
+kable(nj_reli_summary,
+    caption = "County Reliability Summary",
+    col.names = c("Reliability", "Count", "Percent"))
+```
+
+## 2.3 High Uncertainty Counties
+
+**Your Task:** Identify the 5 counties with the highest MOE percentages.
+
+**Requirements:**
+- Sort by MOE percentage (highest first)
+- Select the top 5 counties
+- Display: county name, median income, margin of error, MOE percentage, reliability category
+- Format as a professional table using `kable()`
+
+**Hint:** Use `arrange()`, `slice()`, and `select()` functions.
+
+```{r high-uncertainty}
+# Create table of top 5 counties by MOE percentage
+nj_top_moe <- nj_reli |>
+  # Sort by DESC MOE percent
+  arrange(desc(moe_percent)) |>
+  # Select top 5 counties
+  slice_head(n = 5) |>
+  # Select columns
+  select(county_name, median_incomeE, median_incomeM, moe_percent, reliability)
+
+# Format as table with kable() - include appropriate column names and caption
+kable(nj_top_moe,
+      col.names = c("County", "Median Income", "MOE", "MOE %", "Reliabilty"),
+      caption = "NJ Counties with the Highest Income Data Uncertainty",
+      format.args = list(big.mark = ","))
+```
+
+**Data Quality Commentary:**
+
+[Write 2-3 sentences explaining what these results mean for algorithmic decision-making. Consider: Which counties might be poorly served by algorithms that rely on this income data? What factors might contribute to higher uncertainty?]
+
+In New Jersey, all counties have a median income MOE % below our threshold of 5%, indicating that the reporting of income date is highly reliable based on our standards. Even though these fall within high confidence, we should still proceed with caution when using this data for algorithmic decision-making. A pattern amongst the top highest MOE % revealed that all five counties make up the most southern counties in New Jersey. 
+
+For Cape May and Atlantic counties, a potential cause for higher MOE % stems from their economies being highly reliant on tourism for many residents. Especially, when you consider their location at the Jersey Shore, the flow of tourists is highly dependent on the season (notably, Summer), which can lead to further uncertainty in income reporting.
+
+Cumberland, Salem, and Atlantic counties represent the three lowest counties in median income from this data. It may be the case that these counties may exhibit larger margins of error due to more residents working lower paying, hourly jobs that skew the reporting of median income, leading to higher MOE %.
+
+# Part 3: Neighborhood-Level Analysis
+
+## 3.1 Focus Area Selection
+
+**Your Task:** Select 2-3 counties from your reliability analysis for detailed tract-level study.
+
+**Strategy:** Choose counties that represent different reliability levels (e.g., 1 high confidence, 1 moderate, 1 low confidence) to compare how data quality varies.
+
+**Note from Jack:** All counties in NJ have high confidence levels. I checked with Prof Delmelle, and she said that it was fine to continue with my analysis for NJ. I chose Cape May (MOE = 4.42%, Beach), Essex (2.00%. North Jersey), and Burlington (MOE = 1.40%, South Jersey / Philly) counties for this section to get a diverse selection of MOE percentages and geographical locations.
+
+```{r select-counties}
+# Use filter() to select 2-3 counties from your county_reliability data
+# Store the selected counties in a variable called selected_counties
+selected_countries <- nj_reli |>
+  filter(county_name %in% c("Cape May", "Essex", "Burlington")) |>
+  # Select county name, median income, MOE percentage, reliability category
+  select(county_name, median_incomeE, moe_percent, reliability)
+
+# Display the selected counties with their key characteristics
+# Show: county name, median income, MOE percentage, reliability category
+kable(selected_countries,
+      caption = "Selected Counties",
+      col.names = c("County", "Median Income", "MOE %", "Reliability"))
+```
+
+**Comment on the output:** Burlington county has the highest median income with the lowest MOE %, indicating that it is the safest out of the three for algorithmic decision-making. As stated previously, Cape May has a high MOE %, relative to the rest of NJ, due to its tourist driven economy and volatility in income during a calendar year. Essex county has a moderately low MOE % and median income, revealing that lower income communities may not always have higher MOE %. Although, Essex could be an outlier.
+
+## 3.2 Tract-Level Demographics
+
+**Your Task:** Get demographic data for census tracts in your selected counties.
+
+**Requirements:**
+- Geography: tract level
+- Variables: white alone (B03002_003), Black/African American (B03002_004), Hispanic/Latino (B03002_012), total population (B03002_001)
+- Use the same state and year as before
+- Output format: wide
+- **Challenge:** You'll need county codes, not names. Look at the GEOID patterns in your county data for hints.
+
+```{r tract-demographics}
+# Define your race/ethnicity variables with descriptive names
+white <- "B03002_003"
+black <- "B03002_004"
+hispanic <- "B03002_012"
+total_pop <- "B03002_001"
+
+# Set county codes (GEOID): Burlington, Cape May, Essex
+# Remove "34" from start of GEOID code
+geoid_codes <- c("005", "009", "013")
+
+# Use get_acs() to retrieve tract-level data
+# Hint: You may need to specify county codes in the county parameter
+nj_tract <- get_acs(
+  geography = "tract",
+  variables = c(
+        white = white,
+        black = black,
+        hispanic = hispanic,
+        total_pop = total_pop
+  ),
+  state = my_state, 
+  county = geoid_codes,
+  year = 2022,
+  survey = "acs5",
+  output = "wide"
+) 
+
+# Calculate percentage of each group using mutate()
+nj_tract <- nj_tract |>
+  # Create percentages for white, Black, and Hispanic populations
+  mutate(
+    white_percent = round(100 * whiteE / total_popE, 2),
+    black_percent = round(100 * blackE / total_popE, 2),
+    hispanic_percent = round(100 * hispanicE / total_popE, 2)) |>
+    # Add readable tract and county name columns using str_extract() or similar                
+    mutate(
+      # Tract (RegEx)
+      tract = str_remove(str_extract(NAME, "Census Tract\\s*[0-9]+(?:\\.[0-9]+)?"),"^Census Tract\\s*"),
+
+      # County (RegEx)
+      county = str_extract(NAME, ";\\s*[^;]+\\s*;") |>
+               str_remove("^;\\s*") |>
+               str_remove("\\s*;$") |>
+               str_trim(),
+      
+      county = str_remove(county, "\\s+County\\b") |>
+               str_trim()
+  ) 
+
+# head(nj_tract)
+```
+
+## 3.3 Demographic Analysis
+
+**Your Task:** Analyze the demographic patterns in your selected areas.
+
+```{r demographic-analysis}
+# Find the tract with the highest percentage of Hispanic/Latino residents
+# Hint: use arrange() and slice() to get the top tract
+high_hispanic <- nj_tract |>
+  arrange(desc(hispanic_percent)) |>
+  slice_head(n = 1) |>
+  select(county, tract, hispanic_percent)
+
+kable(high_hispanic,
+    caption = "Highest Percentage of Hispanic Residents",
+    col.names = c("County", "Tract", "Hispanic %"))
+
+# Calculate average demographics by county using group_by() and summarize()
+# Show: number of tracts, average percentage for each racial/ethnic group
+avg_demo <- nj_tract |>
+  group_by(county) |>
+  summarize(
+    num_tracts = n(),
+    avg_white = round(mean(white_percent, na.rm = TRUE), 2),
+    avg_black = round(mean(black_percent, na.rm = TRUE), 2),
+    avg_hispanic = round(mean(hispanic_percent, na.rm = TRUE), 2)
+  )
+
+# Create a nicely formatted table of your results using kable()
+kable(avg_demo,
+      col.names = c("County", "Number of Tracts", "Average White %", "Average Black %", "Average Hispanic %"),
+      caption = "Average Demographics for Burlington, Cape May, and Essex Counties (NJ)",
+      format.args = list(big.mark = ","))
+```
+
+# Part 4: Comprehensive Data Quality Evaluation
+
+## 4.1 MOE Analysis for Demographic Variables
+
+**Your Task:** Examine margins of error for demographic variables to see if some communities have less reliable data.
+
+**Requirements:**
+- Calculate MOE percentages for each demographic variable
+- Flag tracts where any demographic variable has MOE > 15%
+- Create summary statistics
+
+```{r demographic-moe}
+nj_tract <- nj_tract |>
+  mutate(
+    # Calculate MOE percentages for white, Black, and Hispanic variables
+    # Hint: use the same formula as before (margin/estimate * 100)
+    # Need if/else some tracts show 0 population for a demographic
+    white_moe_percent = if_else(whiteE > 0, round(100 * whiteM / whiteE, 2), NA_real_),
+    black_moe_percent = if_else(blackE > 0, round((blackM / blackE) * 100, 2), NA_real_),
+    hispanic_moe_percent = if_else(hispanicE > 0, round((whiteM / whiteE) * 100, 2), NA_real_)
+  )
+
+# Create a flag for tracts with high MOE on any demographic variable
+# Use logical operators (| for OR) in an ifelse() statement
+flag_tracts <- nj_tract |>
+   mutate(
+     flag_moe = ifelse(
+      coalesce(white_moe_percent > 10, FALSE) |
+      coalesce(black_moe_percent > 10, FALSE) |
+      coalesce(hispanic_moe_percent > 10, FALSE),
+      "High MOE", "Low MOE"
+     )
+   )
+
+# Create summary statistics showing how many tracts have data quality issues
+flag_tracts_summary <- flag_tracts |>
+  summarize(
+    total_tracts = n(),
+    flagged_tracts = sum(flag_moe == "High MOE", na.rm = TRUE),
+    flagged_percents = round(100 * flagged_tracts / total_tracts, 2)
+  )
+
+kable(flag_tracts_summary, 
+      col.names = c("Total Tracts", "Flagged Tracts", "Flagged %"),
+      caption = "Summary of Tracts in Burlington, Cape May, Essex counties with High MOE (Any Demo > 15%)",
+      format.args = list(big.mark = ","))
+```
+
+## 4.2 Pattern Analysis
+
+**Your Task:** Investigate whether data quality problems are randomly distributed or concentrated in certain types of communities.
+
+```{r pattern-analysis}
+# Calculate population percentages for each tract
+flag_tracts <- flag_tracts %>%
+  mutate(
+    white_pop_percent = if_else(total_popE > 0, round(100 * whiteE / total_popE, 2), NA_real_),
+    black_pop_percent = if_else(total_popE > 0, round(100 * blackE / total_popE, 2), NA_real_),
+    hispanic_pop_percent = if_else(total_popE > 0, round(100 * hispanicE / total_popE, 2), NA_real_)
+  )
+
+# Group tracts by whether they have high MOE issues
+# Calculate average characteristics for each group:
+# - population size, demographic percentages
+flag_tracts_group <- flag_tracts |>
+  # Group by MOE threshold
+  group_by(flag_moe) |>
+  summarize(
+    # Total number of tracts
+    num_tracts = n(),
+    
+    # Avg population sizes for each demographic group
+    avg_white_pop = round(mean(whiteE, na.rm = TRUE), 2),
+    avg_black_pop = round(mean(blackE, na.rm = TRUE), 2),
+    avg_hispanic_pop = round(mean(hispanicE, na.rm = TRUE), 2),
+    
+    # Avg Population percentage for each demographic group
+    avg_white_pop_percent = round(mean(white_pop_percent, na.rm = TRUE), 2),
+    avg_black_pop_percent = round(mean(black_pop_percent, na.rm = TRUE), 2),
+    avg_hispanic_pop_percent = round(mean(hispanic_pop_percent, na.rm = TRUE), 2),
+  )
+
+# Use group_by() and summarize() to create this comparison
+# Create a professional table showing the patterns
+kable(
+  flag_tracts_group,
+  col.names = c(
+    "MOE Flag Indicator",
+    "Number of Tracts",
+    "Avg White Population", "Avg Black Population", "Avg Hispanic Population",
+    "Avg White Pop %", "Avg Black Pop %", "Avg Hispanic Pop %"
+  ),
+  caption = "Tract Demographic Statistics Based on MOE Flag Indicator",
+  format.args = list(big.mark = ",")
+)
+```
+
+**Pattern Analysis:** 
+
+One pattern is that an overwhelming majority of tracts are flagged with high MOE (for at least one demographic) of around 98.34%. There are a few reasons why we observe this. For one, tracts are much smaller than counties and when we have a smaller sample size, this can lead to more variation, hence less reliability (higher margins of error throughout the data). Secondly, since we set our MOE indicator to be classified as "High MOE" if one or more demographic had a higher MOE than 10%. As a result, this design decision leads to more tracts being categorized as "High MOE" than if we made a stricter boundary of all three demographics must have a higher MOE than 10%. Lastly, the tract data was much sparser than the county level data with many demographic estimates and margins being zero for certain tracks, which could possibly be a reporting error.
+
+From the clear imbalance of our high and low MOE classes for the tracts in our selected counties, we should approach drawing conclusions about demographics and reliability with caution. Nevertheless, it seems that our six "Low MOE" tracts are much less diverse and predominantly White (88.89% compared to 42.21%). It is possible that these communities may have better access to reporting their statistics or are potentially more well informed about the Census and obligation to report. But, it is important to question the oddity that there average Black population is 0% across these tracts. This leads me to believe that this is due to the sparsity issue in the data itself. If the data showed that there are no Black residents (and very little Hispanic residents), then these tracts theoretically would only have to worry about passing the MOE threshold for the White demographic. It is important to consider all possibilities when trying to analyze and uncover patterns within data.
+
+
+# Part 5: Policy Recommendations
+
+## 5.1 Analysis Integration and Professional Summary
+
+**Your Task:** Write an executive summary that integrates findings from all four analyses.
+
+**Executive Summary Requirements:**
+1. **Overall Pattern Identification**: What are the systematic patterns across all your analyses?
+2. **Equity Assessment**: Which communities face the greatest risk of algorithmic bias based on your findings?
+3. **Root Cause Analysis**: What underlying factors drive both data quality issues and bias risk?
+4. **Strategic Recommendations**: What should the Department implement to address these systematic issues?
+
+**Executive Summary:**
+
+**Overall Pattern Identification**: 
+Three significant systematic patterns arose across our analyses. The first pattern was that there was a drastic decline in data reliability when moving from county to tract-level data. In our county analysis, all counties were classified as "high confidence" in MOE % for median income data. However, in our tract data for selected counties, less than 2% of tracts were classified as "high confidence" for demographic data. The second pattern came from our tract-level analysis where we saw that more diverse tracts were much less reliable in terms of collective demographic MOE %. The small percentage of "high confidence" tracts were predominantly white (88.89% compared to 42.21%). The third trend was revealed in geographic location in county analysis. Specifically, the highest MOE % of income data mainly resided in South Jersey, revealing clusters of uncertainty among these counties.
+
+**Equity Assessment**: 
+Diverse communities with higher population percentages of people of color (Black, Hispanic) are most at risk of algorithmic biases. In our tract-level analysis, we saw more confident aggregate results among communities that were predominantly White rather than diverse. In addition, a majority of the missing data in these tracts came from the Black and Hispanic population estimates and margins. These discrepancies could cause further inequity in these diverse communities when using this tract-level data without caution in our algorithmic decision-making.
+
+**Root Cause Analysis**:
+- Counties with more variable income flow such as Cape May or Atlantic are likely to have less reliable survey responses, possibly skewing our data depending on when they are surveyed. For example, imagine an ice cream salesman at the Beach is asked about his income in July vs. December. 
+- The effect of a smaller sample size in our tract data compared to county data is the main cause of less reliability in our MOE estimates. Smaller sample sizes leads to fewer survey responses, which leads to greater variability causing more uncertainty.
+- The effect of sparse or missing data at the tract-level is another potential cause for biased estimates in the reliability of our tract analysis. Since most of the "low MOE" tracts had missing demographic data for either the Black or Hispanic demographics, this made it easier for these tracts to pass our threshold test.
+
+**Strategic Recommendations**:
+- Reliability Thresholds: We should establish more realistic reliability thresholds at both the county and tract level. It is evident that our current decision boundary is not insightful with all counties having high reliability and 98% of tracts having low reliability. We should tighten the threshold for county data in New Jersey. For tract data, it would be valuable to split up reliability by race rather than testing if at least one race fails the threshold. It is also important to highlight which counties have missing data and exclude them from this analysis or state their omission.
+- Improved Efforts in Surveying Diverse Tracts & Country Clusters: We saw that diverse tracts had less reliability than predominantly White tracts. Policymakers should make a stronger effort at reaching these communities to ensure that we are obtaining accurate data to prevent drawing biased conclusions about these demographic groups without proper representation. Additionally, we saw that there were clusters of counties that showed higher uncertainty than the rest of the state. It would be beneficial to address these clusters by promoting survey participation to aid policymakers.
+- Higher Frequency Monitoring: For immediate policy considerations, it would be helpful to have more frequent data collection such as every three months or even every month if possible. This would be very beneficial to counties like Cape May or Atlantic but others as well. It would identify problems in communities much faster and allow for more actionable, targeted intervention in policy making.
+
+
+## 6.3 Specific Recommendations
+
+**Your Task:** Create a decision framework for algorithm implementation.
+
+```{r recommendations-data}
+# Create a summary table using your county reliability data
+# Include: county name, median income, MOE percentage, reliability category
+final_df <- nj_reli |>
+  # Add a new column with algorithm recommendations using case_when():
+  # - High Confidence: "Safe for algorithmic decisions"
+  # - Moderate Confidence: "Use with caution - monitor outcomes"  
+  # - Low Confidence: "Requires manual review or additional data"
+  mutate(
+    reli_cat = case_when(
+      reliability == "High Confidence" ~ "Safe for algorithmic decisions",
+      reliability == "Moderate Confidence" ~ "Use with caution - monitor outcomes",
+      reliability == "Low Confidence" ~ "Requires manual review or additional data"
+    )
+  ) |>
+  # Sort by MOE percent (DESC)
+  arrange(desc(moe_percent)) |>
+  # Select relevant columns to include
+  select(county_name, median_incomeE, moe_percent, reliability, reli_cat) |>
+  # Add $ and % symbols to median_incomeE and moe_percent
+  mutate(
+    median_incomeE = dollar(median_incomeE),
+    moe_percent = paste0(number(moe_percent, accuracy = 0.01), "%")
+  )
+
+# Format as a professional table with kable()
+kable(
+  final_df,
+  col.names = c("County", "Median Income", "MOE Percent", "Reliability", "Recommendation"),
+  caption = "Median Income Decision Framework for NJ Counties",
+  format.args = list(big.mark = ",")
+)
+```
+
+**Key Recommendations:**
+
+**Your Task:** Use your analysis results to provide specific guidance to the department.
+
+1. **Counties suitable for immediate algorithmic implementation:** All counties in NJ are considered suitable for algorithmic implementation. They all have MOE less than our 5% threshold, making them high confidence for algorithmic decision making. However, if we wanted to examine tracts in individual counties, based on our tract-level analysis of three NJ counties, our data is much less reliable to use. Therefore, we should proceed with more caution for any kind of tract-level algorithmic implementation.
+
+2. **Counties requiring additional oversight:** No counties were classified as moderate confidence in NJ. However, I would say that counties near the bound of the 5% threshold like Cape May and Salem could be more closely monitored given their relatively high MOE above 4%. Additionally, as expressed earlier, counties such as Cape May and Atlantic that are highly reliant on tourism in generating income for its residents could use some supplementary data collection for analysis. Since income flow is extremely time-dependent, we should look to monitor the changes in income related to each season (or month) to get a better understanding of the income data. This would lead to more consistent comparisons across years through potential time-series modelling methods like a seasonal ARIMA model or something similar.
+
+3. **Counties needing alternative approaches:** No counties were classified as low confidence in NJ, so no specific alternatives are needed. However, it may be worthwhile to monitor the percent change in some of the higher MOE counties if they were to exhibit drastic increases in MOE % in future years. As mentioned previously, tract data within each county are much less reliable and could definitely benefit from precautionary measures such as manual data validation or increased data collection through additional surveys to give analysts more confidence in deriving algorithms to address issues at this level.
+
+## Questions for Further Investigation
+
+- How does MOE % for each county trend over time? Do counties with lower MOE % or higher MOE % fluctuate over time? In the specific case of tourism-driven economies like Cape May or Atlantic, does data exist on their economic output across each month / season?
+
+- How does geographical location factor into MOE % within counties? We saw how there can be small clusters of counties that share higher MOE % relative to the rest of NJ? Is this a common occurrence that we see in most other states as well? What factors can cause these clusters other than income and demographic trends?
+
+- For tract-level data, why did we see a lot more missing data for people of color than the White demographic? What possible solutions are there to mitigating this issue for future surveys?
+
+# Technical Notes
+
+**Data Sources:** 
+- U.S. Census Bureau, American Community Survey 2018-2022 5-Year Estimates
+- Retrieved via tidycensus R package on 9/21
+
+**Reproducibility:** 
+- All analysis conducted in R version 4.5.0
+- Census API key required for replication
+- Complete code and documentation available at: https://musa-5080-fall-2025.github.io/portfolio-setup-jbader14
+
+**Methodology Notes:**
+- Data processing: For the most part, the data processing in this analysis was standard practice. We converted margin statistics to percentages to have more consistent comparisons across counties and tracts for different variables.
+- County selection: For tract analysis, we chose counties that were diverse in both income MOE % and geographic location. We did not want to pick counties in a cluster of similar MOE % that were geographically close to one another. Since we only chose three counties, we aimed at getting a more holistic view of all the counties with this methodology.
+- Analytical Choices: We chose our thresholds for MOE % at both the county and tract level. These seem relatively consistent with reasonable levels of confidence that are commonly used in statistical analyses. One potential avenue for future work would be to tighten these thresholds, especially in the case of NJ counties all being high confidence. How we set this threshold determines our certainty in trusting the data for algorithmic decision-making. If we were working on a highly important task, it would be worthwile to look into this adaptation.
+
+**Limitations:**
+[Note any limitations in your analysis - sample size issues, geographic scope, temporal factors, etc.]
+- One limitation was that our chosen state had all of their counties as high confidence. As discussed, it could be valuable tightening this threshold as a precautionary measure in future work.
+- Another limitation was that we had missing data in our tract-level data, particularly for communities of color. It should be a priority for future surveys to mitigate the frequency of missing data as that causes anomalies in our analysis.
+= A third limitation would be temporal factors for the counties with tourist-driven counties. Median income does not capture the high variability in incomes for these counties across time. Further data (either season or month) for these counties would be insightful in uncovering trends much more than just yearly data.
+
+---
+
+## Submission Checklist
+
+Before submitting your portfolio link on Canvas:
+
+- [ ] All code chunks run without errors
+- [ ] All "[Fill this in]" prompts have been completed
+- [ ] Tables are properly formatted and readable
+- [ ] Executive summary addresses all four required components
+- [ ] Portfolio navigation includes this assignment
+- [ ] Census API key is properly set 
+- [ ] Document renders correctly to HTML
+
+**Remember:** Submit your portfolio URL on Canvas, not the file itself. Your assignment should be accessible at `your-portfolio-url/assignments/assignment_1/your_file_name.html`

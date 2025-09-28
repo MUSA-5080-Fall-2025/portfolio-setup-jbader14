@@ -2,8 +2,15 @@
   {
     "listing": "/weekly-notes/index.html",
     "items": [
+      "/weekly-notes/week-03-notes.html",
       "/weekly-notes/week-02-notes.html",
       "/weekly-notes/week-01-notes.html"
+    ]
+  },
+  {
+    "listing": "/assignments/index.html",
+    "items": [
+      "/assignments/assignment1/assignment1.html"
     ]
   },
   {

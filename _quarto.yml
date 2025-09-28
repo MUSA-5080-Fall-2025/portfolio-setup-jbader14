@@ -17,8 +17,17 @@ website:
             text: "Week 1"
           - href: weekly-notes/week-02-notes.qmd
             text: "Week 2"
+          - href: weekly-notes/week-03-notes.qmd
+            text: "Week 3"
       - href: labs/
-        text: Labs
+        text: "Labs"
+      - href: assignments/ 
+        text: "Assignments"
+        menu:
+          - href: assignments/
+            text: "All Assignments"
+          - href: assignments/assignment1/assignment1.qmd
+            text: "Assignment 1"
 
 format:
   html:

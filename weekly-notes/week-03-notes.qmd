@@ -1,0 +1,64 @@
+---
+title: "Week 3: EDA & ggplot2"
+date: "2025-09-22"
+---
+
+## Key Concepts Learned
+- EDA: 
+  - Create summary statistics table
+    - But can hide underlying data distribution
+      - Outliers, non-linear relationships
+    - So data visualization is important
+    - Can have same mean, var, cov, regression but diff patterns in visualization
+  - Bad / Misleading data visualizations
+    - Misleading scales or axes
+    - Cherry-picked time periods
+    - Hidden or ignored uncertainty
+    - Missing context about data reliability
+    - Result: Poor policy decisions
+  - Goal: Understand your data before making decisions or building models
+    - What does the data look like? (distributions, missing values)
+    - What patterns exist? (relationships, clusters, trends)
+    - What’s unusual? (outliers, anomalies, data quality issues)
+    - What questions does this raise? (hypotheses for further investigation)
+    - How reliable is this data?
+  - Workflow w/ Data Quality Focus: Enhanced process for policy analysis
+    - Load and inspect - dimensions, variable types, missing data
+    - Assess reliability - examine margins of error, calculate coefficients of variation
+    - Visualize distributions - histograms, boxplots for each variable
+    - Explore relationships - scatter plots, correlations
+    - Identify patterns - grouping, clustering, geographical patterns
+    - Question anomalies - investigate outliers and unusual patterns
+    - Document limitations - prepare honest communication about data quality
+  - JOINS - join predicate does not need to be same name, NEED SAME TYPE
+    - left (most-common) / right: keeps everything from left/right
+    - full: keeps everything from both columns
+    - inner: keeps only matches
+    
+
+## Coding Techniques
+- ggplot2
+  - Data -> Aesthetics -> Geometry -> Visual
+    - Data: Your dataset (census data, survey responses, etc.)
+    - Aesthetics: What variables map to visual properties (x, y, color, size)
+    - Geometries: How to display the data (points, bars, lines)
+    - Additional layers: Scales, themes, facets, annotations
+    - General syntax: ggplot(data = your_data) +   aes(x = variable1, y = variable2) +   geom_something() +   additional_layers()
+  - Aesthetic Mappings: maps data to visual properties
+    - x, y - position
+    - color - point/line color
+    - fill - area fill color
+    - size - point/line size
+    - shape - point shape
+    - alpha - transparency
+  - str_detect(), str_extract(), regex() to search within strings
+    
+
+## Questions & Challenges
+- Nothing!
+
+## Connections to Policy
+
+
+## Reflection
+
