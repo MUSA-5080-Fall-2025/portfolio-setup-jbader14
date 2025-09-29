@@ -88,91 +88,7 @@
     "href": "weekly-notes/index.html",
     "title": "Weekly Notes",
     "section": "",
-    "text": "Order By\n      Default\n      \n        Date - Oldest\n      \n      \n        Date - Newest\n      \n      \n        Title\n      \n    \n  \n    \n      \n      \n    \n\n\n\n\n\n\nTitle\n\n\n\nDate\n\n\n\n\n\n\n\n\nWeek 3: EDA & ggplot2\n\n\nSep 22, 2025\n\n\n\n\n\n\nWeek 2 - Algorithmic Decision Making & Census Data\n\n\nSep 15, 2025\n\n\n\n\n\n\nWeek 1 - Course Introduction\n\n\nSep 8, 2025\n\n\n\n\n\n\nNo matching items"
-  },
-  {
-    "objectID": "weekly-notes/week-03-notes.html",
-    "href": "weekly-notes/week-03-notes.html",
-    "title": "Week 3: EDA & ggplot2",
-    "section": "",
-    "text": "EDA:\n\nCreate summary statistics table\n\nBut can hide underlying data distribution\n\nOutliers, non-linear relationships\n\nSo data visualization is important\nCan have same mean, var, cov, regression but diff patterns in visualization\n\nBad / Misleading data visualizations\n\nMisleading scales or axes\nCherry-picked time periods\nHidden or ignored uncertainty\nMissing context about data reliability\nResult: Poor policy decisions\n\nGoal: Understand your data before making decisions or building models\n\nWhat does the data look like? (distributions, missing values)\nWhat patterns exist? (relationships, clusters, trends)\nWhat’s unusual? (outliers, anomalies, data quality issues)\nWhat questions does this raise? (hypotheses for further investigation)\nHow reliable is this data?\n\nWorkflow w/ Data Quality Focus: Enhanced process for policy analysis\n\nLoad and inspect - dimensions, variable types, missing data\nAssess reliability - examine margins of error, calculate coefficients of variation\nVisualize distributions - histograms, boxplots for each variable\nExplore relationships - scatter plots, correlations\nIdentify patterns - grouping, clustering, geographical patterns\nQuestion anomalies - investigate outliers and unusual patterns\nDocument limitations - prepare honest communication about data quality\n\nJOINS - join predicate does not need to be same name, NEED SAME TYPE\n\nleft (most-common) / right: keeps everything from left/right\nfull: keeps everything from both columns\ninner: keeps only matches"
-  },
-  {
-    "objectID": "weekly-notes/week-03-notes.html#key-concepts-learned",
-    "href": "weekly-notes/week-03-notes.html#key-concepts-learned",
-    "title": "Week 3: EDA & ggplot2",
-    "section": "",
-    "text": "EDA:\n\nCreate summary statistics table\n\nBut can hide underlying data distribution\n\nOutliers, non-linear relationships\n\nSo data visualization is important\nCan have same mean, var, cov, regression but diff patterns in visualization\n\nBad / Misleading data visualizations\n\nMisleading scales or axes\nCherry-picked time periods\nHidden or ignored uncertainty\nMissing context about data reliability\nResult: Poor policy decisions\n\nGoal: Understand your data before making decisions or building models\n\nWhat does the data look like? (distributions, missing values)\nWhat patterns exist? (relationships, clusters, trends)\nWhat’s unusual? (outliers, anomalies, data quality issues)\nWhat questions does this raise? (hypotheses for further investigation)\nHow reliable is this data?\n\nWorkflow w/ Data Quality Focus: Enhanced process for policy analysis\n\nLoad and inspect - dimensions, variable types, missing data\nAssess reliability - examine margins of error, calculate coefficients of variation\nVisualize distributions - histograms, boxplots for each variable\nExplore relationships - scatter plots, correlations\nIdentify patterns - grouping, clustering, geographical patterns\nQuestion anomalies - investigate outliers and unusual patterns\nDocument limitations - prepare honest communication about data quality\n\nJOINS - join predicate does not need to be same name, NEED SAME TYPE\n\nleft (most-common) / right: keeps everything from left/right\nfull: keeps everything from both columns\ninner: keeps only matches"
-  },
-  {
-    "objectID": "weekly-notes/week-03-notes.html#coding-techniques",
-    "href": "weekly-notes/week-03-notes.html#coding-techniques",
-    "title": "Week 3: EDA & ggplot2",
-    "section": "Coding Techniques",
-    "text": "Coding Techniques\n\nggplot2\n\nData -&gt; Aesthetics -&gt; Geometry -&gt; Visual\n\nData: Your dataset (census data, survey responses, etc.)\nAesthetics: What variables map to visual properties (x, y, color, size)\nGeometries: How to display the data (points, bars, lines)\nAdditional layers: Scales, themes, facets, annotations\nGeneral syntax: ggplot(data = your_data) + aes(x = variable1, y = variable2) + geom_something() + additional_layers()\n\nAesthetic Mappings: maps data to visual properties\n\nx, y - position\ncolor - point/line color\nfill - area fill color\nsize - point/line size\nshape - point shape\nalpha - transparency\n\nstr_detect(), str_extract(), regex() to search within strings"
-  },
-  {
-    "objectID": "weekly-notes/week-03-notes.html#questions-challenges",
-    "href": "weekly-notes/week-03-notes.html#questions-challenges",
-    "title": "Week 3: EDA & ggplot2",
-    "section": "Questions & Challenges",
-    "text": "Questions & Challenges\n\nNothing!"
-  },
-  {
-    "objectID": "weekly-notes/week-03-notes.html#connections-to-policy",
-    "href": "weekly-notes/week-03-notes.html#connections-to-policy",
-    "title": "Week 3: EDA & ggplot2",
-    "section": "Connections to Policy",
-    "text": "Connections to Policy"
-  },
-  {
-    "objectID": "weekly-notes/week-03-notes.html#reflection",
-    "href": "weekly-notes/week-03-notes.html#reflection",
-    "title": "Week 3: EDA & ggplot2",
-    "section": "Reflection",
-    "text": "Reflection"
-  },
-  {
-    "objectID": "assignments/index.html",
-    "href": "assignments/index.html",
-    "title": "Assignments",
-    "section": "",
-    "text": "Order By\n      Default\n      \n        Title\n      \n    \n  \n    \n      \n      \n    \n\n\n\n\n\n\nTitle\n\n\n\n\n\n\n\n\nAssignment 1: Census Data Quality for Policy Decisions\n\n\n\n\n\n\nNo matching items"
-  },
-  {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "MUSA 5080 Portfolio",
-    "section": "",
-    "text": "This portfolio documents my learning journey in Public Policy Analytics (MUSA 5080).\n\n\nAdvanced spatial analysis and data science for urban planning and public policy.\n\n\n\n\nWeekly Notes: My learning reflections and key concepts\nLabs: Completed assignments and analyses\nFinal Project: Capstone modeling challenge\n\n\n\n\n\nName: Henry (Jack) Bader\nWhy I am taking this course: I want to deepen my understanding of geospatial data science techniques in the public sector that provides a different perspective than typical engineering data science courses.\n\n\n\n\n\nEmail: jbader14@seas.upenn.edu\nGitHub: jbader14"
-  },
-  {
-    "objectID": "index.html#about-this-course",
-    "href": "index.html#about-this-course",
-    "title": "MUSA 5080 Portfolio",
-    "section": "",
-    "text": "Advanced spatial analysis and data science for urban planning and public policy."
-  },
-  {
-    "objectID": "index.html#portfolio-structure",
-    "href": "index.html#portfolio-structure",
-    "title": "MUSA 5080 Portfolio",
-    "section": "",
-    "text": "Weekly Notes: My learning reflections and key concepts\nLabs: Completed assignments and analyses\nFinal Project: Capstone modeling challenge"
-  },
-  {
-    "objectID": "index.html#about-me",
-    "href": "index.html#about-me",
-    "title": "MUSA 5080 Portfolio",
-    "section": "",
-    "text": "Name: Henry (Jack) Bader\nWhy I am taking this course: I want to deepen my understanding of geospatial data science techniques in the public sector that provides a different perspective than typical engineering data science courses."
-  },
-  {
-    "objectID": "index.html#contact",
-    "href": "index.html#contact",
-    "title": "MUSA 5080 Portfolio",
-    "section": "",
-    "text": "Email: jbader14@seas.upenn.edu\nGitHub: jbader14"
+    "text": "Order By\n      Default\n      \n        Date - Oldest\n      \n      \n        Date - Newest\n      \n      \n        Title\n      \n    \n  \n    \n      \n      \n    \n\n\n\n\n\n\nTitle\n\n\n\nDate\n\n\n\n\n\n\n\n\nWeek 4:GIS & Spatial Analysis in R\n\n\nSep 29, 2025\n\n\n\n\n\n\nWeek 3: EDA & ggplot2\n\n\nSep 22, 2025\n\n\n\n\n\n\nWeek 2 - Algorithmic Decision Making & Census Data\n\n\nSep 15, 2025\n\n\n\n\n\n\nWeek 1 - Course Introduction\n\n\nSep 8, 2025\n\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "weekly-notes/week-02-notes.html",
@@ -217,46 +133,39 @@
     "text": "Reflection\n\nI had not had a formal introduction to Census data before. Sometimes, working with assigned datasets in class overlook a key aspect being data collection, which is a key decision in framing an analytics problem with human choice.\nI think that it is very valuable to go over biases in algorithms and data. One saying that I was taught is “Data is never neutral”, highlighting that there are many subjective human decisions that go into creating data-driven solutions. It is crucial that we recognize these risks in our problem-solving process to mitigate risk of biases in our policy decisions to protect at-risk groups of people."
   },
   {
-    "objectID": "weekly-notes/week-01-notes.html",
-    "href": "weekly-notes/week-01-notes.html",
-    "title": "Week 1 - Course Introduction",
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "MUSA 5080 Portfolio",
     "section": "",
-    "text": "Upcoming assignments: lab0: 9/15 create Quatro portfolio; lab1: 9/27 EDA\nGit: Version-control system - tracks changes in files\n\nCollaboration tool for people teams to work\n\nGithub: cloud host for Git repos (projects)\n\nBackup work in cloud\nShare / collaborate on projects with other\nGithub pages hosts websites\n\nGithub Concepts:\n\nRepo: folder containing proj files\nCommit: snapshot of work at point in time\nPush: Send changes to Github cloud\nPull: Get latest changes from Github cloud\n\nWorkflow each week:\n\nEdit files in RStudio (local)\nCommit changes w/ message\nPush to Github\nPortfolio propogates changes automatically\n\nGithub Classroom:\n\nCreates individual repos for each student\nDistributes assignments automatically\nTAs can provide feedback\n\nLists syntax\nLinks / Images syntax"
+    "text": "This portfolio documents my learning journey in Public Policy Analytics (MUSA 5080).\n\n\nAdvanced spatial analysis and data science for urban planning and public policy.\n\n\n\n\nWeekly Notes: My learning reflections and key concepts\nLabs: Completed assignments and analyses\nFinal Project: Capstone modeling challenge\n\n\n\n\n\nName: Henry (Jack) Bader\nWhy I am taking this course: I want to deepen my understanding of geospatial data science techniques in the public sector that provides a different perspective than typical engineering data science courses.\n\n\n\n\n\nEmail: jbader14@seas.upenn.edu\nGitHub: jbader14"
   },
   {
-    "objectID": "weekly-notes/week-01-notes.html#key-concepts-learned",
-    "href": "weekly-notes/week-01-notes.html#key-concepts-learned",
-    "title": "Week 1 - Course Introduction",
+    "objectID": "index.html#about-this-course",
+    "href": "index.html#about-this-course",
+    "title": "MUSA 5080 Portfolio",
     "section": "",
-    "text": "Upcoming assignments: lab0: 9/15 create Quatro portfolio; lab1: 9/27 EDA\nGit: Version-control system - tracks changes in files\n\nCollaboration tool for people teams to work\n\nGithub: cloud host for Git repos (projects)\n\nBackup work in cloud\nShare / collaborate on projects with other\nGithub pages hosts websites\n\nGithub Concepts:\n\nRepo: folder containing proj files\nCommit: snapshot of work at point in time\nPush: Send changes to Github cloud\nPull: Get latest changes from Github cloud\n\nWorkflow each week:\n\nEdit files in RStudio (local)\nCommit changes w/ message\nPush to Github\nPortfolio propogates changes automatically\n\nGithub Classroom:\n\nCreates individual repos for each student\nDistributes assignments automatically\nTAs can provide feedback\n\nLists syntax\nLinks / Images syntax"
+    "text": "Advanced spatial analysis and data science for urban planning and public policy."
   },
   {
-    "objectID": "weekly-notes/week-01-notes.html#coding-techniques",
-    "href": "weekly-notes/week-01-notes.html#coding-techniques",
-    "title": "Week 1 - Course Introduction",
-    "section": "Coding Techniques",
-    "text": "Coding Techniques\n\nR (open software - people create packages free to use) and dplyr:\n\ntidyverse: Data Science packages\n\nConsistent syntax across functions\nReadable code tells story\nEfficient workflows for common tasks\n\nTibbles: enhanced data frames\n\nTraditional df: class(data)\nTibble: car_data &lt;- as_tibble(data)\nPretty print: Shows ONLY first 10 rows, displays cleaner than traditional df\nread_csv (read.csv for traditional df)\n\nEssential dplyr functions (data cleaning):\nselect(): choose columns - select(df, col1, col2)\nfilter(): choose rows - filter(df, condition)\n\nUse &, | symbol to join conditions (and/or)\n\nmutate(): create new variables - mutate(df, new_col = old_col / 1000)\n\nCan use case_when (if statement) argument: ex) car_df = mutate(car_df, case_when(age &gt; 20 ~ “old”, TRUE ~ “not old”))\n\nsummarize(): calculate stats\ngroup_by(): operate on groups (usually goes together w/ summarize())\n\ngroup_by(col1) |&gt; summarize (n = n()) |&gt; mutate(freq = n / sum(n)) -&gt; calculates proportions (frequencies) for groups\n\nMust assign back to original or new df name to save the operation (always start with dataframe operating on in syntax)\nOthers:\n\nnames(): column names\nglimpse(): rows, columnns, some entries etc.\nClick on df to view in table format\nRename(): renames column: rename(df, new = old)\nRemove a column: select(df, -col)\n\n%&gt;% or |&gt;: Pipes -&gt; combines lines of codes, pass outputs through each pipe\n\nQuarto (better version of R Markdown) - publishing system that combines:\n\nCode (R, Python, etc.), Text (explanations, analysis, etc.), Output (plots, tables results, etc.)\nBenefits:\n\nReproducible research: Ccde and explanation in one place, others can re-run analysis, professional presentation\n\nComponents:\n\nYAML header: title, author, date, format\nR code chunks: load library, read_csv, etc.\nText (formatting: bold, italic, etc.)"
+    "objectID": "index.html#portfolio-structure",
+    "href": "index.html#portfolio-structure",
+    "title": "MUSA 5080 Portfolio",
+    "section": "",
+    "text": "Weekly Notes: My learning reflections and key concepts\nLabs: Completed assignments and analyses\nFinal Project: Capstone modeling challenge"
   },
   {
-    "objectID": "weekly-notes/week-01-notes.html#questions-challenges",
-    "href": "weekly-notes/week-01-notes.html#questions-challenges",
-    "title": "Week 1 - Course Introduction",
-    "section": "Questions & Challenges",
-    "text": "Questions & Challenges\n\nNothing!"
+    "objectID": "index.html#about-me",
+    "href": "index.html#about-me",
+    "title": "MUSA 5080 Portfolio",
+    "section": "",
+    "text": "Name: Henry (Jack) Bader\nWhy I am taking this course: I want to deepen my understanding of geospatial data science techniques in the public sector that provides a different perspective than typical engineering data science courses."
   },
   {
-    "objectID": "weekly-notes/week-01-notes.html#connections-to-policy",
-    "href": "weekly-notes/week-01-notes.html#connections-to-policy",
-    "title": "Week 1 - Course Introduction",
-    "section": "Connections to Policy",
-    "text": "Connections to Policy\n\nWe learned how to clean data, transforming it to drive actionable insights. Datasets can be messy, and by learning these skills, we build foundational knowledge on how we can improve the quality of data for future analyses.\nWe learned how to create a Quarto portfolio as a professional way to organize and present our work. This is highly valuable for making our findings professional, clean, and easily accessible to peers, future employers, etc."
-  },
-  {
-    "objectID": "weekly-notes/week-01-notes.html#reflection",
-    "href": "weekly-notes/week-01-notes.html#reflection",
-    "title": "Week 1 - Course Introduction",
-    "section": "Reflection",
-    "text": "Reflection\n\nI found the Quarto portfolio the most fascinating part of this lecture. It displays our work in a much cleaner format than in R-Markdown.\nI will be using this portfolio to highlight the work in this course. Additionally, I can use skills in making a Quatro portfolio for personal projects as well!"
+    "objectID": "index.html#contact",
+    "href": "index.html#contact",
+    "title": "MUSA 5080 Portfolio",
+    "section": "",
+    "text": "Email: jbader14@seas.upenn.edu\nGitHub: jbader14"
   },
   {
     "objectID": "assignments/assignment1/assignment1.html",
@@ -369,5 +278,222 @@
     "title": "Assignment 1: Census Data Quality for Policy Decisions",
     "section": "Submission Checklist",
     "text": "Submission Checklist\nBefore submitting your portfolio link on Canvas:\n\nAll code chunks run without errors\nAll “[Fill this in]” prompts have been completed\nTables are properly formatted and readable\nExecutive summary addresses all four required components\nPortfolio navigation includes this assignment\nCensus API key is properly set\nDocument renders correctly to HTML\n\nRemember: Submit your portfolio URL on Canvas, not the file itself. Your assignment should be accessible at your-portfolio-url/assignments/assignment_1/your_file_name.html"
+  },
+  {
+    "objectID": "labs/lab0/lab0.html",
+    "href": "labs/lab0/lab0.html",
+    "title": "Lab 0: Getting Started with dplyr",
+    "section": "",
+    "text": "Welcome to your first lab! In this (not graded) assignment, you’ll practice the fundamental dplyr operations I overviewed in class using car sales data. This lab will help you get comfortable with:\n\nBasic data exploration\nColumn selection and manipulation\n\nCreating new variables\nFiltering data\nGrouping and summarizing\n\nInstructions: Copy this template into your portfolio repository under a lab_0/ folder, then complete each section with your code and answers. You will write the code under the comment section in each chunk. Be sure to also copy the data folder into your lab_0 folder."
+  },
+  {
+    "objectID": "labs/lab0/lab0.html#data-structure-exploration",
+    "href": "labs/lab0/lab0.html#data-structure-exploration",
+    "title": "Lab 0: Getting Started with dplyr",
+    "section": "1.1 Data Structure Exploration",
+    "text": "1.1 Data Structure Exploration\nExplore the structure of your data and answer these questions:\n\n# Use glimpse() to see the data structure\nglimpse(car_data)\n\nRows: 50,000\nColumns: 7\n$ Manufacturer          &lt;chr&gt; \"Ford\", \"Porsche\", \"Ford\", \"Toyota\", \"VW\", \"Ford…\n$ Model                 &lt;chr&gt; \"Fiesta\", \"718 Cayman\", \"Mondeo\", \"RAV4\", \"Polo\"…\n$ `Engine size`         &lt;dbl&gt; 1.0, 4.0, 1.6, 1.8, 1.0, 1.4, 1.8, 1.4, 1.2, 2.0…\n$ `Fuel type`           &lt;chr&gt; \"Petrol\", \"Petrol\", \"Diesel\", \"Hybrid\", \"Petrol\"…\n$ `Year of manufacture` &lt;dbl&gt; 2002, 2016, 2014, 1988, 2006, 2018, 2010, 2015, …\n$ Mileage               &lt;dbl&gt; 127300, 57850, 39190, 210814, 127869, 33603, 866…\n$ Price                 &lt;dbl&gt; 3074, 49704, 24072, 1705, 4101, 29204, 14350, 30…\n\n# Check the column names\ncolnames(car_data)\n\n[1] \"Manufacturer\"        \"Model\"               \"Engine size\"        \n[4] \"Fuel type\"           \"Year of manufacture\" \"Mileage\"            \n[7] \"Price\"              \n\n# Look at the first few rows\nhead(car_data)\n\n# A tibble: 6 × 7\n  Manufacturer Model     `Engine size` `Fuel type` `Year of manufacture` Mileage\n  &lt;chr&gt;        &lt;chr&gt;             &lt;dbl&gt; &lt;chr&gt;                       &lt;dbl&gt;   &lt;dbl&gt;\n1 Ford         Fiesta              1   Petrol                       2002  127300\n2 Porsche      718 Caym…           4   Petrol                       2016   57850\n3 Ford         Mondeo              1.6 Diesel                       2014   39190\n4 Toyota       RAV4                1.8 Hybrid                       1988  210814\n5 VW           Polo                1   Petrol                       2006  127869\n6 Ford         Focus               1.4 Petrol                       2018   33603\n# ℹ 1 more variable: Price &lt;dbl&gt;\n\n\nQuestions to answer: - How many rows and columns does the dataset have? - What types of variables do you see (numeric, character, etc.)? - Are there any column names that might cause problems? Why?\nYour answers: - Rows: 50,000 - Columns: 7\n- Variable types: Character, double - Problematic names:“Engine size”, “Fuel type”, “Year of manufacture” are problematic since they have spaces in their names. When we call them, we must wrap these names in quotation marks as shown above."
+  },
+  {
+    "objectID": "labs/lab0/lab0.html#tibble-vs-data-frame",
+    "href": "labs/lab0/lab0.html#tibble-vs-data-frame",
+    "title": "Lab 0: Getting Started with dplyr",
+    "section": "1.2 Tibble vs Data Frame",
+    "text": "1.2 Tibble vs Data Frame\nCompare how tibbles and data frames display:\n\n# Look at the tibble version (what we have)\ncar_data\n\n# A tibble: 50,000 × 7\n   Manufacturer Model    `Engine size` `Fuel type` `Year of manufacture` Mileage\n   &lt;chr&gt;        &lt;chr&gt;            &lt;dbl&gt; &lt;chr&gt;                       &lt;dbl&gt;   &lt;dbl&gt;\n 1 Ford         Fiesta             1   Petrol                       2002  127300\n 2 Porsche      718 Cay…           4   Petrol                       2016   57850\n 3 Ford         Mondeo             1.6 Diesel                       2014   39190\n 4 Toyota       RAV4               1.8 Hybrid                       1988  210814\n 5 VW           Polo               1   Petrol                       2006  127869\n 6 Ford         Focus              1.4 Petrol                       2018   33603\n 7 Ford         Mondeo             1.8 Diesel                       2010   86686\n 8 Toyota       Prius              1.4 Hybrid                       2015   30663\n 9 VW           Polo               1.2 Petrol                       2012   73470\n10 Ford         Focus              2   Diesel                       1992  262514\n# ℹ 49,990 more rows\n# ℹ 1 more variable: Price &lt;dbl&gt;\n\n# Convert to regular data frame and display\ncar_df &lt;- as.data.frame(car_data)\nhead(car_df, 50) # Changed for better render\n\n   Manufacturer      Model Engine size Fuel type Year of manufacture Mileage\n1          Ford     Fiesta         1.0    Petrol                2002  127300\n2       Porsche 718 Cayman         4.0    Petrol                2016   57850\n3          Ford     Mondeo         1.6    Diesel                2014   39190\n4        Toyota       RAV4         1.8    Hybrid                1988  210814\n5            VW       Polo         1.0    Petrol                2006  127869\n6          Ford      Focus         1.4    Petrol                2018   33603\n7          Ford     Mondeo         1.8    Diesel                2010   86686\n8        Toyota      Prius         1.4    Hybrid                2015   30663\n9            VW       Polo         1.2    Petrol                2012   73470\n10         Ford      Focus         2.0    Diesel                1992  262514\n11           VW       Golf         2.0    Diesel                2014   83047\n12          BMW         Z4         2.0    Petrol                1990  293666\n13           VW       Golf         1.2    Diesel                2007   92697\n14       Toyota       RAV4         2.2    Petrol                2007   79393\n15       Toyota      Yaris         1.4    Petrol                1998   97286\n16           VW       Golf         1.6    Diesel                1989  222390\n17       Toyota       RAV4         2.4    Hybrid                2003  117425\n18       Toyota      Yaris         1.2    Petrol                1992  245990\n19       Toyota       RAV4         2.0    Hybrid                2018   28381\n20           VW       Polo         1.2    Petrol                1998  155038\n21           VW       Golf         1.2    Hybrid                1987  121744\n22         Ford     Mondeo         1.6    Diesel                1996   77584\n23       Toyota      Prius         1.0    Hybrid                2003  115291\n24       Toyota      Prius         1.0    Hybrid                1990  238571\n25      Porsche        911         2.6    Petrol                2009   66273\n26       Toyota      Prius         1.8    Hybrid                2017   31958\n27      Porsche        911         3.5    Petrol                2005  151556\n28       Toyota      Yaris         1.2    Petrol                2002  179097\n29           VW       Golf         2.0    Petrol                2020   18985\n30       Toyota       RAV4         1.8    Hybrid                2002   66990\n31         Ford      Focus         1.0    Hybrid                2010   85131\n32         Ford     Fiesta         1.0    Petrol                2001  144731\n33           VW       Polo         2.0    Diesel                2008   97001\n34           VW       Polo         1.6    Petrol                2016   52409\n35         Ford     Fiesta         1.4    Petrol                2010  112714\n36           VW     Passat         2.0    Diesel                1992  198540\n37           VW     Passat         1.8    Diesel                1989  213162\n38          BMW         Z4         2.2    Petrol                2005  133174\n39           VW       Polo         1.6    Petrol                2008  129588\n40          BMW         Z4         2.0    Petrol                1990  148586\n41         Ford      Focus         2.0    Petrol                1995   91173\n42          BMW         M5         4.0    Petrol                2017   22759\n43           VW       Polo         1.4    Petrol                1990  261526\n44           VW     Passat         1.4    Diesel                1995  235594\n45          BMW         Z4         2.0    Petrol                1995   42759\n46           VW     Passat         1.8    Diesel                2005  103352\n47           VW     Passat         1.6    Petrol                2003   63372\n48       Toyota      Yaris         1.0    Petrol                2009   51787\n49         Ford     Fiesta         1.4    Petrol                2014   41495\n50       Toyota      Yaris         1.4    Petrol                2010   43111\n   Price\n1   3074\n2  49704\n3  24072\n4   1705\n5   4101\n6  29204\n7  14350\n8  30297\n9   9977\n10  1049\n11 17173\n12   719\n13  7792\n14 16026\n15  4046\n16   933\n17 11667\n18   720\n19 52671\n20  2118\n21  1890\n22  5667\n23  6512\n24   961\n25 41963\n26 38961\n27 19747\n28  2548\n29 36387\n30 13553\n31 12472\n32  2503\n33  8784\n34 17257\n35  6936\n36  1964\n37  1340\n38  8511\n39  5848\n40  2637\n41  5181\n42 97758\n43   522\n44  1439\n45  7873\n46  9633\n47 10001\n48  9689\n49 14721\n50 12928\n\n\nQuestion: What differences do you notice in how they print?\nYour answer: Tibble will only display the first 10 rows with total number of rows and columns as well as column types as additional info. It also only shows a certain number of columns (in this case, only 6 of 7 columns displayed)."
+  },
+  {
+    "objectID": "labs/lab0/lab0.html#selecting-columns",
+    "href": "labs/lab0/lab0.html#selecting-columns",
+    "title": "Lab 0: Getting Started with dplyr",
+    "section": "2.1 Selecting Columns",
+    "text": "2.1 Selecting Columns\nPractice selecting different combinations of columns:\n\n# Select just Model and Mileage columns\nmodel_mile &lt;- select(car_data, Model, Mileage)\nhead(model_mile, 5)\n\n# A tibble: 5 × 2\n  Model      Mileage\n  &lt;chr&gt;        &lt;dbl&gt;\n1 Fiesta      127300\n2 718 Cayman   57850\n3 Mondeo       39190\n4 RAV4        210814\n5 Polo        127869\n\n# Select Manufacturer, Price, and Fuel type\nmanuf_price_fuel &lt;- select(car_data, Manufacturer, Price, \"Fuel type\")\nhead(manuf_price_fuel, 5)\n\n# A tibble: 5 × 3\n  Manufacturer Price `Fuel type`\n  &lt;chr&gt;        &lt;dbl&gt; &lt;chr&gt;      \n1 Ford          3074 Petrol     \n2 Porsche      49704 Petrol     \n3 Ford         24072 Diesel     \n4 Toyota        1705 Hybrid     \n5 VW            4101 Petrol     \n\n# Challenge: Select all columns EXCEPT Engine Size\nexcept_engine &lt;- select(car_data, -\"Engine size\")\nhead(except_engine, 5)\n\n# A tibble: 5 × 6\n  Manufacturer Model      `Fuel type` `Year of manufacture` Mileage Price\n  &lt;chr&gt;        &lt;chr&gt;      &lt;chr&gt;                       &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;\n1 Ford         Fiesta     Petrol                       2002  127300  3074\n2 Porsche      718 Cayman Petrol                       2016   57850 49704\n3 Ford         Mondeo     Diesel                       2014   39190 24072\n4 Toyota       RAV4       Hybrid                       1988  210814  1705\n5 VW           Polo       Petrol                       2006  127869  4101"
+  },
+  {
+    "objectID": "labs/lab0/lab0.html#renaming-columns",
+    "href": "labs/lab0/lab0.html#renaming-columns",
+    "title": "Lab 0: Getting Started with dplyr",
+    "section": "2.2 Renaming Columns",
+    "text": "2.2 Renaming Columns\nLet’s fix a problematic column name:\n\n# Rename 'Year of manufacture' to year\ncar_data &lt;- car_data |&gt;\n    rename(\n    year = `Year of manufacture`,\n    engine_size = `Engine size`,\n    fuel = `Fuel type`\n  )\n\n# Check that it worked\nnames(car_data)\n\n[1] \"Manufacturer\" \"Model\"        \"engine_size\"  \"fuel\"         \"year\"        \n[6] \"Mileage\"      \"Price\"       \n\n\nQuestion: Why did we need backticks around Year of manufacture but not around year?\nYour answer: Because ‘year’ has no spaces in its variable name."
+  },
+  {
+    "objectID": "labs/lab0/lab0.html#calculate-car-age",
+    "href": "labs/lab0/lab0.html#calculate-car-age",
+    "title": "Lab 0: Getting Started with dplyr",
+    "section": "3.1 Calculate Car Age",
+    "text": "3.1 Calculate Car Age\n\n# Create an 'age' column (2025 minus year of manufacture)\n# Create a mileage_per_year column \ncar_data &lt;- car_data |&gt;\n  mutate(age = 2025 - year,\n         mileage_per_year = Mileage / age)\n\n# Look at your new columns\nselect(car_data, Model, year, age, Mileage, mileage_per_year)\n\n# A tibble: 50,000 × 5\n   Model       year   age Mileage mileage_per_year\n   &lt;chr&gt;      &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;            &lt;dbl&gt;\n 1 Fiesta      2002    23  127300            5535.\n 2 718 Cayman  2016     9   57850            6428.\n 3 Mondeo      2014    11   39190            3563.\n 4 RAV4        1988    37  210814            5698.\n 5 Polo        2006    19  127869            6730.\n 6 Focus       2018     7   33603            4800.\n 7 Mondeo      2010    15   86686            5779.\n 8 Prius       2015    10   30663            3066.\n 9 Polo        2012    13   73470            5652.\n10 Focus       1992    33  262514            7955.\n# ℹ 49,990 more rows"
+  },
+  {
+    "objectID": "labs/lab0/lab0.html#categorize-cars",
+    "href": "labs/lab0/lab0.html#categorize-cars",
+    "title": "Lab 0: Getting Started with dplyr",
+    "section": "3.2 Categorize Cars",
+    "text": "3.2 Categorize Cars\n\n# Create a price_category column where if price is &lt; 15000, its is coded as budget, between 15000 and 30000 is midrange and greater than 30000 is mid-range (use case_when)\ncar_data &lt;- car_data |&gt;\n  mutate(price_category = case_when(\n    Price &lt; 15000 ~ \"budget\", \n    between(Price, 15000, 30000) ~ \"midrange\",\n    TRUE ~ \"luxury\"))\n\n# Check your categories select the new column and show it\nselect(car_data, price_category)\n\n# A tibble: 50,000 × 1\n   price_category\n   &lt;chr&gt;         \n 1 budget        \n 2 luxury        \n 3 midrange      \n 4 budget        \n 5 budget        \n 6 midrange      \n 7 budget        \n 8 luxury        \n 9 budget        \n10 budget        \n# ℹ 49,990 more rows"
+  },
+  {
+    "objectID": "labs/lab0/lab0.html#basic-filtering",
+    "href": "labs/lab0/lab0.html#basic-filtering",
+    "title": "Lab 0: Getting Started with dplyr",
+    "section": "4.1 Basic Filtering",
+    "text": "4.1 Basic Filtering\n\n# Find all Toyota cars\ntoyota &lt;- car_data |&gt;\n  filter(Manufacturer == \"Toyota\")\nhead(toyota, 5)\n\n# A tibble: 5 × 10\n  Manufacturer Model engine_size fuel    year Mileage Price   age\n  &lt;chr&gt;        &lt;chr&gt;       &lt;dbl&gt; &lt;chr&gt;  &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;\n1 Toyota       RAV4          1.8 Hybrid  1988  210814  1705    37\n2 Toyota       Prius         1.4 Hybrid  2015   30663 30297    10\n3 Toyota       RAV4          2.2 Petrol  2007   79393 16026    18\n4 Toyota       Yaris         1.4 Petrol  1998   97286  4046    27\n5 Toyota       RAV4          2.4 Hybrid  2003  117425 11667    22\n# ℹ 2 more variables: mileage_per_year &lt;dbl&gt;, price_category &lt;chr&gt;\n\n# Find cars with mileage less than 30,000\nmile_less_30000 &lt;- car_data |&gt;\n  filter(Mileage &lt; 30000)\nhead(mile_less_30000, 5)\n\n# A tibble: 5 × 10\n  Manufacturer Model engine_size fuel    year Mileage Price   age\n  &lt;chr&gt;        &lt;chr&gt;       &lt;dbl&gt; &lt;chr&gt;  &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;\n1 Toyota       RAV4          2   Hybrid  2018   28381 52671     7\n2 VW           Golf          2   Petrol  2020   18985 36387     5\n3 BMW          M5            4   Petrol  2017   22759 97758     8\n4 Toyota       RAV4          2.4 Petrol  2018   24588 49125     7\n5 VW           Golf          2   Hybrid  2018   25017 36957     7\n# ℹ 2 more variables: mileage_per_year &lt;dbl&gt;, price_category &lt;chr&gt;\n\n# Find luxury cars (from price category) with low mileage\n# ASSUMING low mileage is less than 30000 from part 2\nluxury_low_mile &lt;- mile_less_30000 |&gt;\n  filter(price_category == \"luxury\")\nhead(luxury_low_mile, 5)\n\n# A tibble: 5 × 10\n  Manufacturer Model engine_size fuel    year Mileage Price   age\n  &lt;chr&gt;        &lt;chr&gt;       &lt;dbl&gt; &lt;chr&gt;  &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;\n1 Toyota       RAV4          2   Hybrid  2018   28381 52671     7\n2 VW           Golf          2   Petrol  2020   18985 36387     5\n3 BMW          M5            4   Petrol  2017   22759 97758     8\n4 Toyota       RAV4          2.4 Petrol  2018   24588 49125     7\n5 VW           Golf          2   Hybrid  2018   25017 36957     7\n# ℹ 2 more variables: mileage_per_year &lt;dbl&gt;, price_category &lt;chr&gt;"
+  },
+  {
+    "objectID": "labs/lab0/lab0.html#multiple-conditions",
+    "href": "labs/lab0/lab0.html#multiple-conditions",
+    "title": "Lab 0: Getting Started with dplyr",
+    "section": "4.2 Multiple Conditions",
+    "text": "4.2 Multiple Conditions\n\n# Find cars that are EITHER Honda OR Nissan\nhonda_nissan &lt;- car_data |&gt;\n    filter(Manufacturer %in% c(\"Honda\", \"Nissan\"))\nhead(honda_nissan, 5)\n\n# A tibble: 0 × 10\n# ℹ 10 variables: Manufacturer &lt;chr&gt;, Model &lt;chr&gt;, engine_size &lt;dbl&gt;,\n#   fuel &lt;chr&gt;, year &lt;dbl&gt;, Mileage &lt;dbl&gt;, Price &lt;dbl&gt;, age &lt;dbl&gt;,\n#   mileage_per_year &lt;dbl&gt;, price_category &lt;chr&gt;\n\n# NO NISSAN OR HONDA IN DATASET\n\n# Find cars with price between $20,000 and $35,000\nprice_20k_35k &lt;- car_data |&gt;\n  filter(Price &gt; 20000 & Price &lt; 35000)\nhead(price_20k_35k, 5)\n\n# A tibble: 5 × 10\n  Manufacturer Model  engine_size fuel    year Mileage Price   age\n  &lt;chr&gt;        &lt;chr&gt;        &lt;dbl&gt; &lt;chr&gt;  &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;\n1 Ford         Mondeo         1.6 Diesel  2014   39190 24072    11\n2 Ford         Focus          1.4 Petrol  2018   33603 29204     7\n3 Toyota       Prius          1.4 Hybrid  2015   30663 30297    10\n4 Toyota       Prius          1.4 Hybrid  2016   43893 29946     9\n5 Toyota       Prius          1.4 Hybrid  2016   43130 30085     9\n# ℹ 2 more variables: mileage_per_year &lt;dbl&gt;, price_category &lt;chr&gt;\n\n# Find diesel cars less than 10 years old\ndiesel_less_10_year &lt;- car_data |&gt;\n  filter(fuel == \"Diesel\" & age &lt; 10)\nhead(diesel_less_10_year, 5)\n\n# A tibble: 5 × 10\n  Manufacturer Model  engine_size fuel    year Mileage Price   age\n  &lt;chr&gt;        &lt;chr&gt;        &lt;dbl&gt; &lt;chr&gt;  &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;\n1 Ford         Fiesta         1   Diesel  2017   38370 16257     8\n2 VW           Passat         1.6 Diesel  2018   22122 36634     7\n3 VW           Passat         1.4 Diesel  2020   21413 39310     5\n4 BMW          X3             2   Diesel  2018   27389 44018     7\n5 Ford         Mondeo         2   Diesel  2016   51724 28482     9\n# ℹ 2 more variables: mileage_per_year &lt;dbl&gt;, price_category &lt;chr&gt;\n\nglimpse(diesel_less_10_year)\n\nRows: 2,040\nColumns: 10\n$ Manufacturer     &lt;chr&gt; \"Ford\", \"VW\", \"VW\", \"BMW\", \"Ford\", \"Porsche\", \"VW\", \"…\n$ Model            &lt;chr&gt; \"Fiesta\", \"Passat\", \"Passat\", \"X3\", \"Mondeo\", \"Cayenn…\n$ engine_size      &lt;dbl&gt; 1.0, 1.6, 1.4, 2.0, 2.0, 2.6, 1.2, 1.8, 1.4, 1.4, 1.4…\n$ fuel             &lt;chr&gt; \"Diesel\", \"Diesel\", \"Diesel\", \"Diesel\", \"Diesel\", \"Di…\n$ year             &lt;dbl&gt; 2017, 2018, 2020, 2018, 2016, 2019, 2018, 2016, 2020,…\n$ Mileage          &lt;dbl&gt; 38370, 22122, 21413, 27389, 51724, 20147, 37411, 2943…\n$ Price            &lt;dbl&gt; 16257, 36634, 39310, 44018, 28482, 76182, 19649, 3088…\n$ age              &lt;dbl&gt; 8, 7, 5, 7, 9, 6, 7, 9, 5, 7, 7, 9, 8, 3, 7, 3, 9, 7,…\n$ mileage_per_year &lt;dbl&gt; 4796.2500, 3160.2857, 4282.6000, 3912.7143, 5747.1111…\n$ price_category   &lt;chr&gt; \"midrange\", \"luxury\", \"luxury\", \"luxury\", \"midrange\",…\n\n\nQuestion: How many diesel cars are less than 10 years old?\nYour answer: 2040"
+  },
+  {
+    "objectID": "labs/lab0/lab0.html#basic-summaries",
+    "href": "labs/lab0/lab0.html#basic-summaries",
+    "title": "Lab 0: Getting Started with dplyr",
+    "section": "5.1 Basic Summaries",
+    "text": "5.1 Basic Summaries\n\n# Calculate average price by manufacturer\navg_price_by_brand &lt;- car_data %&gt;%\n  group_by(Manufacturer) %&gt;%\n  summarize(avg_price = mean(Price, na.rm = TRUE))\n\navg_price_by_brand\n\n# A tibble: 5 × 2\n  Manufacturer avg_price\n  &lt;chr&gt;            &lt;dbl&gt;\n1 BMW             24429.\n2 Ford            10672.\n3 Porsche         29104.\n4 Toyota          14340.\n5 VW              10363.\n\n# Calculate average mileage by fuel type\navg_mile_by_fuel &lt;- car_data |&gt;\n  group_by(fuel) |&gt;\n  summarize(avg_mile = mean(Mileage, na.rm = T))\n\navg_mile_by_fuel\n\n# A tibble: 3 × 2\n  fuel   avg_mile\n  &lt;chr&gt;     &lt;dbl&gt;\n1 Diesel  112667.\n2 Hybrid  111622.\n3 Petrol  112795.\n\n# Count cars by manufacturer\ncount_cars_by_brand &lt;- car_data |&gt;\n  group_by(Manufacturer) |&gt;\n  summarize(count_car = n())\n\ncount_cars_by_brand\n\n# A tibble: 5 × 2\n  Manufacturer count_car\n  &lt;chr&gt;            &lt;int&gt;\n1 BMW               4965\n2 Ford             14959\n3 Porsche           2609\n4 Toyota           12554\n5 VW               14913"
+  },
+  {
+    "objectID": "labs/lab0/lab0.html#categorical-summaries",
+    "href": "labs/lab0/lab0.html#categorical-summaries",
+    "title": "Lab 0: Getting Started with dplyr",
+    "section": "5.2 Categorical Summaries",
+    "text": "5.2 Categorical Summaries\n\n# Frequency table for price categories\ncar_data |&gt;\n  count(price_category) |&gt;\n  mutate(percent = 100 * n / sum(n)) |&gt;\n  select(-n)\n\n# A tibble: 3 × 2\n  price_category percent\n  &lt;chr&gt;            &lt;dbl&gt;\n1 budget            68.1\n2 luxury            12.4\n3 midrange          19.6\n\ncar_data\n\n# A tibble: 50,000 × 10\n   Manufacturer Model      engine_size fuel    year Mileage Price   age\n   &lt;chr&gt;        &lt;chr&gt;            &lt;dbl&gt; &lt;chr&gt;  &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;\n 1 Ford         Fiesta             1   Petrol  2002  127300  3074    23\n 2 Porsche      718 Cayman         4   Petrol  2016   57850 49704     9\n 3 Ford         Mondeo             1.6 Diesel  2014   39190 24072    11\n 4 Toyota       RAV4               1.8 Hybrid  1988  210814  1705    37\n 5 VW           Polo               1   Petrol  2006  127869  4101    19\n 6 Ford         Focus              1.4 Petrol  2018   33603 29204     7\n 7 Ford         Mondeo             1.8 Diesel  2010   86686 14350    15\n 8 Toyota       Prius              1.4 Hybrid  2015   30663 30297    10\n 9 VW           Polo               1.2 Petrol  2012   73470  9977    13\n10 Ford         Focus              2   Diesel  1992  262514  1049    33\n# ℹ 49,990 more rows\n# ℹ 2 more variables: mileage_per_year &lt;dbl&gt;, price_category &lt;chr&gt;"
+  },
+  {
+    "objectID": "labs/index.html",
+    "href": "labs/index.html",
+    "title": "Labs",
+    "section": "",
+    "text": "Order By\n      Default\n      \n        Title\n      \n    \n  \n    \n      \n      \n    \n\n\n\n\n\n\nTitle\n\n\n\n\n\n\n\n\nLab 0: Getting Started with dplyr\n\n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "assignments/index.html",
+    "href": "assignments/index.html",
+    "title": "Assignments",
+    "section": "",
+    "text": "Order By\n      Default\n      \n        Title\n      \n    \n  \n    \n      \n      \n    \n\n\n\n\n\n\nTitle\n\n\n\n\n\n\n\n\nAssignment 1: Census Data Quality for Policy Decisions\n\n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "weekly-notes/week-03-notes.html",
+    "href": "weekly-notes/week-03-notes.html",
+    "title": "Week 3: EDA & ggplot2",
+    "section": "",
+    "text": "EDA:\n\nCreate summary statistics table\n\nBut can hide underlying data distribution\n\nOutliers, non-linear relationships\n\nSo data visualization is important\nCan have same mean, var, cov, regression but diff patterns in visualization\n\nBad / Misleading data visualizations\n\nMisleading scales or axes\nCherry-picked time periods\nHidden or ignored uncertainty\nMissing context about data reliability\nResult: Poor policy decisions\n\nGoal: Understand your data before making decisions or building models\n\nWhat does the data look like? (distributions, missing values)\nWhat patterns exist? (relationships, clusters, trends)\nWhat’s unusual? (outliers, anomalies, data quality issues)\nWhat questions does this raise? (hypotheses for further investigation)\nHow reliable is this data?\n\nWorkflow w/ Data Quality Focus: Enhanced process for policy analysis\n\nLoad and inspect - dimensions, variable types, missing data\nAssess reliability - examine margins of error, calculate coefficients of variation\nVisualize distributions - histograms, boxplots for each variable\nExplore relationships - scatter plots, correlations\nIdentify patterns - grouping, clustering, geographical patterns\nQuestion anomalies - investigate outliers and unusual patterns\nDocument limitations - prepare honest communication about data quality\n\nJOINS - join predicate does not need to be same name, NEED SAME TYPE\n\nleft (most-common) / right: keeps everything from left/right\nfull: keeps everything from both columns\ninner: keeps only matches"
+  },
+  {
+    "objectID": "weekly-notes/week-03-notes.html#key-concepts-learned",
+    "href": "weekly-notes/week-03-notes.html#key-concepts-learned",
+    "title": "Week 3: EDA & ggplot2",
+    "section": "",
+    "text": "EDA:\n\nCreate summary statistics table\n\nBut can hide underlying data distribution\n\nOutliers, non-linear relationships\n\nSo data visualization is important\nCan have same mean, var, cov, regression but diff patterns in visualization\n\nBad / Misleading data visualizations\n\nMisleading scales or axes\nCherry-picked time periods\nHidden or ignored uncertainty\nMissing context about data reliability\nResult: Poor policy decisions\n\nGoal: Understand your data before making decisions or building models\n\nWhat does the data look like? (distributions, missing values)\nWhat patterns exist? (relationships, clusters, trends)\nWhat’s unusual? (outliers, anomalies, data quality issues)\nWhat questions does this raise? (hypotheses for further investigation)\nHow reliable is this data?\n\nWorkflow w/ Data Quality Focus: Enhanced process for policy analysis\n\nLoad and inspect - dimensions, variable types, missing data\nAssess reliability - examine margins of error, calculate coefficients of variation\nVisualize distributions - histograms, boxplots for each variable\nExplore relationships - scatter plots, correlations\nIdentify patterns - grouping, clustering, geographical patterns\nQuestion anomalies - investigate outliers and unusual patterns\nDocument limitations - prepare honest communication about data quality\n\nJOINS - join predicate does not need to be same name, NEED SAME TYPE\n\nleft (most-common) / right: keeps everything from left/right\nfull: keeps everything from both columns\ninner: keeps only matches"
+  },
+  {
+    "objectID": "weekly-notes/week-03-notes.html#coding-techniques",
+    "href": "weekly-notes/week-03-notes.html#coding-techniques",
+    "title": "Week 3: EDA & ggplot2",
+    "section": "Coding Techniques",
+    "text": "Coding Techniques\n\nggplot2\n\nData -&gt; Aesthetics -&gt; Geometry -&gt; Visual\n\nData: Your dataset (census data, survey responses, etc.)\nAesthetics: What variables map to visual properties (x, y, color, size)\nGeometries: How to display the data (points, bars, lines)\nAdditional layers: Scales, themes, facets, annotations\nGeneral syntax: ggplot(data = your_data) + aes(x = variable1, y = variable2) + geom_something() + additional_layers()\n\nAesthetic Mappings: maps data to visual properties\n\nx, y - position\ncolor - point/line color\nfill - area fill color\nsize - point/line size\nshape - point shape\nalpha - transparency\n\nstr_detect(), str_extract(), regex() to search within strings"
+  },
+  {
+    "objectID": "weekly-notes/week-03-notes.html#questions-challenges",
+    "href": "weekly-notes/week-03-notes.html#questions-challenges",
+    "title": "Week 3: EDA & ggplot2",
+    "section": "Questions & Challenges",
+    "text": "Questions & Challenges\n\nNothing!"
+  },
+  {
+    "objectID": "weekly-notes/week-03-notes.html#connections-to-policy",
+    "href": "weekly-notes/week-03-notes.html#connections-to-policy",
+    "title": "Week 3: EDA & ggplot2",
+    "section": "Connections to Policy",
+    "text": "Connections to Policy\n\nLearning how to make good (and not misleading) plots is crucial in conveying information to less data-savvy people who may not understand advanced statistical terms.\nEDA is extremely important in learning more about your data before operating on it and then later drawing analysis from for policy considerations."
+  },
+  {
+    "objectID": "weekly-notes/week-03-notes.html#reflection",
+    "href": "weekly-notes/week-03-notes.html#reflection",
+    "title": "Week 3: EDA & ggplot2",
+    "section": "Reflection",
+    "text": "Reflection\n\nI think that these topics are very important to learn to be a good analyst. Being prepared and having a good understanding of your data is a crucial skill to have and plotting allows you to easily convey your findings to your peers."
+  },
+  {
+    "objectID": "weekly-notes/week-04-notes.html",
+    "href": "weekly-notes/week-04-notes.html",
+    "title": "Week 4:GIS & Spatial Analysis in R",
+    "section": "",
+    "text": "Add the spatial dimension to understand:\n\nGeographic clustering of problems\nSpatial relationships between communities\nAccess to services and resources\n\nGeographic bias in algorithms:\n\nTraining data may under-represent certain areas\nSpatial autocorrelation violates independence assumptions\nService delivery algorithms may reinforce geographic inequities\nExamples:\n\nRideshare algorithms avoiding certain neighborhoods\nCrime prediction concentrating enforcement in specific areas\nSocial service algorithms missing rural communities\n\n\nVector Data Model (DISCRETE)\n\nTypes of geometric representation:\n\nPoints: Locations (schools, hospitals)\nLines: Linear features (roads, rivers, train routes)\nPolygons: Areas (census tracts, neighborhoods, service areas)\n\nEach feature has:\n\nGeometry: shape and location\nAttributes: data about that feature (population, income, etc.)\n\n\nCommon coordinate ref systems:\n\nWGS84 (EPSG:4326)\n\nGPS standard, global coverage\nGeographic system (lat/lon)\nGood for web mapping, data sharing\n\nWeb Mercator (EPSG:3857)\n\nWeb mapping standard\nProjected system\nHeavily distorts areas near poles\n\nState Plane / UTM zones\n\nLocal accuracy\nDifferent zones for different regions\nOptimized for specific geographic areas\n\nAlbers Equal Area\n\nPreserves area\nGood for demographic/statistical analysis\n\n\nPolicy Analysis Workflow:\n\nLoad data: Get spatial boundaries and attribute data\nCheck projections: Transform to appropriate CRS\nJoin datasets: Combine spatial and non-spatial data\nSpatial operations: Buffers, intersections, distance calculations\nAggregation: Summarize across spatial units\nVisualization: Maps and charts\nInterpretation: Policy recommendations"
+  },
+  {
+    "objectID": "weekly-notes/week-04-notes.html#key-concepts-learned",
+    "href": "weekly-notes/week-04-notes.html#key-concepts-learned",
+    "title": "Week 4:GIS & Spatial Analysis in R",
+    "section": "",
+    "text": "Add the spatial dimension to understand:\n\nGeographic clustering of problems\nSpatial relationships between communities\nAccess to services and resources\n\nGeographic bias in algorithms:\n\nTraining data may under-represent certain areas\nSpatial autocorrelation violates independence assumptions\nService delivery algorithms may reinforce geographic inequities\nExamples:\n\nRideshare algorithms avoiding certain neighborhoods\nCrime prediction concentrating enforcement in specific areas\nSocial service algorithms missing rural communities\n\n\nVector Data Model (DISCRETE)\n\nTypes of geometric representation:\n\nPoints: Locations (schools, hospitals)\nLines: Linear features (roads, rivers, train routes)\nPolygons: Areas (census tracts, neighborhoods, service areas)\n\nEach feature has:\n\nGeometry: shape and location\nAttributes: data about that feature (population, income, etc.)\n\n\nCommon coordinate ref systems:\n\nWGS84 (EPSG:4326)\n\nGPS standard, global coverage\nGeographic system (lat/lon)\nGood for web mapping, data sharing\n\nWeb Mercator (EPSG:3857)\n\nWeb mapping standard\nProjected system\nHeavily distorts areas near poles\n\nState Plane / UTM zones\n\nLocal accuracy\nDifferent zones for different regions\nOptimized for specific geographic areas\n\nAlbers Equal Area\n\nPreserves area\nGood for demographic/statistical analysis\n\n\nPolicy Analysis Workflow:\n\nLoad data: Get spatial boundaries and attribute data\nCheck projections: Transform to appropriate CRS\nJoin datasets: Combine spatial and non-spatial data\nSpatial operations: Buffers, intersections, distance calculations\nAggregation: Summarize across spatial units\nVisualization: Maps and charts\nInterpretation: Policy recommendations"
+  },
+  {
+    "objectID": "weekly-notes/week-04-notes.html#coding-techniques",
+    "href": "weekly-notes/week-04-notes.html#coding-techniques",
+    "title": "Week 4:GIS & Spatial Analysis in R",
+    "section": "Coding Techniques",
+    "text": "Coding Techniques\n\nsf package in R (Shape File):\n\nWhy sf: Spatial data is just data.frame + geometry column\n\nModern replacement for older spatial packages\nIntegrates with tidyverse workflows\nFollows international standards\nFast and reliable\nRead in shape file and turn into VECTOR data model\n\nExtensions: .shp, .shx, .dbf\n\nCommon spatial data formats:\n\nShapefiles (.shp + supporting files)\nGeoJSON (.geojson)\nKML/KMZ (Google Earth)\nDatabase connections (PostGIS)\n\nSpatial subsetting: Extract key features based on spatial relationships\n\nst_filter(), st_intersects(), st_touches(), st_within()\nst_filter(): Spatial selection based on spatial relationship.\nst_touches(): Share boundary, no interior overlap\n\n“Which counties border Allegheny?”\n\nst_within(): Completely inside\n\n“Which tracts are IN Allegheny?”\n\nst_intersects(): Any overlap at all\n\n“Which tracts overlap a metro area?”\n\nDefault: If no .predicate specified, uses st_intersects\n.predicate tells st_filter() what spatial relationship to look for:\n\nr predicate-structure # Basic structure: st_filter(data_to_filter, reference_geometry, .predicate = relationship)\n\nst_contains(): Completely contains\n\n“Districts containing hospitals\n\nst_overlaps(): Partial overlap\n\n“Overlapping service areas”\n\nst_disjoint(): No spatial relationship\n\n“Counties separate from urban areas”\n\nMost common: st_intersects() (any overlap) and st_touches() (neighbors)\n\nSpatial join: Combine datasets based on spatial relationships.\nDistance calculations:\n\nst_centroid(): converts polygons to points\nst_distance():\n\nArea calculations: Examples in code - Units depend on coordinate reference system.\nDot (.): The dot (.) is a placeholder that represents the data being passed through the pipe (%&gt;%).\n\npa_counties &lt;- pa_counties %&gt;% mutate( area_sqkm = as.numeric(st_area(.)) / 1000000 )\nThe . refers to pa_counties - the data frame being passed through the pipe. So this is equivalent to:\npa_counties &lt;- pa_counties %&gt;% mutate( area_sqkm = as.numeric(st_area(pa_counties)) / 1000000 )\n\nBuffer operations: Create zones around features\n\n`{r buffers} # 10km buffer around all hospitals hospital_buffers &lt;- hospitals %&gt;% st_buffer(dist = 10000) # 10,000 meters\n\nCoordinate Reference Systems:\n\nProblems:\n\nCan’t preserve area, distance, and angles simultaneously\nDifferent projections optimize different properties\nWrong projection → wrong analysis results!\n\nIn-Class:\n\nStep 1: Approximate Earth’s shape w/ ellipsoid\nStep 2: Tie ellipsoid to real Earth (Datum)\nStep 3: Put down lat/long grid\n\nGeographic (geodetic) coord systems:\n\nNorth American Datum 1927 (NAD27)\nNAD 83, GRS 80, WGS 84\nAll lat/long on 3D ellipse.\nUnits: decimal degrees\nGood for: Global datasets, web mapping\nBad for: Area/distance calculations\n\nProjected Coordinate Systems (PCS):\n\nOn computer screen\nX/Y coordinates on a flat plane\nUnits: meters, feet, etc.\nGood for: Local analysis, accurate measurements\nBad for: Large areas, global datasets\n\nTransform when:\n\nCalculating areas or distances\nCreating buffers\nDoing geometric operations\nWorking with local/regional data\n\nCODE:\n\nTo simply check current CRS st_crs(pa_counties)\nTo set CRS (ONLY if missing) pa_counties &lt;- st_set_crs(pa_counties, 4326)\nTransform to different CRS\nPennsylvania South State Plane (good for PA analysis)\npa_counties_projected &lt;- pa_counties %&gt;% st_transform(crs = 3365)\nTransform to Albers Equal Area (good for area calculations) pa_counties_albers &lt;- pa_counties %&gt;% st_transform(crs = 5070) `"
+  },
+  {
+    "objectID": "weekly-notes/week-04-notes.html#questions-challenges",
+    "href": "weekly-notes/week-04-notes.html#questions-challenges",
+    "title": "Week 4:GIS & Spatial Analysis in R",
+    "section": "Questions & Challenges",
+    "text": "Questions & Challenges\n\nNothing!"
+  },
+  {
+    "objectID": "weekly-notes/week-04-notes.html#connections-to-policy",
+    "href": "weekly-notes/week-04-notes.html#connections-to-policy",
+    "title": "Week 4:GIS & Spatial Analysis in R",
+    "section": "Connections to Policy",
+    "text": "Connections to Policy\n\nLearning techniques such as the sf package is extremely valuable in spatial visualizations in R. These help analysts draw conclusions to make policy considerations and also help display trends / patterns to non-data colleagues."
+  },
+  {
+    "objectID": "weekly-notes/week-04-notes.html#reflection",
+    "href": "weekly-notes/week-04-notes.html#reflection",
+    "title": "Week 4:GIS & Spatial Analysis in R",
+    "section": "Reflection",
+    "text": "Reflection\n\nI have worked with the sf package before but not in this much depth. It was very useful going over the useful commands, parameters, relationships, etc. to deepen my understanding of this topic."
+  },
+  {
+    "objectID": "weekly-notes/week-01-notes.html",
+    "href": "weekly-notes/week-01-notes.html",
+    "title": "Week 1 - Course Introduction",
+    "section": "",
+    "text": "Upcoming assignments: lab0: 9/15 create Quatro portfolio; lab1: 9/27 EDA\nGit: Version-control system - tracks changes in files\n\nCollaboration tool for people teams to work\n\nGithub: cloud host for Git repos (projects)\n\nBackup work in cloud\nShare / collaborate on projects with other\nGithub pages hosts websites\n\nGithub Concepts:\n\nRepo: folder containing proj files\nCommit: snapshot of work at point in time\nPush: Send changes to Github cloud\nPull: Get latest changes from Github cloud\n\nWorkflow each week:\n\nEdit files in RStudio (local)\nCommit changes w/ message\nPush to Github\nPortfolio propogates changes automatically\n\nGithub Classroom:\n\nCreates individual repos for each student\nDistributes assignments automatically\nTAs can provide feedback\n\nLists syntax\nLinks / Images syntax"
+  },
+  {
+    "objectID": "weekly-notes/week-01-notes.html#key-concepts-learned",
+    "href": "weekly-notes/week-01-notes.html#key-concepts-learned",
+    "title": "Week 1 - Course Introduction",
+    "section": "",
+    "text": "Upcoming assignments: lab0: 9/15 create Quatro portfolio; lab1: 9/27 EDA\nGit: Version-control system - tracks changes in files\n\nCollaboration tool for people teams to work\n\nGithub: cloud host for Git repos (projects)\n\nBackup work in cloud\nShare / collaborate on projects with other\nGithub pages hosts websites\n\nGithub Concepts:\n\nRepo: folder containing proj files\nCommit: snapshot of work at point in time\nPush: Send changes to Github cloud\nPull: Get latest changes from Github cloud\n\nWorkflow each week:\n\nEdit files in RStudio (local)\nCommit changes w/ message\nPush to Github\nPortfolio propogates changes automatically\n\nGithub Classroom:\n\nCreates individual repos for each student\nDistributes assignments automatically\nTAs can provide feedback\n\nLists syntax\nLinks / Images syntax"
+  },
+  {
+    "objectID": "weekly-notes/week-01-notes.html#coding-techniques",
+    "href": "weekly-notes/week-01-notes.html#coding-techniques",
+    "title": "Week 1 - Course Introduction",
+    "section": "Coding Techniques",
+    "text": "Coding Techniques\n\nR (open software - people create packages free to use) and dplyr:\n\ntidyverse: Data Science packages\n\nConsistent syntax across functions\nReadable code tells story\nEfficient workflows for common tasks\n\nTibbles: enhanced data frames\n\nTraditional df: class(data)\nTibble: car_data &lt;- as_tibble(data)\nPretty print: Shows ONLY first 10 rows, displays cleaner than traditional df\nread_csv (read.csv for traditional df)\n\nEssential dplyr functions (data cleaning):\nselect(): choose columns - select(df, col1, col2)\nfilter(): choose rows - filter(df, condition)\n\nUse &, | symbol to join conditions (and/or)\n\nmutate(): create new variables - mutate(df, new_col = old_col / 1000)\n\nCan use case_when (if statement) argument: ex) car_df = mutate(car_df, case_when(age &gt; 20 ~ “old”, TRUE ~ “not old”))\n\nsummarize(): calculate stats\ngroup_by(): operate on groups (usually goes together w/ summarize())\n\ngroup_by(col1) |&gt; summarize (n = n()) |&gt; mutate(freq = n / sum(n)) -&gt; calculates proportions (frequencies) for groups\n\nMust assign back to original or new df name to save the operation (always start with dataframe operating on in syntax)\nOthers:\n\nnames(): column names\nglimpse(): rows, columnns, some entries etc.\nClick on df to view in table format\nRename(): renames column: rename(df, new = old)\nRemove a column: select(df, -col)\n\n%&gt;% or |&gt;: Pipes -&gt; combines lines of codes, pass outputs through each pipe\n\nQuarto (better version of R Markdown) - publishing system that combines:\n\nCode (R, Python, etc.), Text (explanations, analysis, etc.), Output (plots, tables results, etc.)\nBenefits:\n\nReproducible research: Ccde and explanation in one place, others can re-run analysis, professional presentation\n\nComponents:\n\nYAML header: title, author, date, format\nR code chunks: load library, read_csv, etc.\nText (formatting: bold, italic, etc.)"
+  },
+  {
+    "objectID": "weekly-notes/week-01-notes.html#questions-challenges",
+    "href": "weekly-notes/week-01-notes.html#questions-challenges",
+    "title": "Week 1 - Course Introduction",
+    "section": "Questions & Challenges",
+    "text": "Questions & Challenges\n\nNothing!"
+  },
+  {
+    "objectID": "weekly-notes/week-01-notes.html#connections-to-policy",
+    "href": "weekly-notes/week-01-notes.html#connections-to-policy",
+    "title": "Week 1 - Course Introduction",
+    "section": "Connections to Policy",
+    "text": "Connections to Policy\n\nWe learned how to clean data, transforming it to drive actionable insights. Datasets can be messy, and by learning these skills, we build foundational knowledge on how we can improve the quality of data for future analyses.\nWe learned how to create a Quarto portfolio as a professional way to organize and present our work. This is highly valuable for making our findings professional, clean, and easily accessible to peers, future employers, etc."
+  },
+  {
+    "objectID": "weekly-notes/week-01-notes.html#reflection",
+    "href": "weekly-notes/week-01-notes.html#reflection",
+    "title": "Week 1 - Course Introduction",
+    "section": "Reflection",
+    "text": "Reflection\n\nI found the Quarto portfolio the most fascinating part of this lecture. It displays our work in a much cleaner format than in R-Markdown.\nI will be using this portfolio to highlight the work in this course. Additionally, I can use skills in making a Quatro portfolio for personal projects as well!"
   }
 ]

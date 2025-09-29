@@ -58,7 +58,9 @@ date: "2025-09-22"
 - Nothing!
 
 ## Connections to Policy
-
+- Learning how to make good (and not misleading) plots is crucial in conveying information to less data-savvy people who may not understand advanced statistical terms.
+- EDA is extremely important in learning more about your data before operating on it and then later drawing analysis from for policy considerations. 
 
 ## Reflection
+- I think that these topics are very important to learn to be a good analyst. Being prepared and having a good understanding of your data is a crucial skill to have and plotting allows you to easily convey your findings to your peers.
 

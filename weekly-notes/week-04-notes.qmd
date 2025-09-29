@@ -1,0 +1,141 @@
+---
+title: "Week 4:GIS & Spatial Analysis in R"
+date: "2025-09-29"
+---
+
+## Key Concepts Learned
+- Add the spatial dimension to understand:
+  - Geographic clustering of problems
+  - Spatial relationships between communities
+  - Access to services and resources
+- Geographic bias in algorithms:
+  - Training data may under-represent certain areas
+  - Spatial autocorrelation violates independence assumptions
+  - Service delivery algorithms may reinforce geographic inequities
+  - Examples:
+    - Rideshare algorithms avoiding certain neighborhoods
+    - Crime prediction concentrating enforcement in specific areas
+    - Social service algorithms missing rural communities
+- Vector Data Model (DISCRETE)
+  - Types of geometric representation:
+    - Points: Locations (schools, hospitals)
+    - Lines: Linear features (roads, rivers, train routes)
+    - Polygons: Areas (census tracts, neighborhoods, service areas)
+  - Each feature has:
+    - Geometry: shape and location
+    - Attributes: data about that feature (population, income, etc.)
+- Common coordinate ref systems:
+  - WGS84 (EPSG:4326)
+    - GPS standard, global coverage
+    - Geographic system (lat/lon)
+    - Good for web mapping, data sharing
+  - Web Mercator (EPSG:3857)
+    - Web mapping standard
+    - Projected system
+    - Heavily distorts areas near poles
+  - State Plane / UTM zones
+    - Local accuracy
+    - Different zones for different regions
+    - Optimized for specific geographic areas
+  - Albers Equal Area
+    - Preserves area
+    - Good for demographic/statistical analysis
+- Policy Analysis Workflow:
+  - Load data: Get spatial boundaries and attribute data
+  - Check projections: Transform to appropriate CRS
+  - Join datasets: Combine spatial and non-spatial data
+  - Spatial operations: Buffers, intersections, distance calculations
+  - Aggregation: Summarize across spatial units
+  - Visualization: Maps and charts
+  - Interpretation: Policy recommendations
+    
+## Coding Techniques
+- sf package in R (Shape File):
+  - Why sf: Spatial data is just data.frame + geometry column
+    - Modern replacement for older spatial packages
+    - Integrates with tidyverse workflows
+    - Follows international standards
+    - Fast and reliable
+    - Read in shape file and turn into VECTOR data model
+  - Extensions: .shp, .shx, .dbf
+- Common spatial data formats:
+  - Shapefiles (.shp + supporting files)
+  - GeoJSON (.geojson)
+  - KML/KMZ (Google Earth)
+  - Database connections (PostGIS)
+- Spatial subsetting: Extract key features based on spatial relationships
+  - st_filter(), st_intersects(), st_touches(), st_within()
+  - st_filter(): Spatial selection based on spatial relationship.
+  - st_touches(): Share boundary, no interior overlap
+    - “Which counties border Allegheny?”
+  - st_within(): 	Completely inside
+    - “Which tracts are IN Allegheny?” 
+  - st_intersects(): Any overlap at all
+    - “Which tracts overlap a metro area?” 
+  - Default: If no .predicate specified, uses st_intersects
+  - .predicate tells st_filter() what spatial relationship to look for:
+    - r predicate-structure # Basic structure: st_filter(data_to_filter, reference_geometry, .predicate = relationship)
+  - st_contains(): Completely contains
+    - “Districts containing hospitals
+  - st_overlaps(): Partial overlap
+    - “Overlapping service areas”
+  - st_disjoint(): No spatial relationship
+    - “Counties separate from urban areas”
+  - Most common: st_intersects() (any overlap) and st_touches() (neighbors)
+- Spatial join: Combine datasets based on spatial relationships.
+- Distance calculations:
+  - st_centroid(): converts polygons to points
+  - st_distance():
+- Area calculations: Examples in code - Units depend on coordinate reference system.
+- Dot (.): The dot (.) is a placeholder that represents the data being passed through the pipe (%>%).
+  - pa_counties <- pa_counties %>% mutate( area_sqkm = as.numeric(st_area(.)) / 1000000 )
+  - The . refers to pa_counties - the data frame being passed through the pipe. So this is equivalent to:
+  - pa_counties <- pa_counties %>% mutate( area_sqkm = as.numeric(st_area(pa_counties)) / 1000000 )
+- Buffer operations: Create zones around features
+  - `{r buffers} # 10km buffer around all hospitals hospital_buffers <- hospitals %>% st_buffer(dist = 10000) # 10,000 meters
+- Coordinate Reference Systems:
+  - Problems: 
+    - Can’t preserve area, distance, and angles simultaneously
+    - Different projections optimize different properties
+    - Wrong projection → wrong analysis results!
+  - In-Class:
+    - Step 1: Approximate Earth's shape w/ ellipsoid
+    - Step 2: Tie ellipsoid to real Earth (Datum)
+    - Step 3: Put down lat/long grid
+  - Geographic (geodetic) coord systems:
+    - North American Datum 1927 (NAD27)
+    - NAD 83, GRS 80, WGS 84
+    - All lat/long on 3D ellipse.
+    - Units: decimal degrees
+    - Good for: Global datasets, web mapping
+    - Bad for: Area/distance calculations
+  - Projected Coordinate Systems (PCS):
+    - On computer screen
+    - X/Y coordinates on a flat plane
+    - Units: meters, feet, etc.
+    - Good for: Local analysis, accurate measurements
+    - Bad for: Large areas, global datasets
+  - Transform when:
+    - Calculating areas or distances
+    - Creating buffers
+    - Doing geometric operations
+    - Working with local/regional data
+  - CODE:
+    - To simply check current CRS st_crs(pa_counties)
+    - To set CRS (ONLY if missing) pa_counties <- st_set_crs(pa_counties, 4326)
+    - Transform to different CRS
+    - Pennsylvania South State Plane (good for PA analysis)
+    - pa_counties_projected <- pa_counties %>%   st_transform(crs = 3365)
+    - Transform to Albers Equal Area (good for area calculations) pa_counties_albers <- pa_counties %>%   st_transform(crs = 5070) `
+    
+
+
+## Questions & Challenges
+- Nothing!
+
+## Connections to Policy
+- Learning techniques such as the sf package is extremely valuable in spatial visualizations in R. These help analysts draw conclusions to make policy considerations and also help display trends / patterns to non-data colleagues.
+
+## Reflection
+- I have worked with the sf package before but not in this much depth. It was very useful going over the useful commands, parameters, relationships, etc. to deepen my understanding of this topic.
+
