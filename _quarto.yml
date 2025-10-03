@@ -1,6 +1,11 @@
 project:
   type: website
   output-dir: docs
+  render:
+    - "*.qmd"
+    - weekly-notes/*.qmd
+    - assignments/**/*.qmd
+    - labs/**/*.qmd
 
 website:
   title: "Henry (Jack) Bader - MUSA 5080 Portfolio"

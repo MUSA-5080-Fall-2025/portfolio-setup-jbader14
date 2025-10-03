@@ -1,94 +1,45 @@
 [
   {
-    "objectID": "instructions_week1.html",
-    "href": "instructions_week1.html",
-    "title": "Portfolio Setup Instructions",
+    "objectID": "weekly-notes/week-04-notes.html",
+    "href": "weekly-notes/week-04-notes.html",
+    "title": "Week 4: GIS & Spatial Analysis in R",
     "section": "",
-    "text": "Welcome to MUSA 5080! This guide will help you set up your personal portfolio repository for the semester.\n\n\nBy the end of this setup, you’ll have: - Your own portfolio repository on GitHub - live website showcasing your work - A place to document your learning journey\n\n\n\n\nThis is what you are building: Dr. Delmelle’s sample portfolio\n\n\n\n\nBefore starting, make sure you have: - [ ] A GitHub account (create one here if needed) - [ ] Quarto installed on your computer (download here) - [ ] R and RStudio installed\n\n\n\n\n\nYou should already be in your personal repository (created when you accepted the GitHub Classroom assignment). Now let’s personalize it!\n\n\n\nClick on the _quarto.yml file\nClick the pencil icon (✏️) to edit\nChange \"Your Name - MUSA 5080 Portfolio\" to include your actual name\nExample: \"Jane Smith - MUSA 5080 Portfolio\"\nClick “Commit changes” at the bottom\n\n\n\n\n\nClick on the index.qmd file\nClick the pencil icon (✏️) to edit\nUpdate the “About Me” section with your information:\n\nYour name and background\nYour email address\nYour GitHub username\nWhy you’re taking this course\n\nClick “Commit changes”\n\n\n\n\n\nNavigate to the weekly-notes folder\nClick on week-01-notes.qmd\nClick the pencil icon (✏️) to edit\nFill in your notes from the first class\nClick “Commit changes”\n\n\n\n\n\nThis step makes your portfolio visible as a live website!\n\nGo to Settings: Click the “Settings” tab at the top of your repository\nFind Pages: Scroll down and click “Pages” in the left sidebar\nConfigure Source:\n\nSource: Select “Deploy from a branch”\nBranch: Select “main”\nFolder: Select “/ docs”\n\nSave: Click “Save”\nWait: GitHub will show a message that your site is being built (this takes 1-5 minutes)\n\n\n\n\n\nFind Your URL: After a few minutes, GitHub will show your website URL at the top of the Pages settings\n\nIt will look like: https://yourusername.github.io/repository-name\n\nVisit Your Site: Click the link to see your live portfolio!\nBookmark It: Save this URL - you’ll submit it to Canvas\n\n\n\n\n\nCopy your live website URL\nGo to the Canvas assignment\nSubmit your URL\n\n\n\n\n\nIf you want to work on your computer and see changes before publishing:\n\n\n# Replace [your-repo-url] with your actual repository URL\ngit clone [your-repo-url]\ncd [your-repository-name]\n\n\n\n# Edit your files using RStudio\n# Preview your changes:\nquarto render\nquarto preview\n\n# When ready, save your changes:\ngit add .\ngit commit -m \"Update portfolio\"\ngit push\nYour live website will automatically update when you push changes!\n\n\n\n\nEach week you’ll: 1. Create a new file: weekly-notes/week-XX-notes.qmd 2. Copy the template from week-01-notes.qmd 3. Fill in your reflections and key concepts 4. Commit and push your changes\n\n\n\n\n\n\nWait longer: GitHub Pages can take up to 10 minutes to build\nCheck Actions tab: Look for any red X marks indicating build failures\nVerify Pages settings: Make sure you selected “main” branch and “/docs” folder\n\n\n\n\n\nCheck permissions: Make sure you’re in YOUR repository, not the template\nSign in: Ensure you’re signed into GitHub\n\n\n\n\n\nCheck YAML syntax: Make sure your _quarto.yml file has proper formatting\nVerify file names: Files should end in .qmd not .md\nLook at error messages: The Actions tab will show specific error details\n\n\n\n\n\nDon’t panic! Every change is tracked in Git\nSee history: Click the “History” button on any file to see previous versions\nRevert changes: You can always go back to a previous version\n\n\n\n\n\n\nCommit often: Save your work frequently with descriptive commit messages\nUse branches: For major changes, create a new branch and merge when ready\nPreview locally: Use quarto preview to see changes before publishing\nKeep it professional: This portfolio can be shared with future employers!\nDocument everything: Good documentation is as important as good analysis\n\n\n\n\n\nQuarto Documentation\nGitHub Docs\nMarkdown Guide\nGit Tutorial\n\n\n\n\nDuring Class: - Raise your hand for immediate help - Work with classmates - collaboration is encouraged for setup!\nOutside Class: - Office Hours: Mondays 1:30-3:00 PM - Email: delmelle@design.upenn.edu - GitHub Issues: Create an issue in your repository for technical problems - Canvas Discussion: Post questions others might have too\n\n\n\nBefore submitting, make sure you’ve: - [ ] Customized _quarto.yml with your name - [ ] Updated index.qmd with your information - [ ] Completed Week 1 notes - [ ] Enabled GitHub Pages - [ ] Verified your website loads correctly - [ ] Submitted your URL to Canvas\n\nNeed help? Don’t struggle alone - reach out during office hours (mine + TAs) or in class!"
+    "text": "Add the spatial dimension to understand:\n\nGeographic clustering of problems\nSpatial relationships between communities\nAccess to services and resources\n\nGeographic bias in algorithms:\n\nTraining data may under-represent certain areas\nSpatial autocorrelation violates independence assumptions\nService delivery algorithms may reinforce geographic inequities\nExamples:\n\nRideshare algorithms avoiding certain neighborhoods\nCrime prediction concentrating enforcement in specific areas\nSocial service algorithms missing rural communities\n\n\nVector Data Model (DISCRETE)\n\nTypes of geometric representation:\n\nPoints: Locations (schools, hospitals)\nLines: Linear features (roads, rivers, train routes)\nPolygons: Areas (census tracts, neighborhoods, service areas)\n\nEach feature has:\n\nGeometry: shape and location\nAttributes: data about that feature (population, income, etc.)\n\n\nCommon coordinate ref systems:\n\nWGS84 (EPSG:4326)\n\nGPS standard, global coverage\nGeographic system (lat/lon)\nGood for web mapping, data sharing\n\nWeb Mercator (EPSG:3857)\n\nWeb mapping standard\nProjected system\nHeavily distorts areas near poles\n\nState Plane / UTM zones\n\nLocal accuracy\nDifferent zones for different regions\nOptimized for specific geographic areas\n\nAlbers Equal Area\n\nPreserves area\nGood for demographic/statistical analysis\n\n\nPolicy Analysis Workflow:\n\nLoad data: Get spatial boundaries and attribute data\nCheck projections: Transform to appropriate CRS\nJoin datasets: Combine spatial and non-spatial data\nSpatial operations: Buffers, intersections, distance calculations\nAggregation: Summarize across spatial units\nVisualization: Maps and charts\nInterpretation: Policy recommendations"
   },
   {
-    "objectID": "instructions_week1.html#what-youre-building",
-    "href": "instructions_week1.html#what-youre-building",
-    "title": "Portfolio Setup Instructions",
+    "objectID": "weekly-notes/week-04-notes.html#key-concepts-learned",
+    "href": "weekly-notes/week-04-notes.html#key-concepts-learned",
+    "title": "Week 4: GIS & Spatial Analysis in R",
     "section": "",
-    "text": "By the end of this setup, you’ll have: - Your own portfolio repository on GitHub - live website showcasing your work - A place to document your learning journey"
+    "text": "Add the spatial dimension to understand:\n\nGeographic clustering of problems\nSpatial relationships between communities\nAccess to services and resources\n\nGeographic bias in algorithms:\n\nTraining data may under-represent certain areas\nSpatial autocorrelation violates independence assumptions\nService delivery algorithms may reinforce geographic inequities\nExamples:\n\nRideshare algorithms avoiding certain neighborhoods\nCrime prediction concentrating enforcement in specific areas\nSocial service algorithms missing rural communities\n\n\nVector Data Model (DISCRETE)\n\nTypes of geometric representation:\n\nPoints: Locations (schools, hospitals)\nLines: Linear features (roads, rivers, train routes)\nPolygons: Areas (census tracts, neighborhoods, service areas)\n\nEach feature has:\n\nGeometry: shape and location\nAttributes: data about that feature (population, income, etc.)\n\n\nCommon coordinate ref systems:\n\nWGS84 (EPSG:4326)\n\nGPS standard, global coverage\nGeographic system (lat/lon)\nGood for web mapping, data sharing\n\nWeb Mercator (EPSG:3857)\n\nWeb mapping standard\nProjected system\nHeavily distorts areas near poles\n\nState Plane / UTM zones\n\nLocal accuracy\nDifferent zones for different regions\nOptimized for specific geographic areas\n\nAlbers Equal Area\n\nPreserves area\nGood for demographic/statistical analysis\n\n\nPolicy Analysis Workflow:\n\nLoad data: Get spatial boundaries and attribute data\nCheck projections: Transform to appropriate CRS\nJoin datasets: Combine spatial and non-spatial data\nSpatial operations: Buffers, intersections, distance calculations\nAggregation: Summarize across spatial units\nVisualization: Maps and charts\nInterpretation: Policy recommendations"
   },
   {
-    "objectID": "instructions_week1.html#example",
-    "href": "instructions_week1.html#example",
-    "title": "Portfolio Setup Instructions",
-    "section": "",
-    "text": "This is what you are building: Dr. Delmelle’s sample portfolio"
+    "objectID": "weekly-notes/week-04-notes.html#coding-techniques",
+    "href": "weekly-notes/week-04-notes.html#coding-techniques",
+    "title": "Week 4: GIS & Spatial Analysis in R",
+    "section": "Coding Techniques",
+    "text": "Coding Techniques\n\nsf package in R (Shape File):\n\nWhy sf: Spatial data is just data.frame + geometry column\n\nModern replacement for older spatial packages\nIntegrates with tidyverse workflows\nFollows international standards\nFast and reliable\nRead in shape file and turn into VECTOR data model\n\nExtensions: .shp, .shx, .dbf\n\nCommon spatial data formats:\n\nShapefiles (.shp + supporting files)\nGeoJSON (.geojson)\nKML/KMZ (Google Earth)\nDatabase connections (PostGIS)\n\nSpatial subsetting: Extract key features based on spatial relationships\n\nst_filter(), st_intersects(), st_touches(), st_within()\nst_filter(): Spatial selection based on spatial relationship.\nst_touches(): Share boundary, no interior overlap\n\n“Which counties border Allegheny?”\n\nst_within(): Completely inside\n\n“Which tracts are IN Allegheny?”\n\nst_intersects(): Any overlap at all\n\n“Which tracts overlap a metro area?”\n\nDefault: If no .predicate specified, uses st_intersects\n.predicate tells st_filter() what spatial relationship to look for:\n\nr predicate-structure # Basic structure: st_filter(data_to_filter, reference_geometry, .predicate = relationship)\n\nst_contains(): Completely contains\n\n“Districts containing hospitals\n\nst_overlaps(): Partial overlap\n\n“Overlapping service areas”\n\nst_disjoint(): No spatial relationship\n\n“Counties separate from urban areas”\n\nMost common: st_intersects() (any overlap) and st_touches() (neighbors)\n\nSpatial join: Combine datasets based on spatial relationships.\nDistance calculations:\n\nst_centroid(): converts polygons to points\nst_distance():\n\nArea calculations: Examples in code - Units depend on coordinate reference system.\nDot (.): The dot (.) is a placeholder that represents the data being passed through the pipe (%&gt;%).\n\npa_counties &lt;- pa_counties %&gt;% mutate( area_sqkm = as.numeric(st_area(.)) / 1000000 )\nThe . refers to pa_counties - the data frame being passed through the pipe. So this is equivalent to:\npa_counties &lt;- pa_counties %&gt;% mutate( area_sqkm = as.numeric(st_area(pa_counties)) / 1000000 )\n\nBuffer operations: Create zones around features\n\n`{r buffers} # 10km buffer around all hospitals hospital_buffers &lt;- hospitals %&gt;% st_buffer(dist = 10000) # 10,000 meters\n\nCoordinate Reference Systems:\n\nProblems:\n\nCan’t preserve area, distance, and angles simultaneously\nDifferent projections optimize different properties\nWrong projection → wrong analysis results!\n\nIn-Class:\n\nStep 1: Approximate Earth’s shape w/ ellipsoid\nStep 2: Tie ellipsoid to real Earth (Datum)\nStep 3: Put down lat/long grid\n\nGeographic (geodetic) coord systems:\n\nNorth American Datum 1927 (NAD27)\nNAD 83, GRS 80, WGS 84\nAll lat/long on 3D ellipse.\nUnits: decimal degrees\nGood for: Global datasets, web mapping\nBad for: Area/distance calculations\n\nProjected Coordinate Systems (PCS):\n\nOn computer screen\nX/Y coordinates on a flat plane\nUnits: meters, feet, etc.\nGood for: Local analysis, accurate measurements\nBad for: Large areas, global datasets\n\nTransform when:\n\nCalculating areas or distances\nCreating buffers\nDoing geometric operations\nWorking with local/regional data\n\nCODE:\n\nTo simply check current CRS st_crs(pa_counties)\nTo set CRS (ONLY if missing) pa_counties &lt;- st_set_crs(pa_counties, 4326)\nTransform to different CRS\nPennsylvania South State Plane (good for PA analysis)\npa_counties_projected &lt;- pa_counties %&gt;% st_transform(crs = 3365)\nTransform to Albers Equal Area (good for area calculations) pa_counties_albers &lt;- pa_counties %&gt;% st_transform(crs = 5070) `"
   },
   {
-    "objectID": "instructions_week1.html#prerequisites",
-    "href": "instructions_week1.html#prerequisites",
-    "title": "Portfolio Setup Instructions",
-    "section": "",
-    "text": "Before starting, make sure you have: - [ ] A GitHub account (create one here if needed) - [ ] Quarto installed on your computer (download here) - [ ] R and RStudio installed"
+    "objectID": "weekly-notes/week-04-notes.html#questions-challenges",
+    "href": "weekly-notes/week-04-notes.html#questions-challenges",
+    "title": "Week 4: GIS & Spatial Analysis in R",
+    "section": "Questions & Challenges",
+    "text": "Questions & Challenges\n\nNothing!"
   },
   {
-    "objectID": "instructions_week1.html#step-by-step-setup",
-    "href": "instructions_week1.html#step-by-step-setup",
-    "title": "Portfolio Setup Instructions",
-    "section": "",
-    "text": "You should already be in your personal repository (created when you accepted the GitHub Classroom assignment). Now let’s personalize it!\n\n\n\nClick on the _quarto.yml file\nClick the pencil icon (✏️) to edit\nChange \"Your Name - MUSA 5080 Portfolio\" to include your actual name\nExample: \"Jane Smith - MUSA 5080 Portfolio\"\nClick “Commit changes” at the bottom\n\n\n\n\n\nClick on the index.qmd file\nClick the pencil icon (✏️) to edit\nUpdate the “About Me” section with your information:\n\nYour name and background\nYour email address\nYour GitHub username\nWhy you’re taking this course\n\nClick “Commit changes”\n\n\n\n\n\nNavigate to the weekly-notes folder\nClick on week-01-notes.qmd\nClick the pencil icon (✏️) to edit\nFill in your notes from the first class\nClick “Commit changes”\n\n\n\n\n\nThis step makes your portfolio visible as a live website!\n\nGo to Settings: Click the “Settings” tab at the top of your repository\nFind Pages: Scroll down and click “Pages” in the left sidebar\nConfigure Source:\n\nSource: Select “Deploy from a branch”\nBranch: Select “main”\nFolder: Select “/ docs”\n\nSave: Click “Save”\nWait: GitHub will show a message that your site is being built (this takes 1-5 minutes)\n\n\n\n\n\nFind Your URL: After a few minutes, GitHub will show your website URL at the top of the Pages settings\n\nIt will look like: https://yourusername.github.io/repository-name\n\nVisit Your Site: Click the link to see your live portfolio!\nBookmark It: Save this URL - you’ll submit it to Canvas\n\n\n\n\n\nCopy your live website URL\nGo to the Canvas assignment\nSubmit your URL"
+    "objectID": "weekly-notes/week-04-notes.html#connections-to-policy",
+    "href": "weekly-notes/week-04-notes.html#connections-to-policy",
+    "title": "Week 4: GIS & Spatial Analysis in R",
+    "section": "Connections to Policy",
+    "text": "Connections to Policy\n\nLearning techniques such as the sf package is extremely valuable in spatial visualizations in R. These help analysts draw conclusions to make policy considerations and also help display trends / patterns to non-data colleagues."
   },
   {
-    "objectID": "instructions_week1.html#working-on-your-portfolio-locally-optional-but-recommended",
-    "href": "instructions_week1.html#working-on-your-portfolio-locally-optional-but-recommended",
-    "title": "Portfolio Setup Instructions",
-    "section": "",
-    "text": "If you want to work on your computer and see changes before publishing:\n\n\n# Replace [your-repo-url] with your actual repository URL\ngit clone [your-repo-url]\ncd [your-repository-name]\n\n\n\n# Edit your files using RStudio\n# Preview your changes:\nquarto render\nquarto preview\n\n# When ready, save your changes:\ngit add .\ngit commit -m \"Update portfolio\"\ngit push\nYour live website will automatically update when you push changes!"
-  },
-  {
-    "objectID": "instructions_week1.html#weekly-workflow",
-    "href": "instructions_week1.html#weekly-workflow",
-    "title": "Portfolio Setup Instructions",
-    "section": "",
-    "text": "Each week you’ll: 1. Create a new file: weekly-notes/week-XX-notes.qmd 2. Copy the template from week-01-notes.qmd 3. Fill in your reflections and key concepts 4. Commit and push your changes"
-  },
-  {
-    "objectID": "instructions_week1.html#troubleshooting",
-    "href": "instructions_week1.html#troubleshooting",
-    "title": "Portfolio Setup Instructions",
-    "section": "",
-    "text": "Wait longer: GitHub Pages can take up to 10 minutes to build\nCheck Actions tab: Look for any red X marks indicating build failures\nVerify Pages settings: Make sure you selected “main” branch and “/docs” folder\n\n\n\n\n\nCheck permissions: Make sure you’re in YOUR repository, not the template\nSign in: Ensure you’re signed into GitHub\n\n\n\n\n\nCheck YAML syntax: Make sure your _quarto.yml file has proper formatting\nVerify file names: Files should end in .qmd not .md\nLook at error messages: The Actions tab will show specific error details\n\n\n\n\n\nDon’t panic! Every change is tracked in Git\nSee history: Click the “History” button on any file to see previous versions\nRevert changes: You can always go back to a previous version"
-  },
-  {
-    "objectID": "instructions_week1.html#pro-tips",
-    "href": "instructions_week1.html#pro-tips",
-    "title": "Portfolio Setup Instructions",
-    "section": "",
-    "text": "Commit often: Save your work frequently with descriptive commit messages\nUse branches: For major changes, create a new branch and merge when ready\nPreview locally: Use quarto preview to see changes before publishing\nKeep it professional: This portfolio can be shared with future employers!\nDocument everything: Good documentation is as important as good analysis"
-  },
-  {
-    "objectID": "instructions_week1.html#additional-resources",
-    "href": "instructions_week1.html#additional-resources",
-    "title": "Portfolio Setup Instructions",
-    "section": "",
-    "text": "Quarto Documentation\nGitHub Docs\nMarkdown Guide\nGit Tutorial"
-  },
-  {
-    "objectID": "instructions_week1.html#getting-help",
-    "href": "instructions_week1.html#getting-help",
-    "title": "Portfolio Setup Instructions",
-    "section": "",
-    "text": "During Class: - Raise your hand for immediate help - Work with classmates - collaboration is encouraged for setup!\nOutside Class: - Office Hours: Mondays 1:30-3:00 PM - Email: delmelle@design.upenn.edu - GitHub Issues: Create an issue in your repository for technical problems - Canvas Discussion: Post questions others might have too"
-  },
-  {
-    "objectID": "instructions_week1.html#checklist",
-    "href": "instructions_week1.html#checklist",
-    "title": "Portfolio Setup Instructions",
-    "section": "",
-    "text": "Before submitting, make sure you’ve: - [ ] Customized _quarto.yml with your name - [ ] Updated index.qmd with your information - [ ] Completed Week 1 notes - [ ] Enabled GitHub Pages - [ ] Verified your website loads correctly - [ ] Submitted your URL to Canvas\n\nNeed help? Don’t struggle alone - reach out during office hours (mine + TAs) or in class!"
-  },
-  {
-    "objectID": "weekly-notes/index.html",
-    "href": "weekly-notes/index.html",
-    "title": "Weekly Notes",
-    "section": "",
-    "text": "Order By\n      Default\n      \n        Date - Oldest\n      \n      \n        Date - Newest\n      \n      \n        Title\n      \n    \n  \n    \n      \n      \n    \n\n\n\n\n\n\nTitle\n\n\n\nDate\n\n\n\n\n\n\n\n\nWeek 4:GIS & Spatial Analysis in R\n\n\nSep 29, 2025\n\n\n\n\n\n\nWeek 3: EDA & ggplot2\n\n\nSep 22, 2025\n\n\n\n\n\n\nWeek 2 - Algorithmic Decision Making & Census Data\n\n\nSep 15, 2025\n\n\n\n\n\n\nWeek 1 - Course Introduction\n\n\nSep 8, 2025\n\n\n\n\n\n\nNo matching items"
+    "objectID": "weekly-notes/week-04-notes.html#reflection",
+    "href": "weekly-notes/week-04-notes.html#reflection",
+    "title": "Week 4: GIS & Spatial Analysis in R",
+    "section": "Reflection",
+    "text": "Reflection\n\nI have worked with the sf package before but not in this much depth. It was very useful going over the useful commands, parameters, relationships, etc. to deepen my understanding of this topic."
   },
   {
     "objectID": "weekly-notes/week-02-notes.html",
@@ -133,39 +84,25 @@
     "text": "Reflection\n\nI had not had a formal introduction to Census data before. Sometimes, working with assigned datasets in class overlook a key aspect being data collection, which is a key decision in framing an analytics problem with human choice.\nI think that it is very valuable to go over biases in algorithms and data. One saying that I was taught is “Data is never neutral”, highlighting that there are many subjective human decisions that go into creating data-driven solutions. It is crucial that we recognize these risks in our problem-solving process to mitigate risk of biases in our policy decisions to protect at-risk groups of people."
   },
   {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "MUSA 5080 Portfolio",
+    "objectID": "weekly-notes/index.html",
+    "href": "weekly-notes/index.html",
+    "title": "Weekly Notes",
     "section": "",
-    "text": "This portfolio documents my learning journey in Public Policy Analytics (MUSA 5080).\n\n\nAdvanced spatial analysis and data science for urban planning and public policy.\n\n\n\n\nWeekly Notes: My learning reflections and key concepts\nLabs: Completed assignments and analyses\nFinal Project: Capstone modeling challenge\n\n\n\n\n\nName: Henry (Jack) Bader\nWhy I am taking this course: I want to deepen my understanding of geospatial data science techniques in the public sector that provides a different perspective than typical engineering data science courses.\n\n\n\n\n\nEmail: jbader14@seas.upenn.edu\nGitHub: jbader14"
+    "text": "Order By\n      Default\n      \n        Date - Oldest\n      \n      \n        Date - Newest\n      \n      \n        Title\n      \n    \n  \n    \n      \n      \n    \n\n\n\n\n\n\nTitle\n\n\n\nDate\n\n\n\n\n\n\n\n\nWeek 4: GIS & Spatial Analysis in R\n\n\nSep 29, 2025\n\n\n\n\n\n\nWeek 3: EDA & ggplot2\n\n\nSep 22, 2025\n\n\n\n\n\n\nWeek 2 - Algorithmic Decision Making & Census Data\n\n\nSep 15, 2025\n\n\n\n\n\n\nWeek 1 - Course Introduction\n\n\nSep 8, 2025\n\n\n\n\n\n\nNo matching items"
   },
   {
-    "objectID": "index.html#about-this-course",
-    "href": "index.html#about-this-course",
-    "title": "MUSA 5080 Portfolio",
+    "objectID": "labs/index.html",
+    "href": "labs/index.html",
+    "title": "Labs",
     "section": "",
-    "text": "Advanced spatial analysis and data science for urban planning and public policy."
+    "text": "Order By\n      Default\n      \n        Title\n      \n    \n  \n    \n      \n      \n    \n\n\n\n\n\n\nTitle\n\n\n\n\n\n\n\n\nLab 0: Getting Started with dplyr\n\n\n\n\n\n\nNo matching items"
   },
   {
-    "objectID": "index.html#portfolio-structure",
-    "href": "index.html#portfolio-structure",
-    "title": "MUSA 5080 Portfolio",
+    "objectID": "assignments/index.html",
+    "href": "assignments/index.html",
+    "title": "Assignments",
     "section": "",
-    "text": "Weekly Notes: My learning reflections and key concepts\nLabs: Completed assignments and analyses\nFinal Project: Capstone modeling challenge"
-  },
-  {
-    "objectID": "index.html#about-me",
-    "href": "index.html#about-me",
-    "title": "MUSA 5080 Portfolio",
-    "section": "",
-    "text": "Name: Henry (Jack) Bader\nWhy I am taking this course: I want to deepen my understanding of geospatial data science techniques in the public sector that provides a different perspective than typical engineering data science courses."
-  },
-  {
-    "objectID": "index.html#contact",
-    "href": "index.html#contact",
-    "title": "MUSA 5080 Portfolio",
-    "section": "",
-    "text": "Email: jbader14@seas.upenn.edu\nGitHub: jbader14"
+    "text": "Order By\n      Default\n      \n        Title\n      \n    \n  \n    \n      \n      \n    \n\n\n\n\n\n\nTitle\n\n\n\n\n\n\n\n\nAssignment 1: Census Data Quality for Policy Decisions\n\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "assignments/assignment1/assignment1.html",
@@ -280,6 +217,41 @@
     "text": "Submission Checklist\nBefore submitting your portfolio link on Canvas:\n\nAll code chunks run without errors\nAll “[Fill this in]” prompts have been completed\nTables are properly formatted and readable\nExecutive summary addresses all four required components\nPortfolio navigation includes this assignment\nCensus API key is properly set\nDocument renders correctly to HTML\n\nRemember: Submit your portfolio URL on Canvas, not the file itself. Your assignment should be accessible at your-portfolio-url/assignments/assignment_1/your_file_name.html"
   },
   {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "MUSA 5080 Portfolio",
+    "section": "",
+    "text": "This portfolio documents my learning journey in Public Policy Analytics (MUSA 5080).\n\n\nAdvanced spatial analysis and data science for urban planning and public policy.\n\n\n\n\nWeekly Notes: My learning reflections and key concepts\nLabs: Completed assignments and analyses\nFinal Project: Capstone modeling challenge\n\n\n\n\n\nName: Henry (Jack) Bader\nWhy I am taking this course: I want to deepen my understanding of geospatial data science techniques in the public sector that provides a different perspective than typical engineering data science courses.\n\n\n\n\n\nEmail: jbader14@seas.upenn.edu\nGitHub: jbader14"
+  },
+  {
+    "objectID": "index.html#about-this-course",
+    "href": "index.html#about-this-course",
+    "title": "MUSA 5080 Portfolio",
+    "section": "",
+    "text": "Advanced spatial analysis and data science for urban planning and public policy."
+  },
+  {
+    "objectID": "index.html#portfolio-structure",
+    "href": "index.html#portfolio-structure",
+    "title": "MUSA 5080 Portfolio",
+    "section": "",
+    "text": "Weekly Notes: My learning reflections and key concepts\nLabs: Completed assignments and analyses\nFinal Project: Capstone modeling challenge"
+  },
+  {
+    "objectID": "index.html#about-me",
+    "href": "index.html#about-me",
+    "title": "MUSA 5080 Portfolio",
+    "section": "",
+    "text": "Name: Henry (Jack) Bader\nWhy I am taking this course: I want to deepen my understanding of geospatial data science techniques in the public sector that provides a different perspective than typical engineering data science courses."
+  },
+  {
+    "objectID": "index.html#contact",
+    "href": "index.html#contact",
+    "title": "MUSA 5080 Portfolio",
+    "section": "",
+    "text": "Email: jbader14@seas.upenn.edu\nGitHub: jbader14"
+  },
+  {
     "objectID": "labs/lab0/lab0.html",
     "href": "labs/lab0/lab0.html",
     "title": "Lab 0: Getting Started with dplyr",
@@ -357,18 +329,46 @@
     "text": "5.2 Categorical Summaries\n\n# Frequency table for price categories\ncar_data |&gt;\n  count(price_category) |&gt;\n  mutate(percent = 100 * n / sum(n)) |&gt;\n  select(-n)\n\n# A tibble: 3 × 2\n  price_category percent\n  &lt;chr&gt;            &lt;dbl&gt;\n1 budget            68.1\n2 luxury            12.4\n3 midrange          19.6\n\ncar_data\n\n# A tibble: 50,000 × 10\n   Manufacturer Model      engine_size fuel    year Mileage Price   age\n   &lt;chr&gt;        &lt;chr&gt;            &lt;dbl&gt; &lt;chr&gt;  &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;\n 1 Ford         Fiesta             1   Petrol  2002  127300  3074    23\n 2 Porsche      718 Cayman         4   Petrol  2016   57850 49704     9\n 3 Ford         Mondeo             1.6 Diesel  2014   39190 24072    11\n 4 Toyota       RAV4               1.8 Hybrid  1988  210814  1705    37\n 5 VW           Polo               1   Petrol  2006  127869  4101    19\n 6 Ford         Focus              1.4 Petrol  2018   33603 29204     7\n 7 Ford         Mondeo             1.8 Diesel  2010   86686 14350    15\n 8 Toyota       Prius              1.4 Hybrid  2015   30663 30297    10\n 9 VW           Polo               1.2 Petrol  2012   73470  9977    13\n10 Ford         Focus              2   Diesel  1992  262514  1049    33\n# ℹ 49,990 more rows\n# ℹ 2 more variables: mileage_per_year &lt;dbl&gt;, price_category &lt;chr&gt;"
   },
   {
-    "objectID": "labs/index.html",
-    "href": "labs/index.html",
-    "title": "Labs",
+    "objectID": "weekly-notes/week-01-notes.html",
+    "href": "weekly-notes/week-01-notes.html",
+    "title": "Week 1 - Course Introduction",
     "section": "",
-    "text": "Order By\n      Default\n      \n        Title\n      \n    \n  \n    \n      \n      \n    \n\n\n\n\n\n\nTitle\n\n\n\n\n\n\n\n\nLab 0: Getting Started with dplyr\n\n\n\n\n\n\nNo matching items"
+    "text": "Upcoming assignments: lab0: 9/15 create Quatro portfolio; lab1: 9/27 EDA\nGit: Version-control system - tracks changes in files\n\nCollaboration tool for people teams to work\n\nGithub: cloud host for Git repos (projects)\n\nBackup work in cloud\nShare / collaborate on projects with other\nGithub pages hosts websites\n\nGithub Concepts:\n\nRepo: folder containing proj files\nCommit: snapshot of work at point in time\nPush: Send changes to Github cloud\nPull: Get latest changes from Github cloud\n\nWorkflow each week:\n\nEdit files in RStudio (local)\nCommit changes w/ message\nPush to Github\nPortfolio propogates changes automatically\n\nGithub Classroom:\n\nCreates individual repos for each student\nDistributes assignments automatically\nTAs can provide feedback\n\nLists syntax\nLinks / Images syntax"
   },
   {
-    "objectID": "assignments/index.html",
-    "href": "assignments/index.html",
-    "title": "Assignments",
+    "objectID": "weekly-notes/week-01-notes.html#key-concepts-learned",
+    "href": "weekly-notes/week-01-notes.html#key-concepts-learned",
+    "title": "Week 1 - Course Introduction",
     "section": "",
-    "text": "Order By\n      Default\n      \n        Title\n      \n    \n  \n    \n      \n      \n    \n\n\n\n\n\n\nTitle\n\n\n\n\n\n\n\n\nAssignment 1: Census Data Quality for Policy Decisions\n\n\n\n\n\n\nNo matching items"
+    "text": "Upcoming assignments: lab0: 9/15 create Quatro portfolio; lab1: 9/27 EDA\nGit: Version-control system - tracks changes in files\n\nCollaboration tool for people teams to work\n\nGithub: cloud host for Git repos (projects)\n\nBackup work in cloud\nShare / collaborate on projects with other\nGithub pages hosts websites\n\nGithub Concepts:\n\nRepo: folder containing proj files\nCommit: snapshot of work at point in time\nPush: Send changes to Github cloud\nPull: Get latest changes from Github cloud\n\nWorkflow each week:\n\nEdit files in RStudio (local)\nCommit changes w/ message\nPush to Github\nPortfolio propogates changes automatically\n\nGithub Classroom:\n\nCreates individual repos for each student\nDistributes assignments automatically\nTAs can provide feedback\n\nLists syntax\nLinks / Images syntax"
+  },
+  {
+    "objectID": "weekly-notes/week-01-notes.html#coding-techniques",
+    "href": "weekly-notes/week-01-notes.html#coding-techniques",
+    "title": "Week 1 - Course Introduction",
+    "section": "Coding Techniques",
+    "text": "Coding Techniques\n\nR (open software - people create packages free to use) and dplyr:\n\ntidyverse: Data Science packages\n\nConsistent syntax across functions\nReadable code tells story\nEfficient workflows for common tasks\n\nTibbles: enhanced data frames\n\nTraditional df: class(data)\nTibble: car_data &lt;- as_tibble(data)\nPretty print: Shows ONLY first 10 rows, displays cleaner than traditional df\nread_csv (read.csv for traditional df)\n\nEssential dplyr functions (data cleaning):\nselect(): choose columns - select(df, col1, col2)\nfilter(): choose rows - filter(df, condition)\n\nUse &, | symbol to join conditions (and/or)\n\nmutate(): create new variables - mutate(df, new_col = old_col / 1000)\n\nCan use case_when (if statement) argument: ex) car_df = mutate(car_df, case_when(age &gt; 20 ~ “old”, TRUE ~ “not old”))\n\nsummarize(): calculate stats\ngroup_by(): operate on groups (usually goes together w/ summarize())\n\ngroup_by(col1) |&gt; summarize (n = n()) |&gt; mutate(freq = n / sum(n)) -&gt; calculates proportions (frequencies) for groups\n\nMust assign back to original or new df name to save the operation (always start with dataframe operating on in syntax)\nOthers:\n\nnames(): column names\nglimpse(): rows, columnns, some entries etc.\nClick on df to view in table format\nRename(): renames column: rename(df, new = old)\nRemove a column: select(df, -col)\n\n%&gt;% or |&gt;: Pipes -&gt; combines lines of codes, pass outputs through each pipe\n\nQuarto (better version of R Markdown) - publishing system that combines:\n\nCode (R, Python, etc.), Text (explanations, analysis, etc.), Output (plots, tables results, etc.)\nBenefits:\n\nReproducible research: Ccde and explanation in one place, others can re-run analysis, professional presentation\n\nComponents:\n\nYAML header: title, author, date, format\nR code chunks: load library, read_csv, etc.\nText (formatting: bold, italic, etc.)"
+  },
+  {
+    "objectID": "weekly-notes/week-01-notes.html#questions-challenges",
+    "href": "weekly-notes/week-01-notes.html#questions-challenges",
+    "title": "Week 1 - Course Introduction",
+    "section": "Questions & Challenges",
+    "text": "Questions & Challenges\n\nNothing!"
+  },
+  {
+    "objectID": "weekly-notes/week-01-notes.html#connections-to-policy",
+    "href": "weekly-notes/week-01-notes.html#connections-to-policy",
+    "title": "Week 1 - Course Introduction",
+    "section": "Connections to Policy",
+    "text": "Connections to Policy\n\nWe learned how to clean data, transforming it to drive actionable insights. Datasets can be messy, and by learning these skills, we build foundational knowledge on how we can improve the quality of data for future analyses.\nWe learned how to create a Quarto portfolio as a professional way to organize and present our work. This is highly valuable for making our findings professional, clean, and easily accessible to peers, future employers, etc."
+  },
+  {
+    "objectID": "weekly-notes/week-01-notes.html#reflection",
+    "href": "weekly-notes/week-01-notes.html#reflection",
+    "title": "Week 1 - Course Introduction",
+    "section": "Reflection",
+    "text": "Reflection\n\nI found the Quarto portfolio the most fascinating part of this lecture. It displays our work in a much cleaner format than in R-Markdown.\nI will be using this portfolio to highlight the work in this course. Additionally, I can use skills in making a Quatro portfolio for personal projects as well!"
   },
   {
     "objectID": "weekly-notes/week-03-notes.html",
@@ -411,89 +411,5 @@
     "title": "Week 3: EDA & ggplot2",
     "section": "Reflection",
     "text": "Reflection\n\nI think that these topics are very important to learn to be a good analyst. Being prepared and having a good understanding of your data is a crucial skill to have and plotting allows you to easily convey your findings to your peers."
-  },
-  {
-    "objectID": "weekly-notes/week-04-notes.html",
-    "href": "weekly-notes/week-04-notes.html",
-    "title": "Week 4:GIS & Spatial Analysis in R",
-    "section": "",
-    "text": "Add the spatial dimension to understand:\n\nGeographic clustering of problems\nSpatial relationships between communities\nAccess to services and resources\n\nGeographic bias in algorithms:\n\nTraining data may under-represent certain areas\nSpatial autocorrelation violates independence assumptions\nService delivery algorithms may reinforce geographic inequities\nExamples:\n\nRideshare algorithms avoiding certain neighborhoods\nCrime prediction concentrating enforcement in specific areas\nSocial service algorithms missing rural communities\n\n\nVector Data Model (DISCRETE)\n\nTypes of geometric representation:\n\nPoints: Locations (schools, hospitals)\nLines: Linear features (roads, rivers, train routes)\nPolygons: Areas (census tracts, neighborhoods, service areas)\n\nEach feature has:\n\nGeometry: shape and location\nAttributes: data about that feature (population, income, etc.)\n\n\nCommon coordinate ref systems:\n\nWGS84 (EPSG:4326)\n\nGPS standard, global coverage\nGeographic system (lat/lon)\nGood for web mapping, data sharing\n\nWeb Mercator (EPSG:3857)\n\nWeb mapping standard\nProjected system\nHeavily distorts areas near poles\n\nState Plane / UTM zones\n\nLocal accuracy\nDifferent zones for different regions\nOptimized for specific geographic areas\n\nAlbers Equal Area\n\nPreserves area\nGood for demographic/statistical analysis\n\n\nPolicy Analysis Workflow:\n\nLoad data: Get spatial boundaries and attribute data\nCheck projections: Transform to appropriate CRS\nJoin datasets: Combine spatial and non-spatial data\nSpatial operations: Buffers, intersections, distance calculations\nAggregation: Summarize across spatial units\nVisualization: Maps and charts\nInterpretation: Policy recommendations"
-  },
-  {
-    "objectID": "weekly-notes/week-04-notes.html#key-concepts-learned",
-    "href": "weekly-notes/week-04-notes.html#key-concepts-learned",
-    "title": "Week 4:GIS & Spatial Analysis in R",
-    "section": "",
-    "text": "Add the spatial dimension to understand:\n\nGeographic clustering of problems\nSpatial relationships between communities\nAccess to services and resources\n\nGeographic bias in algorithms:\n\nTraining data may under-represent certain areas\nSpatial autocorrelation violates independence assumptions\nService delivery algorithms may reinforce geographic inequities\nExamples:\n\nRideshare algorithms avoiding certain neighborhoods\nCrime prediction concentrating enforcement in specific areas\nSocial service algorithms missing rural communities\n\n\nVector Data Model (DISCRETE)\n\nTypes of geometric representation:\n\nPoints: Locations (schools, hospitals)\nLines: Linear features (roads, rivers, train routes)\nPolygons: Areas (census tracts, neighborhoods, service areas)\n\nEach feature has:\n\nGeometry: shape and location\nAttributes: data about that feature (population, income, etc.)\n\n\nCommon coordinate ref systems:\n\nWGS84 (EPSG:4326)\n\nGPS standard, global coverage\nGeographic system (lat/lon)\nGood for web mapping, data sharing\n\nWeb Mercator (EPSG:3857)\n\nWeb mapping standard\nProjected system\nHeavily distorts areas near poles\n\nState Plane / UTM zones\n\nLocal accuracy\nDifferent zones for different regions\nOptimized for specific geographic areas\n\nAlbers Equal Area\n\nPreserves area\nGood for demographic/statistical analysis\n\n\nPolicy Analysis Workflow:\n\nLoad data: Get spatial boundaries and attribute data\nCheck projections: Transform to appropriate CRS\nJoin datasets: Combine spatial and non-spatial data\nSpatial operations: Buffers, intersections, distance calculations\nAggregation: Summarize across spatial units\nVisualization: Maps and charts\nInterpretation: Policy recommendations"
-  },
-  {
-    "objectID": "weekly-notes/week-04-notes.html#coding-techniques",
-    "href": "weekly-notes/week-04-notes.html#coding-techniques",
-    "title": "Week 4:GIS & Spatial Analysis in R",
-    "section": "Coding Techniques",
-    "text": "Coding Techniques\n\nsf package in R (Shape File):\n\nWhy sf: Spatial data is just data.frame + geometry column\n\nModern replacement for older spatial packages\nIntegrates with tidyverse workflows\nFollows international standards\nFast and reliable\nRead in shape file and turn into VECTOR data model\n\nExtensions: .shp, .shx, .dbf\n\nCommon spatial data formats:\n\nShapefiles (.shp + supporting files)\nGeoJSON (.geojson)\nKML/KMZ (Google Earth)\nDatabase connections (PostGIS)\n\nSpatial subsetting: Extract key features based on spatial relationships\n\nst_filter(), st_intersects(), st_touches(), st_within()\nst_filter(): Spatial selection based on spatial relationship.\nst_touches(): Share boundary, no interior overlap\n\n“Which counties border Allegheny?”\n\nst_within(): Completely inside\n\n“Which tracts are IN Allegheny?”\n\nst_intersects(): Any overlap at all\n\n“Which tracts overlap a metro area?”\n\nDefault: If no .predicate specified, uses st_intersects\n.predicate tells st_filter() what spatial relationship to look for:\n\nr predicate-structure # Basic structure: st_filter(data_to_filter, reference_geometry, .predicate = relationship)\n\nst_contains(): Completely contains\n\n“Districts containing hospitals\n\nst_overlaps(): Partial overlap\n\n“Overlapping service areas”\n\nst_disjoint(): No spatial relationship\n\n“Counties separate from urban areas”\n\nMost common: st_intersects() (any overlap) and st_touches() (neighbors)\n\nSpatial join: Combine datasets based on spatial relationships.\nDistance calculations:\n\nst_centroid(): converts polygons to points\nst_distance():\n\nArea calculations: Examples in code - Units depend on coordinate reference system.\nDot (.): The dot (.) is a placeholder that represents the data being passed through the pipe (%&gt;%).\n\npa_counties &lt;- pa_counties %&gt;% mutate( area_sqkm = as.numeric(st_area(.)) / 1000000 )\nThe . refers to pa_counties - the data frame being passed through the pipe. So this is equivalent to:\npa_counties &lt;- pa_counties %&gt;% mutate( area_sqkm = as.numeric(st_area(pa_counties)) / 1000000 )\n\nBuffer operations: Create zones around features\n\n`{r buffers} # 10km buffer around all hospitals hospital_buffers &lt;- hospitals %&gt;% st_buffer(dist = 10000) # 10,000 meters\n\nCoordinate Reference Systems:\n\nProblems:\n\nCan’t preserve area, distance, and angles simultaneously\nDifferent projections optimize different properties\nWrong projection → wrong analysis results!\n\nIn-Class:\n\nStep 1: Approximate Earth’s shape w/ ellipsoid\nStep 2: Tie ellipsoid to real Earth (Datum)\nStep 3: Put down lat/long grid\n\nGeographic (geodetic) coord systems:\n\nNorth American Datum 1927 (NAD27)\nNAD 83, GRS 80, WGS 84\nAll lat/long on 3D ellipse.\nUnits: decimal degrees\nGood for: Global datasets, web mapping\nBad for: Area/distance calculations\n\nProjected Coordinate Systems (PCS):\n\nOn computer screen\nX/Y coordinates on a flat plane\nUnits: meters, feet, etc.\nGood for: Local analysis, accurate measurements\nBad for: Large areas, global datasets\n\nTransform when:\n\nCalculating areas or distances\nCreating buffers\nDoing geometric operations\nWorking with local/regional data\n\nCODE:\n\nTo simply check current CRS st_crs(pa_counties)\nTo set CRS (ONLY if missing) pa_counties &lt;- st_set_crs(pa_counties, 4326)\nTransform to different CRS\nPennsylvania South State Plane (good for PA analysis)\npa_counties_projected &lt;- pa_counties %&gt;% st_transform(crs = 3365)\nTransform to Albers Equal Area (good for area calculations) pa_counties_albers &lt;- pa_counties %&gt;% st_transform(crs = 5070) `"
-  },
-  {
-    "objectID": "weekly-notes/week-04-notes.html#questions-challenges",
-    "href": "weekly-notes/week-04-notes.html#questions-challenges",
-    "title": "Week 4:GIS & Spatial Analysis in R",
-    "section": "Questions & Challenges",
-    "text": "Questions & Challenges\n\nNothing!"
-  },
-  {
-    "objectID": "weekly-notes/week-04-notes.html#connections-to-policy",
-    "href": "weekly-notes/week-04-notes.html#connections-to-policy",
-    "title": "Week 4:GIS & Spatial Analysis in R",
-    "section": "Connections to Policy",
-    "text": "Connections to Policy\n\nLearning techniques such as the sf package is extremely valuable in spatial visualizations in R. These help analysts draw conclusions to make policy considerations and also help display trends / patterns to non-data colleagues."
-  },
-  {
-    "objectID": "weekly-notes/week-04-notes.html#reflection",
-    "href": "weekly-notes/week-04-notes.html#reflection",
-    "title": "Week 4:GIS & Spatial Analysis in R",
-    "section": "Reflection",
-    "text": "Reflection\n\nI have worked with the sf package before but not in this much depth. It was very useful going over the useful commands, parameters, relationships, etc. to deepen my understanding of this topic."
-  },
-  {
-    "objectID": "weekly-notes/week-01-notes.html",
-    "href": "weekly-notes/week-01-notes.html",
-    "title": "Week 1 - Course Introduction",
-    "section": "",
-    "text": "Upcoming assignments: lab0: 9/15 create Quatro portfolio; lab1: 9/27 EDA\nGit: Version-control system - tracks changes in files\n\nCollaboration tool for people teams to work\n\nGithub: cloud host for Git repos (projects)\n\nBackup work in cloud\nShare / collaborate on projects with other\nGithub pages hosts websites\n\nGithub Concepts:\n\nRepo: folder containing proj files\nCommit: snapshot of work at point in time\nPush: Send changes to Github cloud\nPull: Get latest changes from Github cloud\n\nWorkflow each week:\n\nEdit files in RStudio (local)\nCommit changes w/ message\nPush to Github\nPortfolio propogates changes automatically\n\nGithub Classroom:\n\nCreates individual repos for each student\nDistributes assignments automatically\nTAs can provide feedback\n\nLists syntax\nLinks / Images syntax"
-  },
-  {
-    "objectID": "weekly-notes/week-01-notes.html#key-concepts-learned",
-    "href": "weekly-notes/week-01-notes.html#key-concepts-learned",
-    "title": "Week 1 - Course Introduction",
-    "section": "",
-    "text": "Upcoming assignments: lab0: 9/15 create Quatro portfolio; lab1: 9/27 EDA\nGit: Version-control system - tracks changes in files\n\nCollaboration tool for people teams to work\n\nGithub: cloud host for Git repos (projects)\n\nBackup work in cloud\nShare / collaborate on projects with other\nGithub pages hosts websites\n\nGithub Concepts:\n\nRepo: folder containing proj files\nCommit: snapshot of work at point in time\nPush: Send changes to Github cloud\nPull: Get latest changes from Github cloud\n\nWorkflow each week:\n\nEdit files in RStudio (local)\nCommit changes w/ message\nPush to Github\nPortfolio propogates changes automatically\n\nGithub Classroom:\n\nCreates individual repos for each student\nDistributes assignments automatically\nTAs can provide feedback\n\nLists syntax\nLinks / Images syntax"
-  },
-  {
-    "objectID": "weekly-notes/week-01-notes.html#coding-techniques",
-    "href": "weekly-notes/week-01-notes.html#coding-techniques",
-    "title": "Week 1 - Course Introduction",
-    "section": "Coding Techniques",
-    "text": "Coding Techniques\n\nR (open software - people create packages free to use) and dplyr:\n\ntidyverse: Data Science packages\n\nConsistent syntax across functions\nReadable code tells story\nEfficient workflows for common tasks\n\nTibbles: enhanced data frames\n\nTraditional df: class(data)\nTibble: car_data &lt;- as_tibble(data)\nPretty print: Shows ONLY first 10 rows, displays cleaner than traditional df\nread_csv (read.csv for traditional df)\n\nEssential dplyr functions (data cleaning):\nselect(): choose columns - select(df, col1, col2)\nfilter(): choose rows - filter(df, condition)\n\nUse &, | symbol to join conditions (and/or)\n\nmutate(): create new variables - mutate(df, new_col = old_col / 1000)\n\nCan use case_when (if statement) argument: ex) car_df = mutate(car_df, case_when(age &gt; 20 ~ “old”, TRUE ~ “not old”))\n\nsummarize(): calculate stats\ngroup_by(): operate on groups (usually goes together w/ summarize())\n\ngroup_by(col1) |&gt; summarize (n = n()) |&gt; mutate(freq = n / sum(n)) -&gt; calculates proportions (frequencies) for groups\n\nMust assign back to original or new df name to save the operation (always start with dataframe operating on in syntax)\nOthers:\n\nnames(): column names\nglimpse(): rows, columnns, some entries etc.\nClick on df to view in table format\nRename(): renames column: rename(df, new = old)\nRemove a column: select(df, -col)\n\n%&gt;% or |&gt;: Pipes -&gt; combines lines of codes, pass outputs through each pipe\n\nQuarto (better version of R Markdown) - publishing system that combines:\n\nCode (R, Python, etc.), Text (explanations, analysis, etc.), Output (plots, tables results, etc.)\nBenefits:\n\nReproducible research: Ccde and explanation in one place, others can re-run analysis, professional presentation\n\nComponents:\n\nYAML header: title, author, date, format\nR code chunks: load library, read_csv, etc.\nText (formatting: bold, italic, etc.)"
-  },
-  {
-    "objectID": "weekly-notes/week-01-notes.html#questions-challenges",
-    "href": "weekly-notes/week-01-notes.html#questions-challenges",
-    "title": "Week 1 - Course Introduction",
-    "section": "Questions & Challenges",
-    "text": "Questions & Challenges\n\nNothing!"
-  },
-  {
-    "objectID": "weekly-notes/week-01-notes.html#connections-to-policy",
-    "href": "weekly-notes/week-01-notes.html#connections-to-policy",
-    "title": "Week 1 - Course Introduction",
-    "section": "Connections to Policy",
-    "text": "Connections to Policy\n\nWe learned how to clean data, transforming it to drive actionable insights. Datasets can be messy, and by learning these skills, we build foundational knowledge on how we can improve the quality of data for future analyses.\nWe learned how to create a Quarto portfolio as a professional way to organize and present our work. This is highly valuable for making our findings professional, clean, and easily accessible to peers, future employers, etc."
-  },
-  {
-    "objectID": "weekly-notes/week-01-notes.html#reflection",
-    "href": "weekly-notes/week-01-notes.html#reflection",
-    "title": "Week 1 - Course Introduction",
-    "section": "Reflection",
-    "text": "Reflection\n\nI found the Quarto portfolio the most fascinating part of this lecture. It displays our work in a much cleaner format than in R-Markdown.\nI will be using this portfolio to highlight the work in this course. Additionally, I can use skills in making a Quatro portfolio for personal projects as well!"
   }
 ]
