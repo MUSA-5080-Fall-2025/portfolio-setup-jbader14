@@ -1,5 +1,5 @@
 ---
-title: "Week 4:GIS & Spatial Analysis in R"
+title: "Week 4: GIS & Spatial Analysis in R"
 date: "2025-09-29"
 ---
 
@@ -127,7 +127,6 @@ date: "2025-09-29"
     - Pennsylvania South State Plane (good for PA analysis)
     - pa_counties_projected <- pa_counties %>%   st_transform(crs = 3365)
     - Transform to Albers Equal Area (good for area calculations) pa_counties_albers <- pa_counties %>%   st_transform(crs = 5070) `
-    
 
 
 ## Questions & Challenges
