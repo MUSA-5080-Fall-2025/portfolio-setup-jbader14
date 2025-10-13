@@ -1,0 +1,54 @@
+---
+title: "Week 6 - Spatial ML & Advanced LR"
+date: "2025-10-13"
+---
+
+## Key Concepts Learned
+- Build a baseline model, interpret coefs / performance / limitations
+- Building dummy variables: binary indicators
+  - type of categorical variable
+  - Neightborhoods:
+    - Rittenhouse is reference (omit)
+    - Pos coef: More expensive than Rittenhouse, Neg: Less expensive (all else equal)
+- Interaction Effects: When effect of one variable depends on the level of another variable.
+  - ex) Housing: Sq Foot matter more in wealthy neighborhood
+- Polynomial Terms: nonlinear relationships
+  - U Shaped Age Effect: Really new / old houses high val - Middle aged houses are low in val.
+- First Law of Geography: “Everything is related to everything else, but near things are more related than distant things”
+- Fixed Effects: Categorical variables that capture all unmeasured characteristics of a group
+  - In Hedonic Models:
+    - Each neighborhood gets its own dummy variable
+    - Captures everything unique about that neighborhood we didn’t explicitly measure
+  - Benefits: 
+    - Better predictions
+    - Change coefs
+    - But Black Box (Don't know the why)
+- LOOCV - Leave one observation out at a time (special case of k-fold)
+
+## Coding Techniques
+- st_as_sf(coords =, crs = ): Make data spatial
+- Dummy Variable:
+  - # Ensure name is a factor
+  - boston.sf <- boston.sf %>%
+  - mutate(name = as.factor(name))
+  - # Check which is reference (first alphabetically)
+  - levels(boston.sf$name)[1]
+  - # Fit model with neighborhood fixed effects
+  - model_neighborhoods <- lm(SalePrice ~ LivingArea + name, data = boston.sf)
+- Interaction Effect:
+    - model_interact <- lm(SalePrice ~ LivingArea * wealthy_neighborhood, data = boston.sf)
+- Approaches to Spatial Aggregation (See Lecture Slides):
+  - Buffer Aggregation: Count or sum events within a defined distance
+  - k-Nearest Neighbors (kNN): Average distance to k closest events
+  - Distance to Specific Points: Straight-line distance to important locations
+    
+## Questions & Challenges
+- Nothing!
+
+## Connections to Policy
+- I think these more advanced techniques for modeling regressions is very important to build better models to use for decision making in policy considerations
+
+
+## Reflection
+- I am excited to employ some of these advanced strategies on the midterm with my table! I think doing this lecture in the context of housing prices makes it easier to wrap my head around the concepts for the midterm.
+

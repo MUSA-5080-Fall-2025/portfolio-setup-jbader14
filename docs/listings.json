@@ -1,9 +1,13 @@
 [
   {
-    "listing": "/assignments/index.html",
+    "listing": "/weekly-notes/index.html",
     "items": [
-      "/assignments/assignment1/assignment1.html",
-      "/assignments/assignment2/assignment2.html"
+      "/weekly-notes/week-06-notes.html",
+      "/weekly-notes/week-05-notes.html",
+      "/weekly-notes/week-04-notes.html",
+      "/weekly-notes/week-03-notes.html",
+      "/weekly-notes/week-02-notes.html",
+      "/weekly-notes/week-01-notes.html"
     ]
   },
   {
@@ -13,13 +17,10 @@
     ]
   },
   {
-    "listing": "/weekly-notes/index.html",
+    "listing": "/assignments/index.html",
     "items": [
-      "/weekly-notes/week-05-notes.html",
-      "/weekly-notes/week-04-notes.html",
-      "/weekly-notes/week-03-notes.html",
-      "/weekly-notes/week-02-notes.html",
-      "/weekly-notes/week-01-notes.html"
+      "/assignments/assignment1/assignment1.html",
+      "/assignments/assignment2/assignment2.html"
     ]
   }
 ]

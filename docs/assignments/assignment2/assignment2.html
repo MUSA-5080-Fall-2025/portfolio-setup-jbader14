@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Henry (Jack) Bader">
-<meta name="dcterms.date" content="2025-10-12">
+<meta name="dcterms.date" content="2025-10-13">
 
 <title>Assignment 2: Spatial Analysis and Visualization – Henry (Jack) Bader - MUSA 5080 Portfolio</title>
 <style>
@@ -3968,7 +3968,7 @@ vertical-align: -.125em;
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">October 12, 2025</p>
+      <p class="date">October 13, 2025</p>
     </div>
   </div>
   
@@ -4072,6 +4072,7 @@ Geodetic CRS:  WGS 84</code></pre>
 <span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a><span class="co"># st_crs(pa_county_bounds)</span></span>
 <span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a><span class="co"># st_crs(hospitals)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
+<p><strong>Analysis:</strong></p>
 <ul>
 <li>There are 222 hospitals and 2547 census tracts in PA from our datasets. Both datasets are using the WGS 84 coordinate reference systems.</li>
 </ul>
@@ -4151,6 +4152,7 @@ Geodetic CRS:  WGS 84</code></pre>
 <span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>median_income <span class="ot">&lt;-</span> pa_tract_demo <span class="sc">|&gt;</span></span>
 <span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">median_income =</span> <span class="fu">median</span>(median_incomeE, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
+<p><strong>Analysis:</strong></p>
 <ul>
 <li>The ACS data in this analysis is from 2022 for PA where 63 tracts have missing income data and the median income across all tracts is $70,188.</li>
 </ul>
@@ -4196,6 +4198,7 @@ Geodetic CRS:  WGS 84</code></pre>
 <span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="co"># What percentage of PA census tracts are considered vulnerable by your definition?</span></span>
 <span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>percent_vuln <span class="ot">&lt;-</span> <span class="fu">round</span>(<span class="dv">100</span> <span class="sc">*</span> count_vuln <span class="sc">/</span> <span class="dv">2547</span>, <span class="dv">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
+<p><strong>Analysis:</strong></p>
 <ul>
 <li><p>The income threshold is set to identify vulnerable tracts for all tracts that fall at or below the 10th percentile of median household income. Instead of setting an arbitrary threshold value like $50,000, this method will flag the lowest 10% of median incomes as vulnerable.</p></li>
 <li><p>Similarly, the elderly population threshold is set to identify vulnerable tracts for all tracts that fall at or above the 90th percentile of elderly populations. The tracts the highest 10% of elderly population percentages are flagged as vulnerable. We chose to use elderly population percentages over raw estimates to normalize for total tract populations.</p></li>
@@ -4246,6 +4249,7 @@ Geodetic CRS:  WGS 84</code></pre>
 <span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="co"># How many vulnerable tracts are more than 15 miles from the nearest hospital?</span></span>
 <span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>count_tracts_far_from_hosp <span class="ot">&lt;-</span> <span class="fu">sum</span>(pa_tract_vuln<span class="sc">$</span>dist_to_near_hosp <span class="sc">&gt;</span> <span class="dv">15</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
+<p><strong>Analysis:</strong></p>
 <ul>
 <li><p>We are using the US Albers Equal Area projection because it preserves areas and distances without much distortion like the Web Mercator projection. It also has been proven to be effective to use with demographic and statistical analysis in the United States, making it a strong choice for this work.</p></li>
 <li><p>Anong vulnerable tracts, the average distance to the nearest hospital for vulnerable tracts is 3.6 miles, and the maximum distance is 28.98 miles.</p></li>
@@ -4256,7 +4260,6 @@ Geodetic CRS:  WGS 84</code></pre>
 <section id="step-5-identify-underserved-areas" class="level4">
 <h4 class="anchored" data-anchor-id="step-5-identify-underserved-areas">Step 5: Identify Underserved Areas</h4>
 <p>Define “underserved” as vulnerable tracts that are more than 15 miles from the nearest hospital.</p>
-<p><strong>Your Task:</strong></p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create underserved variable</span></span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>pa_tract_flagged <span class="ot">&lt;-</span> pa_tract_flagged <span class="sc">|&gt;</span></span>
@@ -4271,6 +4274,7 @@ Geodetic CRS:  WGS 84</code></pre>
 <span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="co"># What percentage of vulnerable tracts are underserved?</span></span>
 <span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>percent_underserved <span class="ot">&lt;-</span> <span class="fu">round</span>(<span class="dv">100</span> <span class="sc">*</span> count_tracts_far_from_hosp <span class="sc">/</span> count_vuln, <span class="dv">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
+<p><strong>Analysis:</strong></p>
 <ul>
 <li>As discussed previously, there are 19 underserved tracts. 2.88% of vulnerable tracts are classified as underserved. This metric seems somewhat surprisingly low to me. It would make sense that vulnerable tracts with lower median incomes would have worse access to hospitals than this. However, we must remember that some vulnerable tracts are classified only by high elderly population percentages. Intuitively, these tracts should have more hospitals nearby since elderly populations would most likely need access to more hospital resources and services than younger populations. Since these two effects inversely relate to one another, it makes some sense why only a small percentage of vulnerable tracts are classified as underserved; however, the metric still seems low to me. In a future analysis, it could be worthwhile to experiment with a lower threshold for distance to nearest hospital to get more concrete results of underserved tracts in PA.</li>
 </ul>
@@ -4279,7 +4283,6 @@ Geodetic CRS:  WGS 84</code></pre>
 <section id="step-6-aggregate-to-county-level" class="level4">
 <h4 class="anchored" data-anchor-id="step-6-aggregate-to-county-level">Step 6: Aggregate to County Level</h4>
 <p>Use spatial joins and aggregation to calculate county-level statistics about vulnerable populations and hospital access.</p>
-<p><strong>Your Task:</strong></p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Transform CRS</span></span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>pa_tract_flagged <span class="ot">&lt;-</span> <span class="fu">st_transform</span>(pa_tract_flagged, <span class="dv">5070</span>)</span>
@@ -4351,7 +4354,6 @@ Geodetic CRS:  WGS 84</code></pre>
 <section id="step-7-create-summary-table" class="level4">
 <h4 class="anchored" data-anchor-id="step-7-create-summary-table">Step 7: Create Summary Table</h4>
 <p>Create a professional table showing the top 10 priority counties for healthcare investment.</p>
-<p><strong>Your Task:</strong></p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create and format priority counties table</span></span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>priority_counties <span class="ot">&lt;-</span> county_level_stats <span class="sc">|&gt;</span></span>
@@ -4494,7 +4496,6 @@ Geodetic CRS:  WGS 84</code></pre>
 <section id="map-1-county-level-choropleth" class="level3">
 <h3 class="anchored" data-anchor-id="map-1-county-level-choropleth">Map 1: County-Level Choropleth</h3>
 <p>Create a choropleth map showing healthcare access challenges at the county level.</p>
-<p><strong>Your Task:</strong></p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create county-level access map</span></span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -4548,7 +4549,6 @@ Geodetic CRS:  WGS 84</code></pre>
 <section id="map-2-detailed-vulnerability-map" class="level3">
 <h3 class="anchored" data-anchor-id="map-2-detailed-vulnerability-map">Map 2: Detailed Vulnerability Map</h3>
 <p>Create a map highlighting underserved vulnerable tracts.</p>
-<p><strong>Your Task:</strong></p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create detailed tract-level map</span></span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -4617,7 +4617,6 @@ Geodetic CRS:  WGS 84</code></pre>
 <section id="chart-distribution-analysis" class="level3">
 <h3 class="anchored" data-anchor-id="chart-distribution-analysis">Chart: Distribution Analysis</h3>
 <p>Create a visualization showing the distribution of distances to hospitals for vulnerable populations.</p>
-<p><strong>Your Task:</strong></p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Get median distance to hospital among vuln tracts</span></span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>median_dist  <span class="ot">&lt;-</span> <span class="fu">median</span>(pa_tract_vuln<span class="sc">$</span>dist_to_near_hosp, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
@@ -4734,7 +4733,6 @@ Geodetic CRS:  WGS 84</code></pre>
 </section>
 <section id="your-analysis" class="level3">
 <h3 class="anchored" data-anchor-id="your-analysis">Your Analysis</h3>
-<p><strong>Your Task:</strong></p>
 <ol type="1">
 <li><p><strong>Find and load additional data</strong></p>
 <ul>
@@ -5298,7 +5296,7 @@ Geodetic CRS:  WGS 84</code></pre>
 <li><p>At least one map showing your findings</p></li>
 <li><p>Brief interpretation of results (3-5 sentences)</p></li>
 </ul>
-<p><strong>Your interpretation:</strong> Looking at the choropleths and tables, it does not seem there is a strong relationship between number of crimes and nearby PPR sites / number of streetlights. Even by seperating the data to analyze morning/afternoon crimes with PPR sites and evening/night crimes with PPR sites, there are not significant discoveries or trends to be made from plots and tables alone. From the choropleth of crime-heavy tracts, it does look like these tracts do cluster near eachother, signifying they belong to unsafe neighborhoods. Additionally, from the tables, tracts that experience high crime levels in the morning/afternoon tend to have higher crime levels in the evening/night at a glance. For further research, I think it would be beneficial to do zip code level analysis to get a better sense of patterns in crime throughout Philadelphia in larger geographic regions than at the tract level. I also think it could be valuable to normalize crime counts into rates using population data and street light counts into densities with area data. However, it may be the case that these variables are not strong indicators or predictors of crime level throughout the city. For that, we could do correlation, regression analyses among others to delve deeper into the factors that cause high crime, which can benefit policymakers in their decision-making.</p>
+<p><strong>Interpretation:</strong> Looking at the choropleths and tables, it does not seem there is a strong relationship between number of crimes and nearby PPR sites / number of streetlights. Even by seperating the data to analyze morning/afternoon crimes with PPR sites and evening/night crimes with PPR sites, there are not significant discoveries or trends to be made from plots and tables alone. From the choropleth of crime-heavy tracts, it does look like these tracts do cluster near eachother, signifying they belong to unsafe neighborhoods. Additionally, from the tables, tracts that experience high crime levels in the morning/afternoon tend to have higher crime levels in the evening/night at a glance. For further research, I think it would be beneficial to do zip code level analysis to get a better sense of patterns in crime throughout Philadelphia in larger geographic regions than at the tract level. I also think it could be valuable to normalize crime counts into rates using population data and street light counts into densities with area data. However, it may be the case that these variables are not strong indicators or predictors of crime level throughout the city. For that, we could do correlation, regression analyses among others to delve deeper into the factors that cause high crime, which can benefit policymakers in their decision-making.</p>
 </section>
 </section>
 <section id="incorporation-of-feedback" class="level2">

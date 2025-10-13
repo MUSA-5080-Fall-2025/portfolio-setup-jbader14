@@ -108,6 +108,9 @@ count_tract <- pa_tract_bounds |>
 # st_crs(hospitals)
 ```
 
+**Analysis:**
+
+
 - There are 222 hospitals and 2547 census tracts in PA from our datasets. Both datasets are using the WGS 84 coordinate reference systems.
 
 ---
@@ -196,6 +199,9 @@ median_income <- pa_tract_demo |>
 
 ```
 
+**Analysis:**
+
+
 - The ACS data in this analysis is from 2022 for PA where 63 tracts have missing income data and the median income across all tracts is $70,188.
 
 ---
@@ -245,6 +251,9 @@ count_vuln <- sum(pa_tract_flagged$vulnerable, na.rm = TRUE)
 # What percentage of PA census tracts are considered vulnerable by your definition?
 percent_vuln <- round(100 * count_vuln / 2547, 2)
 ```
+
+**Analysis:**
+
 
 - The income threshold is set to identify vulnerable tracts for all tracts that fall at or below the 10th percentile of median household income. Instead of setting an arbitrary threshold value like $50,000, this method will flag the lowest 10% of median incomes as vulnerable.
 
@@ -305,6 +314,8 @@ max_dist_to_hosp <- max(pa_tract_vuln$dist_to_near_hosp, na.rm = TRUE)
 count_tracts_far_from_hosp <- sum(pa_tract_vuln$dist_to_near_hosp > 15, na.rm = TRUE)
 ```
 
+**Analysis:**
+
 
 - We are using the US Albers Equal Area projection because it preserves areas and distances without much distortion like the Web Mercator projection. It also has been proven to be effective to use with demographic and statistical analysis in the United States, making it a strong choice for this work.
 
@@ -320,7 +331,7 @@ count_tracts_far_from_hosp <- sum(pa_tract_vuln$dist_to_near_hosp > 15, na.rm = 
 
 Define "underserved" as vulnerable tracts that are more than 15 miles from the nearest hospital.
 
-**Your Task:**
+
 ```{r}
 # Create underserved variable
 pa_tract_flagged <- pa_tract_flagged |>
@@ -338,6 +349,9 @@ count_underserved <- round(sum(pa_tract_flagged$underserved == TRUE, na.rm = TRU
 percent_underserved <- round(100 * count_tracts_far_from_hosp / count_vuln, 2)
 ```
 
+**Analysis:**
+
+
 - As discussed previously, there are 19 underserved tracts. 2.88% of vulnerable tracts are classified as underserved. This metric seems somewhat surprisingly low to me. It would make sense that vulnerable tracts with lower median incomes would have worse access to hospitals than this. However, we must remember that some vulnerable tracts are classified only by high elderly population percentages. Intuitively, these tracts should have more hospitals nearby since elderly populations would most likely need access to more hospital resources and services than younger populations. Since these two effects inversely relate to one another, it makes some sense why only a small percentage of vulnerable tracts are classified as underserved; however, the metric still seems low to me. In a future analysis, it could be worthwhile to experiment with a lower threshold for distance to nearest hospital to get more concrete results of underserved tracts in PA.
 
 ---
@@ -346,7 +360,6 @@ percent_underserved <- round(100 * count_tracts_far_from_hosp / count_vuln, 2)
 
 Use spatial joins and aggregation to calculate county-level statistics about vulnerable populations and hospital access.
 
-**Your Task:**
 ```{r}
 # Transform CRS
 pa_tract_flagged <- st_transform(pa_tract_flagged, 5070)
@@ -438,7 +451,7 @@ top5_under_pops <- county_level_stats |>
 
 Create a professional table showing the top 10 priority counties for healthcare investment.
 
-**Your Task:**
+
 ```{r}
 # Create and format priority counties table
 priority_counties <- county_level_stats |>
@@ -487,7 +500,7 @@ Using the skills from Week 3 (Data Visualization), create publication-quality ma
 
 Create a choropleth map showing healthcare access challenges at the county level.
 
-**Your Task:**
+
 ```{r}
 # Create county-level access map
 
@@ -548,7 +561,7 @@ ggplot() +
 
 Create a map highlighting underserved vulnerable tracts.
 
-**Your Task:**
+
 ```{r}
 # Create detailed tract-level map
 
@@ -622,7 +635,7 @@ ggplot() +
 
 Create a visualization showing the distribution of distances to hospitals for vulnerable populations.
 
-**Your Task:**
+
 ```{r}
 # Get median distance to hospital among vuln tracts
 median_dist  <- median(pa_tract_vuln$dist_to_near_hosp, na.rm = TRUE)
@@ -802,7 +815,6 @@ Choose ONE of the following challenge exercises, or propose your own research qu
 
 ### Your Analysis
 
-**Your Task:**
 
 1. **Find and load additional data**
 
@@ -1143,7 +1155,7 @@ kable(
 - Brief interpretation of results (3-5 sentences)
 
 
-**Your interpretation:**
+**Interpretation:**
 Looking at the choropleths and tables, it does not seem there is a strong relationship between number of crimes and nearby PPR sites / number of streetlights. Even by seperating the data to analyze morning/afternoon crimes with PPR sites and evening/night crimes with PPR sites, there are not significant discoveries or trends to be made from plots and tables alone. From the choropleth of crime-heavy tracts, it does look like these tracts do cluster near eachother, signifying they belong to unsafe neighborhoods. Additionally, from the tables, tracts that experience high crime levels in the morning/afternoon tend to have higher crime levels in the evening/night at a glance. For further research, I think it would be beneficial to do zip code level analysis to get a better sense of patterns in crime throughout Philadelphia in larger geographic regions than at the tract level. I also think it could be valuable to normalize crime counts into rates using population data and street light counts into densities with area data. However, it may be the case that these variables are not strong indicators or predictors of crime level throughout the city. For that, we could do correlation, regression analyses among others to delve deeper into the factors that cause high crime, which can benefit policymakers in their decision-making.  
 
 
