@@ -33,6 +33,8 @@ website:
             text: "All Assignments"
           - href: assignments/assignment1/assignment1.qmd
             text: "Assignment 1"
+          - href: assignments/assignment2/assignment2.qmd
+            text: "Assignment 2"
 
 format:
   html:

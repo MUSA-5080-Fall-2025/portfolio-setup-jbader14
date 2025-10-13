@@ -1,0 +1,206 @@
+---
+title: "Week 5 - Intro to Linear Regression"
+date: "2025-10-06"
+---
+
+## Key Concepts Learned
+- Statistical learning = a set of approaches for estimating relationship between variables
+  - Observe data like: counties, income, population, education, etc.
+- Response / outcome variable Y as a function of predictors X's and noise...
+  - 𝑌=𝑓(𝑋)+𝜖
+  - f = the systematic information X provides about Y
+  - ε = random error (irreducible)
+- f represents the true relationship between predictors and outcome
+  - fixed but unknown
+  - what we want to estimate
+  - I think this is just the coefficient
+- Why estimate f?
+  - 1. Prediction: 
+    - Estimate Y for new observations
+    - Don’t necessarily care about the exact form of f
+    - Prediction intervals (confidence) matter
+    - Don't need to understand why
+    - Focus: accuracy of predictions
+  - 2. Inference
+    - Understand how X affects Y (mechanisms)
+    - Statistical significance matters
+    - Which predictors matter?
+    - What’s the nature of the relationship?
+    - Focus: interpreting the model / coefs
+      - intercept (usually not that useful), slope (coef), p-value (reject null / fail to reject)
+- How do we estimate f?
+  - Parametric Methods
+    - Make an assumption about the functional form (e.g., linear)
+    - Reduces problem to estimating a few parameters
+    - Easier to interpret
+    - This is what we’ll focus on
+    - Method: OLS
+  - Non-Parametric Methods
+    - Don’t assume a specific form
+    - More flexible
+    - Require more data
+    - Harder to interpret
+  - Key Diff:
+    - Parametric: We assume f is linear, then estimate β₀ and β₁
+    - Non-Parametric: We let the data determine the shape of f.
+- Why linear regression?
+  - Advantages:
+    - Simple and interpretable
+    - Well-understood properties
+    - Works remarkably well for many problems
+    - Foundation for more complex methods
+  - Limitations:
+    - Assumes linearity
+    - Sensitive to outliers
+    - Makes several assumptions
+- Statistical Significance:
+  - Null hypothesis (H₀): β₁ = 0 (no relationship)
+  - Our estimate: β₁ = 0.02
+  - Question: Could we get 0.02 just by chance if H₀ is true?
+  - t-statistic: How many standard errors away from 0?
+    - Bigger |t| = more confidence the relationship is real
+  - p-value: Probability of seeing our estimate if H₀ is true
+    - Small p → reject H₀, conclude relationship exists
+- Model Evaluation:
+  - How well does it fit the data we used? (in sample fit)
+    - R-squared: _ % of variation in income is explained by population.
+      - For prediction: Pop is moderately good predictor of income.
+      - For inference: Pop matters, but other factors exist.
+      - R-squared alone does not tell us if the model is trustworthy (overfit)
+  - How well would it predict new data? (out of sample performance)
+- PROBLEM:
+  - Underfitting: Model too simple (high bias)
+  - Good fit: Captures pattern without noise
+  - Overfitting: Memorizes training data (high variance)
+- Cross-Validation: Multiple train-test splits
+  - Gives more stable estimate of true prediction performance
+- Linear regression makes assumptions. If violated:
+  - Coefficients may be biased
+  - Standard errors wrong
+  - Predictions unreliable
+- Improving the model:
+  - Add more predictors
+  - Log transform predictors
+  - Categorical variables
+- Regression workflow:
+  - Understand the framework: What’s f? What’s the goal?
+  - Visualize first: Does a linear model make sense?
+  - Fit the model: Estimate coefficients
+  - Evaluate performance: Train/test split, cross-validation
+  - Check assumptions: Residual plots, VIF, outliers
+  - Improve if needed: Transformations, more variables
+  - Consider ethics: Who could be harmed by this model?
+
+
+## Coding Techniques
+- Fit the model:
+  - linear reg: model1 <- lm(median_incomeE ~ total_popE, data = pa_data)
+  - summary stats: summary(model1)
+  
+- Train/Test Split:
+  - set.seed(123)
+  - n <- nrow(pa_data)
+  - # 70% training, 30% testing
+  - train_indices <- sample(1:n, size = 0.7 * n)
+  - train_data <- pa_data[train_indices, ]
+  - test_data <- pa_data[-train_indices, ]
+  - # Fit on training data only
+  - model_train <- lm(median_incomeE ~ total_popE, data = train_data)
+  - # Predict on test data
+  - test_predictions <- predict(model_train, newdata = test_data)
+  
+- Evaluate Prediction:
+  - # Calculate prediction error (RMSE)
+  - rmse_test <- sqrt(mean((test_data$median_incomeE - test_predictions)^2))
+  - rmse_train <- summary(model_train)$sigma
+  - cat("Training RMSE:", round(rmse_train, 0), "\n")
+  - Training RMSE: 12893 
+  - cat("Test RMSE:", round(rmse_test, 0), "\n")
+  - Test RMSE: 9536 
+  - Interpreting RMSE
+  - On new data (test set), our predictions are off by ~$9,500 on average. Is this level of error acceptable for policy decisions?
+  
+- Cross-Validation:
+  - library(caret)
+  - # 10-fold cross-validation
+  - train_control <- trainControl(method = "cv", number = 10)
+  - cv_model <- train(median_incomeE ~ total_popE,
+                  data = pa_data,
+                  method = "lm",
+                  trControl = train_control)
+  - cv_model$results
+  - intercept     RMSE  Rsquared      MAE   RMSESD RsquaredSD    MAESD
+  -     TRUE  12577.76 0.5643826 8859.865 5609.002  0.2997098 2238.042
+  - Key Metrics (Averaged Across 10 Folds)
+    - RMSE: Typical prediction error (~$12,578)
+    - R²: % of variation explained (0.564)
+    - MAE: Average absolute error (~$8,860) - easier to interpret
+
+- Assumption 1: Linearity - Check: Residual Plot
+  - pa_data$residuals <- residuals(model1)
+  - pa_data$fitted <- fitted(model1)
+  - ggplot(pa_data, aes(x = fitted, y = residuals)) +
+  - geom_point() +
+  - geom_hline(yintercept = 0, color = "red", linetype = "dashed") +
+  - labs(title = "Residual Plot", x = "Fitted Values", y = "Residuals") +
+  - theme_minimal()
+  
+- Reading residual plots:
+  - Good: Random scatter, points around zero, constant spread
+  - Bad: Curved pattern, model missing something, predictions biased
+  - Linearity violations hurt predictions, not just inference:
+    - If the true relationship is curved and you fit a straight line, you’ll systematically underpredict in some regions and overpredict in others
+    - Biased predictions in predictable ways (not random errors!)
+    - Residual plots should show random scatter - any pattern means your model is missing something systematic
+    
+- Assumption 2: Constant Variance - Check: Residual Plot
+  - Heteroskedasticity: Variance changes across X
+  - Impact; Standard errors are wrong -> misleading p-values
+  - Often a symptom of model misspecification:
+    - Model fits well for some values (e.g., small counties) but poorly for others (large counties)
+    - May indicate missing variables that matter more at certain X values
+    - Ask: “What’s different about observations with large residuals?”
+  - Formal test: Breusch-Pagan
+    - library(lmtest)
+    - bptest(model1)
+    - p > 0.05: Constant variance assumption OK
+    - p < 0.05: Evidence of heteroscedasticity
+  - If detected, solutions:
+    - Transform Y (try log(income))
+    - Robust standard errors
+    - Add missing variables
+    - Accept it (point predictions still OK for prediction goals)
+    
+- Asssumption 3: Normality of Residuals - Check: Q-Q Plot
+  - Less critical for point predictions (unbiased regardless)
+  - Important for confidence intervals and prediction intervals
+  - Needed for valid hypothesis tests (t-tests, F-tests)
+  
+- Assumption 4: No Multicollinearity - VIF
+  - X's shouldn't be correlated w/ one another
+  - Coefs can become unstable, harder to interpret
+  - library(car)
+  - vif(model1)  # Variance Inflation Factor
+  - # Rule of thumb: VIF > 10 suggests problems
+  - # Not relevant with only 1 predictor!
+
+- Assumption 5: No influential outliers: 
+  - Not all outliers are problems - only those with high leverage AND large residuals
+    - High leverage + large residual = pulls regression line
+  - Check w/ visual diagnostic / Identify influential points (z-score)
+  - What to do with influential outliers:
+    - Investigate: Why is this observation unusual? (data error? truly unique?)
+    - Report: Always note influential observations in your analysis
+    - Sensitivity check: Refit model without them - do conclusions change?
+    - Don’t automatically remove: They might represent real, important cases
+    - For policy: An influential county might need special attention, not exclusion!
+  
+    
+## Questions & Challenges
+- Nothing!
+
+## Connections to Policy
+- There are a lot of human choices in modeling, which influences the conclusions we draw to make policy decisions. It is important to know how to verify assumptions, improve modeling, etc. to make for better policy considerations.
+
+## Reflection
+- I have covered regression many times, but this was a good refresher especially on all of the assumptions that we should verify and methods to do so.

@@ -1,3 +1,15 @@
+.env
+.Renviron
+.env
+.Renviron
+_site/
+.quarto/
+.Rproj.user/
+.Rhistory
+.RData
+.Ruserdata
+.DS_Store
+Thumbs.db
+
 /.quarto/
 **/*.quarto_ipynb
-.Rproj.user
