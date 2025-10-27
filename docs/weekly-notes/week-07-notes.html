@@ -6,9 +6,8 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2025-10-13">
 
-<title>Week 6 - Spatial ML &amp; Advanced LR – Henry (Jack) Bader - MUSA 5080 Portfolio</title>
+<title>Week 7 Notes - Model Diagnostics &amp; Spatial Autocorrelation – Henry (Jack) Bader - MUSA 5080 Portfolio</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -137,7 +136,7 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Week 6 - Spatial ML &amp; Advanced LR</h1>
+<h1 class="title">Week 7 Notes - Model Diagnostics &amp; Spatial Autocorrelation</h1>
 </div>
 
 
@@ -145,12 +144,6 @@ ul.task-list li input[type="checkbox"] {
 <div class="quarto-title-meta">
 
     
-    <div>
-    <div class="quarto-title-meta-heading">Published</div>
-    <div class="quarto-title-meta-contents">
-      <p class="date">October 13, 2025</p>
-    </div>
-  </div>
   
     
   </div>
@@ -163,66 +156,73 @@ ul.task-list li input[type="checkbox"] {
 <section id="key-concepts-learned" class="level2">
 <h2 class="anchored" data-anchor-id="key-concepts-learned">Key Concepts Learned</h2>
 <ul>
-<li>Build a baseline model, interpret coefs / performance / limitations</li>
-<li>Building dummy variables: binary indicators
+<li>Hide progress bars when loading spatial data:
 <ul>
-<li>type of categorical variable</li>
-<li>Neightborhoods:
+<li>progress = FALSE inside get_acs</li>
+<li>OR: options(tigris_progress = FALSE)</li>
+</ul></li>
+<li>Good (random) errors:
 <ul>
-<li>Rittenhouse is reference (omit)</li>
-<li>Pos coef: More expensive than Rittenhouse, Neg: Less expensive (all else equal)</li>
+<li>No systematic pattern</li>
+<li>Scattered across space</li>
+<li>Prediction equally good everywhere</li>
+<li>Model captures key relationships</li>
+</ul></li>
+<li>Bad (clustered) errors:
+<ul>
+<li>Spatial pattern visible</li>
+<li>Under / over predict in areas</li>
+<li>Model misses something about location</li>
+<li>Need more spatial features</li>
+</ul></li>
+<li>Look for spatial autocorrelation in the errors</li>
+<li>Moran’s I: [-1, 1]
+<ul>
+<li>1: Perfect spatial correlation (clustering)</li>
+<li>0: Random spatial pattern</li>
+<li>(-1): Perfect negative correlation (dispersion)</li>
+<li>If high: (diff buffer sizes, more amenities, neighborhood specific vars)
+<ul>
+<li><ol type="1">
+<li>Add more spatial features</li>
+</ol></li>
+<li><ol start="2" type="1">
+<li>Try spatial fixed effects (neighborhood or grid cell dummies)</li>
+</ol></li>
+<li><ol start="3" type="1">
+<li>Consider spatial regression models (spatial lag or error models)</li>
+</ol>
+<ul>
+<li>NOT for this class.</li>
 </ul></li>
 </ul></li>
-<li>Interaction Effects: When effect of one variable depends on the level of another variable.
-<ul>
-<li>ex) Housing: Sq Foot matter more in wealthy neighborhood</li>
 </ul></li>
-<li>Polynomial Terms: nonlinear relationships
+<li>Defining “neighbors”
 <ul>
-<li>U Shaped Age Effect: Really new / old houses high val - Middle aged houses are low in val.</li>
+<li>Contiguity:
+<ul>
+<li>Polygons that share a border</li>
 </ul></li>
-<li>First Law of Geography: “Everything is related to everything else, but near things are more related than distant things”</li>
-<li>Fixed Effects: Categorical variables that capture all unmeasured characteristics of a group
+<li>Distance:
 <ul>
-<li>In Hedonic Models:
-<ul>
-<li>Each neighborhood gets its own dummy variable</li>
-<li>Captures everything unique about that neighborhood we didn’t explicitly measure</li>
+<li>All within X meters</li>
+<li>Fixed threshold</li>
 </ul></li>
-<li>Benefits:
+<li>k-Nearest:
 <ul>
-<li>Better predictions</li>
-<li>Change coefs</li>
-<li>But Black Box (Don’t know the why)</li>
+<li>Closest k points</li>
+<li>Adaptive distance</li>
 </ul></li>
 </ul></li>
-<li>LOOCV - Leave one observation out at a time (special case of k-fold)</li>
+<li>Spatial lag = avg value of neighbors (see slide for syntax)</li>
 </ul>
 </section>
 <section id="coding-techniques" class="level2">
 <h2 class="anchored" data-anchor-id="coding-techniques">Coding Techniques</h2>
 <ul>
-<li>st_as_sf(coords =, crs = ): Make data spatial</li>
-<li>Dummy Variable:
-<ul>
-<li>Ensure name is a factor</li>
-<li>boston.sf &lt;- boston.sf %&gt;%</li>
-<li>mutate(name = as.factor(name))</li>
-<li>Check which is reference (first alphabetically)</li>
-<li>levels(boston.sf$name)[1]</li>
-<li>Fit model with neighborhood fixed effects</li>
-<li>model_neighborhoods &lt;- lm(SalePrice ~ LivingArea + name, data = boston.sf)</li>
-</ul></li>
-<li>Interaction Effect:
-<ul>
-<li>model_interact &lt;- lm(SalePrice ~ LivingArea * wealthy_neighborhood, data = boston.sf)</li>
-</ul></li>
-<li>Approaches to Spatial Aggregation (See Lecture Slides):
-<ul>
-<li>Buffer Aggregation: Count or sum events within a defined distance</li>
-<li>k-Nearest Neighbors (kNN): Average distance to k closest events</li>
-<li>Distance to Specific Points: Straight-line distance to important locations</li>
-</ul></li>
+<li>eval: true -&gt; code chunk actually ran (#| ) before</li>
+<li>echo: true -&gt; code chunk is actualy displayed</li>
+<li>spdep library to do spatial analysis like knn, weights, etc. (see slides)</li>
 </ul>
 </section>
 <section id="questions-challenges" class="level2">
@@ -234,13 +234,13 @@ ul.task-list li input[type="checkbox"] {
 <section id="connections-to-policy" class="level2">
 <h2 class="anchored" data-anchor-id="connections-to-policy">Connections to Policy</h2>
 <ul>
-<li>I think these more advanced techniques for modeling regressions is very important to build better models to use for decision making in policy considerations</li>
+<li>Identifying spatial autocorrelation is very important in understanding what errors are good / bad and how we can fix them to make better models for policy considerations.</li>
 </ul>
 </section>
 <section id="reflection" class="level2">
 <h2 class="anchored" data-anchor-id="reflection">Reflection</h2>
 <ul>
-<li>I am excited to employ some of these advanced strategies on the midterm with my table! I think doing this lecture in the context of housing prices makes it easier to wrap my head around the concepts for the midterm.</li>
+<li>I havent’t learned about Moran’s I before, but I think it is very useful to use to test for autocorrelaton and ultimately, model performance.</li>
 </ul>
 
 

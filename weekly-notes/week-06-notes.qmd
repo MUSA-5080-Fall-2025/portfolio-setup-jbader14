@@ -28,12 +28,12 @@ date: "2025-10-13"
 ## Coding Techniques
 - st_as_sf(coords =, crs = ): Make data spatial
 - Dummy Variable:
-  - # Ensure name is a factor
+  - Ensure name is a factor
   - boston.sf <- boston.sf %>%
   - mutate(name = as.factor(name))
-  - # Check which is reference (first alphabetically)
+  - Check which is reference (first alphabetically)
   - levels(boston.sf$name)[1]
-  - # Fit model with neighborhood fixed effects
+  - Fit model with neighborhood fixed effects
   - model_neighborhoods <- lm(SalePrice ~ LivingArea + name, data = boston.sf)
 - Interaction Effect:
     - model_interact <- lm(SalePrice ~ LivingArea * wealthy_neighborhood, data = boston.sf)

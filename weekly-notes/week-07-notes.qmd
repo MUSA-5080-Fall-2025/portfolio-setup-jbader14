@@ -1,0 +1,56 @@
+---
+title: "Week 7 Notes - Model Diagnostics & Spatial Autocorrelation"
+format: html
+---
+
+## Key Concepts Learned
+- Hide progress bars when loading spatial data:
+  - progress = FALSE inside get_acs
+  - OR: options(tigris_progress = FALSE)
+- Good (random) errors:
+  - No systematic pattern
+  - Scattered across space
+  - Prediction equally good everywhere
+  - Model captures key relationships
+- Bad (clustered) errors:
+  - Spatial pattern visible
+  - Under / over predict in areas
+  - Model misses something about location
+  - Need more spatial features
+- Look for spatial autocorrelation in the errors
+- Moran's I: [-1, 1]
+  - 1: Perfect spatial correlation (clustering)
+  - 0: Random spatial pattern
+  - (-1): Perfect negative correlation (dispersion)
+  - If high: (diff buffer sizes, more amenities, neighborhood specific vars)
+    - 1) Add more spatial features
+    - 2) Try spatial fixed effects (neighborhood or grid cell dummies)
+    - 3) Consider spatial regression models (spatial lag or error models)
+      - NOT for this class.
+- Defining "neighbors"
+  - Contiguity:
+    - Polygons that share a border
+  - Distance:
+    - All within X meters
+    - Fixed threshold
+  - k-Nearest:
+    - Closest k points
+    - Adaptive distance
+- Spatial lag = avg value of neighbors (see slide for syntax)
+
+## Coding Techniques
+- eval: true -> code chunk actually ran (#| ) before
+- echo: true -> code chunk is actualy displayed
+- spdep library to do spatial analysis like knn, weights, etc. (see slides)
+
+    
+## Questions & Challenges
+- Nothing!
+
+## Connections to Policy
+- Identifying spatial autocorrelation is very important in understanding what errors are good / bad and how we can fix them to make better models for policy considerations.
+
+
+## Reflection
+- I havent't learned about Moran's I before, but I think it is very useful to use to test for autocorrelaton and ultimately, model performance.
+

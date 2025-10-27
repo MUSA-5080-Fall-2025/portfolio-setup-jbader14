@@ -6,9 +6,8 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2025-10-13">
 
-<title>Week 6 - Spatial ML &amp; Advanced LR – Henry (Jack) Bader - MUSA 5080 Portfolio</title>
+<title>Week 8 Notes – Henry (Jack) Bader - MUSA 5080 Portfolio</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -119,25 +118,15 @@ ul.task-list li input[type="checkbox"] {
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">On this page</h2>
-   
-  <ul>
-  <li><a href="#key-concepts-learned" id="toc-key-concepts-learned" class="nav-link active" data-scroll-target="#key-concepts-learned">Key Concepts Learned</a></li>
-  <li><a href="#coding-techniques" id="toc-coding-techniques" class="nav-link" data-scroll-target="#coding-techniques">Coding Techniques</a></li>
-  <li><a href="#questions-challenges" id="toc-questions-challenges" class="nav-link" data-scroll-target="#questions-challenges">Questions &amp; Challenges</a></li>
-  <li><a href="#connections-to-policy" id="toc-connections-to-policy" class="nav-link" data-scroll-target="#connections-to-policy">Connections to Policy</a></li>
-  <li><a href="#reflection" id="toc-reflection" class="nav-link" data-scroll-target="#reflection">Reflection</a></li>
-  </ul>
-</nav>
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+        
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Week 6 - Spatial ML &amp; Advanced LR</h1>
+<h1 class="title">Week 8 Notes</h1>
 </div>
 
 
@@ -145,12 +134,6 @@ ul.task-list li input[type="checkbox"] {
 <div class="quarto-title-meta">
 
     
-    <div>
-    <div class="quarto-title-meta-heading">Published</div>
-    <div class="quarto-title-meta-contents">
-      <p class="date">October 13, 2025</p>
-    </div>
-  </div>
   
     
   </div>
@@ -160,91 +143,8 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<section id="key-concepts-learned" class="level2">
-<h2 class="anchored" data-anchor-id="key-concepts-learned">Key Concepts Learned</h2>
-<ul>
-<li>Build a baseline model, interpret coefs / performance / limitations</li>
-<li>Building dummy variables: binary indicators
-<ul>
-<li>type of categorical variable</li>
-<li>Neightborhoods:
-<ul>
-<li>Rittenhouse is reference (omit)</li>
-<li>Pos coef: More expensive than Rittenhouse, Neg: Less expensive (all else equal)</li>
-</ul></li>
-</ul></li>
-<li>Interaction Effects: When effect of one variable depends on the level of another variable.
-<ul>
-<li>ex) Housing: Sq Foot matter more in wealthy neighborhood</li>
-</ul></li>
-<li>Polynomial Terms: nonlinear relationships
-<ul>
-<li>U Shaped Age Effect: Really new / old houses high val - Middle aged houses are low in val.</li>
-</ul></li>
-<li>First Law of Geography: “Everything is related to everything else, but near things are more related than distant things”</li>
-<li>Fixed Effects: Categorical variables that capture all unmeasured characteristics of a group
-<ul>
-<li>In Hedonic Models:
-<ul>
-<li>Each neighborhood gets its own dummy variable</li>
-<li>Captures everything unique about that neighborhood we didn’t explicitly measure</li>
-</ul></li>
-<li>Benefits:
-<ul>
-<li>Better predictions</li>
-<li>Change coefs</li>
-<li>But Black Box (Don’t know the why)</li>
-</ul></li>
-</ul></li>
-<li>LOOCV - Leave one observation out at a time (special case of k-fold)</li>
-</ul>
-</section>
-<section id="coding-techniques" class="level2">
-<h2 class="anchored" data-anchor-id="coding-techniques">Coding Techniques</h2>
-<ul>
-<li>st_as_sf(coords =, crs = ): Make data spatial</li>
-<li>Dummy Variable:
-<ul>
-<li>Ensure name is a factor</li>
-<li>boston.sf &lt;- boston.sf %&gt;%</li>
-<li>mutate(name = as.factor(name))</li>
-<li>Check which is reference (first alphabetically)</li>
-<li>levels(boston.sf$name)[1]</li>
-<li>Fit model with neighborhood fixed effects</li>
-<li>model_neighborhoods &lt;- lm(SalePrice ~ LivingArea + name, data = boston.sf)</li>
-</ul></li>
-<li>Interaction Effect:
-<ul>
-<li>model_interact &lt;- lm(SalePrice ~ LivingArea * wealthy_neighborhood, data = boston.sf)</li>
-</ul></li>
-<li>Approaches to Spatial Aggregation (See Lecture Slides):
-<ul>
-<li>Buffer Aggregation: Count or sum events within a defined distance</li>
-<li>k-Nearest Neighbors (kNN): Average distance to k closest events</li>
-<li>Distance to Specific Points: Straight-line distance to important locations</li>
-</ul></li>
-</ul>
-</section>
-<section id="questions-challenges" class="level2">
-<h2 class="anchored" data-anchor-id="questions-challenges">Questions &amp; Challenges</h2>
-<ul>
-<li>Nothing!</li>
-</ul>
-</section>
-<section id="connections-to-policy" class="level2">
-<h2 class="anchored" data-anchor-id="connections-to-policy">Connections to Policy</h2>
-<ul>
-<li>I think these more advanced techniques for modeling regressions is very important to build better models to use for decision making in policy considerations</li>
-</ul>
-</section>
-<section id="reflection" class="level2">
-<h2 class="anchored" data-anchor-id="reflection">Reflection</h2>
-<ul>
-<li>I am excited to employ some of these advanced strategies on the midterm with my table! I think doing this lecture in the context of housing prices makes it easier to wrap my head around the concepts for the midterm.</li>
-</ul>
 
 
-</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
