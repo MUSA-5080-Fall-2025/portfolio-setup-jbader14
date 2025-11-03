@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Week 8 Notes – Henry (Jack) Bader - MUSA 5080 Portfolio</title>
+<title>Week 8 Notes - Critical Perspectives on Predictive Modeling – Henry (Jack) Bader - MUSA 5080 Portfolio</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -118,15 +118,25 @@ ul.task-list li input[type="checkbox"] {
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#key-concepts-learned" id="toc-key-concepts-learned" class="nav-link active" data-scroll-target="#key-concepts-learned">Key Concepts Learned</a></li>
+  <li><a href="#coding-techniques" id="toc-coding-techniques" class="nav-link" data-scroll-target="#coding-techniques">Coding Techniques</a></li>
+  <li><a href="#questions-challenges" id="toc-questions-challenges" class="nav-link" data-scroll-target="#questions-challenges">Questions &amp; Challenges</a></li>
+  <li><a href="#connections-to-policy" id="toc-connections-to-policy" class="nav-link" data-scroll-target="#connections-to-policy">Connections to Policy</a></li>
+  <li><a href="#reflection" id="toc-reflection" class="nav-link" data-scroll-target="#reflection">Reflection</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Week 8 Notes</h1>
+<h1 class="title">Week 8 Notes - Critical Perspectives on Predictive Modeling</h1>
 </div>
 
 
@@ -143,8 +153,84 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
+<section id="key-concepts-learned" class="level2">
+<h2 class="anchored" data-anchor-id="key-concepts-learned">Key Concepts Learned</h2>
+<ul>
+<li>Broken Window’s Theory: Signs of disorder (abandoned cars) predict property crime (burglaries)</li>
+<li>Global v. Local Spatial Autocorrelation: Moran’s I (diff formulas for each)
+<ul>
+<li>Use Moran’s I scatterplot to visualize hotspots/coldspots and outliers</li>
+</ul></li>
+<li>Statistical Significance Testing:
+<ul>
+<li>Calculate observed I_i for location 𝑖</li>
+<li>Randomly shuffle values across locations (999 times)</li>
+<li>Recalculate I_i for each permutation</li>
+<li>Compare observed vs.&nbsp;distribution of permuted values</li>
+<li>If observed is extreme → statistically significant (p &lt; 0.05)</li>
+</ul></li>
+<li>Why linear regression does not work for “count” target data:
+<ul>
+<li>Can predict negative values (impossible for counts)</li>
+<li>Assumes constant variance (counts often have variance ≠ mean)</li>
+<li>Assumes continuous outcome (counts are discrete)</li>
+<li>Assumes normal errors (count data is skewed)</li>
+</ul></li>
+<li>Model 1: Poisson
+<ul>
+<li>Raise e to the power of sum of regressors</li>
+<li>Log-scaled</li>
+</ul></li>
+<li>Over-Dispersion Problem: Variance &gt;&gt;&gt; Mean
+<ul>
+<li>Unobserved heterogeneity: Some areas have unmeasured crime attractors</li>
+<li>Contagion effects: One crime leads to others (not independent)</li>
+<li>Measurement error: Counting issues, data quality</li>
+<li>Model misspecification: Missing important variables</li>
+<li>Dispersion = Residual Deviance / Degrees of Freedom</li>
+</ul></li>
+<li>Model 2: Negative Bibomial (for over-dispersion)
+<ul>
+<li>Relaxes variance = mean assumption</li>
+</ul></li>
+<li>Fishnet Grid:
+<ul>
+<li>Standard approach in predictive policing</li>
+<li>Easier spatial operations</li>
+<li>Consistent unit of analysis</li>
+</ul></li>
+<li>LOGO-CV: Leave-one-out CV for spatial data</li>
+<li>Kernel Density Estimation (KDE): Simpleset spatial prediction method
+<ul>
+<li>Place smooth “bump” over each crime location</li>
+<li>Sum all bumps to create risk surface</li>
+<li>No predictors, no model, just past locations</li>
+</ul></li>
+</ul>
+</section>
+<section id="coding-techniques" class="level2">
+<h2 class="anchored" data-anchor-id="coding-techniques">Coding Techniques</h2>
+</section>
+<section id="questions-challenges" class="level2">
+<h2 class="anchored" data-anchor-id="questions-challenges">Questions &amp; Challenges</h2>
+<ul>
+<li>Nothing!</li>
+</ul>
+</section>
+<section id="connections-to-policy" class="level2">
+<h2 class="anchored" data-anchor-id="connections-to-policy">Connections to Policy</h2>
+<ul>
+<li>Understanding dirty data is very important for preventing algorithmic biases in our modeling process.</li>
+</ul>
+</section>
+<section id="reflection" class="level2">
+<h2 class="anchored" data-anchor-id="reflection">Reflection</h2>
+<ul>
+<li>Re-learning the Poisson and Negative Binomial regression methods is important especially for cases like Crime count data.</li>
+</ul>
 
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
