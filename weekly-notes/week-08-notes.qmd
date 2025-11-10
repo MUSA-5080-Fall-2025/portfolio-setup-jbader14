@@ -1,6 +1,6 @@
 ---
-title: "Week 8 Notes - Critical Perspectives on Predictive Modeling"
-format: html
+title: "Week 8 Notes - Predictive Policying, Dirty Data, and Count Regression"
+date: "2025-11-3"
 ---
 
 ## Key Concepts Learned

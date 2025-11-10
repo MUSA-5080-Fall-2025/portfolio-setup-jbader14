@@ -6,9 +6,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2025-10-27">
+<meta name="dcterms.date" content="2025-11-10">
 
-<title>Week 7 Notes - Model Diagnostics &amp; Spatial Autocorrelation – Henry (Jack) Bader - MUSA 5080 Portfolio</title>
+<title>Week 9 Notes - Logistic Regression: The Case of Recidivism – Henry (Jack) Bader - MUSA 5080 Portfolio</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -137,7 +137,7 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Week 7 Notes - Model Diagnostics &amp; Spatial Autocorrelation</h1>
+<h1 class="title">Week 9 Notes - Logistic Regression: The Case of Recidivism</h1>
 </div>
 
 
@@ -148,7 +148,7 @@ ul.task-list li input[type="checkbox"] {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">October 27, 2025</p>
+      <p class="date">November 10, 2025</p>
     </div>
   </div>
   
@@ -163,73 +163,46 @@ ul.task-list li input[type="checkbox"] {
 <section id="key-concepts-learned" class="level2">
 <h2 class="anchored" data-anchor-id="key-concepts-learned">Key Concepts Learned</h2>
 <ul>
-<li>Hide progress bars when loading spatial data:
+<li>Logistic Regression: Predicting binary outcomes
 <ul>
-<li>progress = FALSE inside get_acs</li>
-<li>OR: options(tigris_progress = FALSE)</li>
+<li>Predict the probability of Y, not Y directly</li>
+<li>Need 0-1 bounds</li>
 </ul></li>
-<li>Good (random) errors:
+<li>Logit Transformation: Behind the scenes, work with log-odds
 <ul>
-<li>No systematic pattern</li>
-<li>Scattered across space</li>
-<li>Prediction equally good everywhere</li>
-<li>Model captures key relationships</li>
+<li>Log-Odds: Logit(p) = ln (p / 1-p)</li>
+<li>Creates linear relationship: Logit(p) = B0 + B1*x1 …</li>
+<li>Coefs are log odds</li>
+<li>Interpret as odds ratio</li>
+<li><blockquote class="blockquote">
+<p>1: predictor increases odds of outcome</p>
+</blockquote></li>
 </ul></li>
-<li>Bad (clustered) errors:
+<li>Classify threshold to split on classification: Diff risks</li>
+<li>Confusion Matrix (TP, FP, FN, TN)</li>
+<li>Metrics to evaluate: Sensitivity (Recall, TPR), Specificity (TNR), Precision</li>
+<li>ROC curve: Receiver Operating Characteristic
 <ul>
-<li>Spatial pattern visible</li>
-<li>Under / over predict in areas</li>
-<li>Model misses something about location</li>
-<li>Need more spatial features</li>
+<li>Every possible threshold</li>
+<li>Trade off between TPR and FPR</li>
+<li>Overall model discrimination ability</li>
 </ul></li>
-<li>Look for spatial autocorrelation in the errors</li>
-<li>Moran’s I: [-1, 1]
-<ul>
-<li>1: Perfect spatial correlation (clustering)</li>
-<li>0: Random spatial pattern</li>
-<li>(-1): Perfect negative correlation (dispersion)</li>
-<li>If high: (diff buffer sizes, more amenities, neighborhood specific vars)
-<ul>
-<li><ol type="1">
-<li>Add more spatial features</li>
-</ol></li>
-<li><ol start="2" type="1">
-<li>Try spatial fixed effects (neighborhood or grid cell dummies)</li>
-</ol></li>
-<li><ol start="3" type="1">
-<li>Consider spatial regression models (spatial lag or error models)</li>
-</ol>
-<ul>
-<li>NOT for this class.</li>
-</ul></li>
-</ul></li>
-</ul></li>
-<li>Defining “neighbors”
-<ul>
-<li>Contiguity:
-<ul>
-<li>Polygons that share a border</li>
-</ul></li>
-<li>Distance:
-<ul>
-<li>All within X meters</li>
-<li>Fixed threshold</li>
-</ul></li>
-<li>k-Nearest:
-<ul>
-<li>Closest k points</li>
-<li>Adaptive distance</li>
-</ul></li>
-</ul></li>
-<li>Spatial lag = avg value of neighbors (see slide for syntax)</li>
 </ul>
 </section>
 <section id="coding-techniques" class="level2">
 <h2 class="anchored" data-anchor-id="coding-techniques">Coding Techniques</h2>
 <ul>
-<li>eval: true -&gt; code chunk actually ran (#| ) before</li>
-<li>echo: true -&gt; code chunk is actualy displayed</li>
-<li>spdep library to do spatial analysis like knn, weights, etc. (see slides)</li>
+<li>Logit Model: Use glm() with family = ‘binomial’
+<ul>
+<li>exp() convert to odds ratio</li>
+<li>coef() interpret coefs</li>
+<li>predict(): make predictions</li>
+</ul></li>
+<li>Plotting:
+<ul>
+<li>confusionMatrix()</li>
+<li>ggroc()</li>
+</ul></li>
 </ul>
 </section>
 <section id="questions-challenges" class="level2">
@@ -241,13 +214,13 @@ ul.task-list li input[type="checkbox"] {
 <section id="connections-to-policy" class="level2">
 <h2 class="anchored" data-anchor-id="connections-to-policy">Connections to Policy</h2>
 <ul>
-<li>Identifying spatial autocorrelation is very important in understanding what errors are good / bad and how we can fix them to make better models for policy considerations.</li>
+<li>Logistic regression is very important to policy markers for supporting algorithmic decision making for binary outcomes.</li>
 </ul>
 </section>
 <section id="reflection" class="level2">
 <h2 class="anchored" data-anchor-id="reflection">Reflection</h2>
 <ul>
-<li>I havent’t learned about Moran’s I before, but I think it is very useful to use to test for autocorrelaton and ultimately, model performance.</li>
+<li>Learning these topics in a much more applied setting compared to my Data Science classes has really helped me further grasp the concepts.</li>
 </ul>
 
 

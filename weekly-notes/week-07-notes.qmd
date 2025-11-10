@@ -1,6 +1,6 @@
 ---
 title: "Week 7 Notes - Model Diagnostics & Spatial Autocorrelation"
-format: html
+date: "2025-10-27"
 ---
 
 ## Key Concepts Learned

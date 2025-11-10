@@ -1,0 +1,280 @@
+---
+title: "assignment4"
+format: html
+---
+
+# Setup
+
+```{r setup}
+#| message: false
+#| warning: false
+
+# Load required packages
+library(readr)
+library(tidyverse)      # Data manipulation
+library(sf)             # Spatial operations
+library(here)           # Relative file paths
+library(viridis)        # Color scales
+library(terra)          # Raster operations (replaces 'raster')
+library(spdep)          # Spatial dependence
+library(FNN)            # Fast nearest neighbors
+library(MASS)           # Negative binomial regression
+library(patchwork)      # Plot composition (replaces grid/gridExtra)
+library(knitr)          # Tables
+library(kableExtra)     # Table formatting
+library(classInt)       # Classification intervals
+library(here)
+
+# Spatstat split into sub-packages
+library(spatstat.geom)    # Spatial geometries
+library(spatstat.explore) # Spatial exploration/KDE
+
+# Set options
+options(scipen = 999)  # No scientific notation
+set.seed(5080)         # Reproducibility
+```
+
+```{r theme}
+# Create consistent theme for visualizations
+theme_graffiti <- function(base_size = 11) {
+  theme_minimal(base_size = base_size) +
+    theme(
+      plot.title = element_text(face = "bold", size = base_size + 1),
+      plot.subtitle = element_text(color = "gray30", size = base_size - 1),
+      legend.position = "right",
+      panel.grid.minor = element_blank(),
+      axis.text = element_blank(),
+      axis.title = element_blank()
+    )
+}
+```
+
+# Part 1: Data Loading & Exploration
+
+## 1.1 Data Loading
+```{r data-loading}
+# Load Chicago boundary
+chicagoBoundary <- 
+  st_read("https://raw.githubusercontent.com/urbanSpatial/Public-Policy-Analytics-Landing/master/DATA/Chapter5/chicagoBoundary.geojson") |>
+  st_transform('ESRI:102271')
+
+# Selected 311 data: Graffiti Removal
+graffiti <- read_csv("/Users/jack/Documents/GitHub/portfolio-setup-jbader14/assignments/assignment4/data/graffiti.csv")
+```
+
+## 1.2 Data Cleaning
+```{r data-cleaning}
+# Invalid locations
+graffiti <- graffiti |>
+  filter(
+    !is.na(Longitude), 
+    !is.na(Latitude),
+    Latitude > 0
+    )
+
+# Convert to sf
+graffiti_sf <- st_as_sf(graffiti, coords = c("Longitude", "Latitude"), crs = 4326) |>
+  st_transform('ESRI:102271')
+```
+
+## 1.3 Spatial Visualizations
+```{r preliminary-spatial-visualizations}
+# Simple point map
+p1 <- ggplot() + 
+  geom_sf(data = chicagoBoundary, fill = "gray95", color = "gray60") +
+  geom_sf(data = graffiti_sf, color = "#d62828", size = 0.1, alpha = 0.4) +
+  labs(
+    title = "Graffiti Locations",
+    subtitle = paste0("Chicago, n = ", nrow(graffiti_sf))
+  )
+
+# Density surface using modern syntax
+p2 <- ggplot() + 
+  geom_sf(data = chicagoBoundary, fill = "gray95", color = "gray60") +
+  geom_density_2d_filled(
+    data = data.frame(st_coordinates(graffiti_sf)),
+    aes(X, Y),
+    alpha = 0.7,
+    bins = 8
+  ) +
+  scale_fill_viridis_d(
+    option = "plasma",
+    direction = -1,
+    guide = "none"
+  ) +
+  labs(
+    title = "Density Surface",
+    subtitle = "Kernel Density Estimation (KDE)"
+  )
+
+# Combine plots using patchwork (modern approach)
+p1 + p2 + 
+  plot_annotation(
+    title = "Spatial Distribution of Graffiti Removal Requests in Chicago",
+    tag_levels = 'A'
+  )
+```
+
+## Description of Patterns
+
+
+## Explanation of Step 1
+
+
+# Part 2: Fishnet Grid Creation
+
+## 2.1 Create a 500m vs. 500m Fishnet Grid
+```{r fishnet-grid}
+# Create 500m x 500m grid
+fishnet <- st_make_grid(
+  chicagoBoundary,
+  cellsize = 500,  # 500 m
+  square = TRUE
+) |>
+  st_sf() |>
+  mutate(uniqueID = row_number())
+
+# Keep only cells that intersect Chicago
+fishnet <- fishnet[chicagoBoundary, ]
+
+# View basic info
+cat("✓ Created fishnet grid\n")
+cat("  - Number of cells:", nrow(fishnet), "\n")
+cat("  - Cell size:", 500, "x", 500, "meters\n")
+cat("  - Cell area:", round(st_area(fishnet[1,])), "square meters\n")
+```
+
+## 2.2 Aggregate Your Violations
+```{r graffiti-aggregation}
+# Spatial join to determine how many graffiti calls in each cell
+graffiti_fish <- st_join(graffiti_sf, fishnet, join = st_within) |>
+  st_drop_geometry() |>
+  group_by(uniqueID) |>
+  summarize(num_graffiti = n())
+
+# Join back to fishnet
+fishnet <- fishnet |>
+  left_join(graffiti_fish, by = "uniqueID") |>
+  mutate(num_graffiti = replace_na(num_graffiti, 0))
+
+# Print Summary Stats
+cat("\nGraffiti count distribution:\n")
+summary(fishnet$num_graffiti)
+cat("\nCells with zero graffiti incidents:", 
+    sum(fishnet$num_graffiti == 0), 
+    "/", nrow(fishnet),
+    "(", round(100 * sum(fishnet$num_graffiti == 0) / nrow(fishnet), 1), "%)\n")
+```
+
+## 2.3 Visualize the Count Distribution
+
+```{r fishnet-count-histogram}
+# Trim top 5% of graffiti counts
+cutoff <- quantile(fishnet$num_graffiti, 0.95, na.rm = TRUE)
+fishnet_trim <- subset(fishnet, num_graffiti <= cutoff)
+
+graffiti_median <- median(fishnet_trim$num_graffiti, na.rm = TRUE)
+
+ggplot(fishnet_trim, aes(num_graffiti)) +
+  geom_histogram(bins = 40, fill = "maroon", color = "black") +
+  geom_vline(xintercept = graffiti_median, linetype = 5) +
+  annotate("text",
+           x = graffiti_median,
+           y = Inf,
+           label = "Median",
+           hjust = -0.25,
+           vjust = 3,
+           color = "black",
+           size = 3) +
+  labs(title = "Distribution of Graffiti Counts in Chicago (2017)",
+       subtitle = "Data obtained from removal requests directed to the 311 call center.",
+       x = "Count of Graffiti Incidents",
+       y = "Count",
+       caption = "Top 5% of Counts Trimmed for Easier Visualization") +
+  theme_minimal()
+```
+
+```{r spatial-fishnet-heatmap}
+ggplot() +
+  geom_sf(data = fishnet, aes(fill = num_graffiti), color = NA) +
+  geom_sf(data = chicagoBoundary, fill = NA, color = "white", linewidth = 1) +
+  scale_fill_viridis_c(
+    name = "Graffiti",
+    option = "plasma",
+    trans = "sqrt",
+    breaks = c(0, 1, 5, 10, 20, 40)
+  ) +
+  labs(
+    title = "Graffiti Counts by Grid Cell",
+    subtitle = "500m x 500m cells, Chicago 2017"
+  ) +
+  theme_void()
+```
+
+# Part 3: Spatial Features
+
+## 3.1 Calculate k-nearest neighbor features
+```{r knn-features}
+#| message: false
+
+# Calculate mean distance to 3 nearest graffiti sites
+
+# Get coordinates
+graffiti_coords <- st_coordinates(graffiti_sf)
+fishnet_coords <- st_coordinates(st_centroid(fishnet))
+
+# Calculate k nearest neighbors and distances
+knn_results <- get.knnx(graffiti_coords, fishnet_coords, k = 3)
+
+# Add to fishnet
+fishnet <- fishnet %>%
+  mutate(
+    graffiti_knn = rowMeans(knn_results$nn.dist)
+  )
+
+cat("✓ Calculated k nearest neighbor distances for graffiti in Chicago\n")
+summary(fishnet$graffiti_knn)
+
+```
+
+
+## 3.2 Perform Local Moran's I Analysis
+
+```{r local-moran-function}
+# Function to calculate Local Moran's I
+calculate_local_morans <- function(data, variable, k = 5) {
+  
+  # Create spatial weights
+  coords <- st_coordinates(st_centroid(data))
+  neighbors <- knn2nb(knearneigh(coords, k = k))
+  weights <- nb2listw(neighbors, style = "W", zero.policy = TRUE)
+  
+  # Calculate Local Moran's I
+  local_moran <- localmoran(data[[variable]], weights)
+  
+  # Classify clusters
+  mean_val <- mean(data[[variable]], na.rm = TRUE)
+  
+  data %>%
+    mutate(
+      local_i = local_moran[, 1],
+      p_value = local_moran[, 5],
+      is_significant = p_value < 0.05,
+      
+      moran_class = case_when(
+        !is_significant ~ "Not Significant",
+        local_i > 0 & .data[[variable]] > mean_val ~ "High-High",
+        local_i > 0 & .data[[variable]] <= mean_val ~ "Low-Low",
+        local_i < 0 & .data[[variable]] > mean_val ~ "High-Low",
+        local_i < 0 & .data[[variable]] <= mean_val ~ "Low-High",
+        TRUE ~ "Not Significant"
+      )
+    )
+}
+```
+
+```{r local-moran-calculation}
+# Apply to graffiti
+fishnet <- calculate_local_morans(fishnet, "num_graffiti", k = 5)
+```
+

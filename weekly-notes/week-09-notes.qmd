@@ -1,0 +1,42 @@
+---
+title: "Week 9 Notes - Logistic Regression: The Case of Recidivism"
+date: "2025-11-10"
+---
+
+## Key Concepts Learned
+- Logistic Regression: Predicting binary outcomes
+  - Predict the probability of Y, not Y directly
+  - Need 0-1 bounds
+- Logit Transformation: Behind the scenes, work with log-odds
+  - Log-Odds: Logit(p) = ln (p / 1-p)
+  - Creates linear relationship: Logit(p) = B0 + B1*x1 ...
+  - Coefs are log odds
+  - Interpret as odds ratio
+  - >1: predictor increases odds of outcome
+- Classify threshold to split on classification: Diff risks
+- Confusion Matrix (TP, FP, FN, TN)
+- Metrics to evaluate: Sensitivity (Recall, TPR), Specificity (TNR), Precision
+- ROC curve: Receiver Operating Characteristic
+  - Every possible threshold
+  - Trade off between TPR and FPR
+  - Overall model discrimination ability
+
+
+## Coding Techniques
+- Logit Model: Use glm() with family = 'binomial'
+  - exp() convert to odds ratio
+  - coef() interpret coefs
+  - predict(): make predictions
+- Plotting:
+  - confusionMatrix()
+  - ggroc()
+
+
+## Questions & Challenges
+- Nothing!
+
+## Connections to Policy
+- Logistic regression is very important to policy markers for supporting algorithmic decision making for binary outcomes.
+
+## Reflection
+- Learning these topics in a much more applied setting compared to my Data Science classes has really helped me further grasp the concepts.
