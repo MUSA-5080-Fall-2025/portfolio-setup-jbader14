@@ -1,10 +1,9 @@
 ---
-title: "assignment4"
+title: "Assignment 4: Spatial Predictive Analysis"
 format: html
 ---
 
 # Setup
-
 ```{r setup}
 #| message: false
 #| warning: false
@@ -36,7 +35,7 @@ set.seed(5080)         # Reproducibility
 
 ```{r theme}
 # Create consistent theme for visualizations
-theme_graffiti <- function(base_size = 11) {
+theme_plotting <- function(base_size = 11) {
   theme_minimal(base_size = base_size) +
     theme(
       plot.title = element_text(face = "bold", size = base_size + 1),
@@ -52,47 +51,175 @@ theme_graffiti <- function(base_size = 11) {
 # Part 1: Data Loading & Exploration
 
 ## 1.1 Data Loading
-```{r data-loading}
+
+```{r police-data}
+#| message: false
+#| warning: false
+
+# Load police districts (used for spatial cross-validation)
+policeDistricts <- 
+  st_read("https://data.cityofchicago.org/api/geospatial/24zt-jpfn?method=export&format=GeoJSON", quiet = TRUE) |>
+  st_transform('ESRI:102271') |>
+  dplyr::select(District = dist_num)
+
+# Load police beats (smaller administrative units)
+policeBeats <- 
+  st_read("https://data.cityofchicago.org/api/geospatial/n9it-hstw?method=export&format=GeoJSON", quiet = TRUE) |>
+  st_transform('ESRI:102271') |>
+  dplyr::select(Beat = beat_num)
+```
+
+```{r chicago-data}
+#| message: false
+#| warning: false
+
 # Load Chicago boundary
 chicagoBoundary <- 
-  st_read("https://raw.githubusercontent.com/urbanSpatial/Public-Policy-Analytics-Landing/master/DATA/Chapter5/chicagoBoundary.geojson") |>
+  st_read("https://raw.githubusercontent.com/urbanSpatial/Public-Policy-Analytics-Landing/master/DATA/Chapter5/chicagoBoundary.geojson", quiet = TRUE) |>
   st_transform('ESRI:102271')
+```
 
-# Selected 311 data: Graffiti Removal
-graffiti <- read_csv("/Users/jack/Documents/GitHub/portfolio-setup-jbader14/assignments/assignment4/data/graffiti.csv")
+```{r burglary-data}
+#| message: false
+#| warning: false
+
+# Load burglaries data
+burglaries <- st_read("/Users/jack/Documents/GitHub/portfolio-setup-jbader14/assignments/assignment4/data/burglaries.shp", quiet = TRUE) |>
+  st_transform('ESRI:102271')
+```
+
+::: callout-note
+## Burglary Data
+
+**Data Source:** 
+
+The Chicago Police Department (CPD) provides the data on reported burglaries, where each row represents a distinct burglary incident in the city of Chicago from 2017.
+
+**Data Quality Concerns:**
+
+- **Patrol Biases:** Neighborhoods in Chicago that experience a higher volume of police patrolling may experience more reported burglaries as a result.
+
+- **Under-reported / Missing Data:** Some burglaries may not have been reported due to external circumstances, such as in neighborhoods with a higher distrust of law enforcement or ignored complaints.
+
+- **Consistent Reporting:** The CPD may not report all burglary incidents into their database or possibly code them as different crimes either by error or intentionally.
+
+**Considerations:**
+
+It is important to consider the potential biases that arise in police reported data. These are crucial examples of potential "dirty data" instances that must be recognized before continuing with our model building workflow. Crime data that is biased and non-neutral cannot be remedied by traditional technical data cleaning to seperate true crime from policing patterns, so we must proceed with caution.
+
+Our largest concern is the data may adversely affect over-policed communities in Chicago, potentially skewing our data to show these neighborhoods as more prominent "burglary hotspots". It may not be that these neighborhoods are truly more susceptible to burglaries but that they are more policed and reported. This is a classic case of a feedback loop where over-policed neighborhoods are identified as high-risk for burglaries by our algorithm. As a result, more police units are sent there leading to even more burglary reports, repeating the cycle.
+:::
+
+```{r streetlights-data}
+#| message: false
+#| warning: false
+
+# Selected 311 data: All Streetlights Out
+streetlights <- read_csv("/Users/jack/Documents/GitHub/portfolio-setup-jbader14/assignments/assignment4/data/streetlights.csv")
 ```
 
 ## 1.2 Data Cleaning
 ```{r data-cleaning}
-# Invalid locations
-graffiti <- graffiti |>
+streetlights <- streetlights |>
+  # Filter out streetlights with no location data
+  filter(!is.na(Location)) |>
+  # Create new variable creation_date in datetime type
+  mutate(
+    creation_date = mdy(`Creation Date`)
+  ) |>
+  # Filter for only 2017 complaints
   filter(
-    !is.na(Longitude), 
-    !is.na(Latitude),
-    Latitude > 0
-    )
+    creation_date >= as.Date("2017-01-01"),
+    creation_date <  as.Date("2018-01-01")
+  )
 
 # Convert to sf
-graffiti_sf <- st_as_sf(graffiti, coords = c("Longitude", "Latitude"), crs = 4326) |>
+streetlights <- st_as_sf(streetlights, coords = c("Longitude", "Latitude"), crs = 4326) |>
   st_transform('ESRI:102271')
 ```
 
+::: callout-note
+## 311 Street Lights (All Out) Data
+
+**Data Source:** 
+
+The city of Chicago provides data on their 311 service request line for various offenses. The street lights (all out) dataset represents incidents where there is an outage of 3 or more lights in a city circuit, where each circuit typically has 8-16 streetlights. 
+
+**Modeling Choice of Street Lights (All Out):** 
+
+We decided to use street lights (all out) as our 311 offense variable over other types such as graffiti or pothole incidents because we believe it is a better choice of a predictor for modeling burglary risk in Chicago. Assuming that most burglaries tend to occur at night, city blocks without working streetlights are seen as much more at risk for burglaries since it is harder to surveil the surrounding environment due to the lack of visibility. Also, streetlight outages can occur in distinct clustering patterns based on the dataset description that make it a suitable choice for modeling burglary hotspots.
+
+**Data Cleaning:**
+
+1. For spatial analysis, we filtered out any incidents that failed to report a location.
+
+2. To remain consistent with the burglaries dataset, we filtered the street lights (all out) dataset to only include reports in the same year (2017).
+
+**Data Quality Concerns:** 
+
+One potential concern is the presence of duplicate service requests. The general procedure is for the city to send an electrician to repair the broken lights in a circuit after a request is made. However, the city emphasizes that sometimes a second request is put out for the same outage if it was not repaired properly, leading to duplicate requests in our dataset. This issue can be tied to poor city infrastructure that can impact the data quality we are using in our analysis. We will make note of it as this could overestimate pockets with high frequencies of broken streetlights due to poor data reporting and repair management. Additionally as before, reporting of 311 incidents may not be consistent across neighborhoods in Chicago for external reasons such as a lack of time to report, lack of care, etc.
+
+**Considerations:** 
+
+It is important to recognize these data quality concerns as we can use this variable as a proxy for **dark city blocks with poor visibility** but also recognizing that other variables such as duplicates and reporting inconsistencies may skew the accuracy of our analysis and models.
+:::
+
 ## 1.3 Spatial Visualizations
-```{r preliminary-spatial-visualizations}
+
+```{r burglaries-spatial-visualizations}
 # Simple point map
 p1 <- ggplot() + 
   geom_sf(data = chicagoBoundary, fill = "gray95", color = "gray60") +
-  geom_sf(data = graffiti_sf, color = "#d62828", size = 0.1, alpha = 0.4) +
+  geom_sf(data = burglaries, color = "#d62828", size = 0.1, alpha = 0.4) +
   labs(
-    title = "Graffiti Locations",
-    subtitle = paste0("Chicago, n = ", nrow(graffiti_sf))
-  )
+    title = "Burglary Locations",
+    subtitle = paste0("Chicago 2017, n = ", nrow(burglaries))
+  ) +
+  theme_plotting()
 
 # Density surface using modern syntax
 p2 <- ggplot() + 
   geom_sf(data = chicagoBoundary, fill = "gray95", color = "gray60") +
   geom_density_2d_filled(
-    data = data.frame(st_coordinates(graffiti_sf)),
+    data = data.frame(st_coordinates(burglaries)),
+    aes(X, Y),
+    alpha = 0.7,
+    bins = 8
+  ) +
+  scale_fill_viridis_d(
+    option = "plasma",
+    direction = -1,
+    guide = "none"  # Modern ggplot2 syntax (not guide = FALSE)
+  ) +
+  labs(
+    title = "Density Surface",
+    subtitle = "Kernel density estimation"
+  ) +
+  theme_plotting()
+
+# Combine plots using patchwork (modern approach)
+p1 + p2 + 
+  plot_annotation(
+    title = "Spatial Distribution of Burglaries in Chicago"
+  )
+```
+
+```{r streetlights-spatial-visualizations}
+# Simple point map
+p1 <- ggplot() + 
+  geom_sf(data = chicagoBoundary, fill = "gray95", color = "gray60") +
+  geom_sf(data = streetlights, color = "#d62828", size = 0.1, alpha = 0.4) +
+  labs(
+    title = "Streetlight Outages Locations",
+    subtitle = paste0("Chicago 2019, n = ", nrow(streetlights))
+  ) +
+  theme_plotting()
+
+# Density surface using modern syntax
+p2 <- ggplot() + 
+  geom_sf(data = chicagoBoundary, fill = "gray95", color = "gray60") +
+  geom_density_2d_filled(
+    data = data.frame(st_coordinates(streetlights)),
     aes(X, Y),
     alpha = 0.7,
     bins = 8
@@ -105,20 +232,35 @@ p2 <- ggplot() +
   labs(
     title = "Density Surface",
     subtitle = "Kernel Density Estimation (KDE)"
-  )
+  ) +
+  theme_plotting()
 
 # Combine plots using patchwork (modern approach)
 p1 + p2 + 
   plot_annotation(
-    title = "Spatial Distribution of Graffiti Removal Requests in Chicago",
-    tag_levels = 'A'
+    title = "Spatial Distribution of Street Lights (All Out) in Chicago"
   )
 ```
 
-## Description of Patterns
+::: callout-note
+## Spatial Visualizations Interpretation
 
+**What we did:**  
 
-## Explanation of Step 1
+We created side by side point-geometry and KDE density maps for Chicago burglaries and street lights (all out):
+
+1. The point estimates show the exact locations to demonstrate the distribution of burglaries and broken street lights throughout Chicago.
+
+2. The **Kernel Density Estimation (KDE)** maps show a better high-level understanding of spatial patterns from a smoothed heatmap of burglaries and broken street lights.
+
+**Why this step matters:**
+
+It is important to visualize how our target and predictor variables are spatially distributed across Chicago before we move onto further analysis and eventual modeling phases. This step helped support our decision to use street lights (all out) to better understand burglaries since their heatmaps show similar hotspot regions.
+
+**Why this step is important:**
+
+For both variables, we see similar clusters of hotspots across the city of Chicago from the KDE plots. They both exhibit a large Northern hotspot and two Southern hotspots across the city that align close to one another. This evidence suggests that there could be a presence of positive correlation between neighborhoods that experience lots of streetlight blackouts and higher burglary incidents. We want correlation between our target and regressor variable when building a model to accurately predict burglary counts in Chicago.
+:::
 
 
 # Part 2: Fishnet Grid Creation
@@ -136,107 +278,269 @@ fishnet <- st_make_grid(
 
 # Keep only cells that intersect Chicago
 fishnet <- fishnet[chicagoBoundary, ]
-
-# View basic info
-cat("✓ Created fishnet grid\n")
-cat("  - Number of cells:", nrow(fishnet), "\n")
-cat("  - Cell size:", 500, "x", 500, "meters\n")
-cat("  - Cell area:", round(st_area(fishnet[1,])), "square meters\n")
 ```
 
-## 2.2 Aggregate Your Violations
-```{r graffiti-aggregation}
-# Spatial join to determine how many graffiti calls in each cell
-graffiti_fish <- st_join(graffiti_sf, fishnet, join = st_within) |>
+## 2.2 Aggregate Your Violations to Grid Cells
+
+```{r burglaries-aggregation}
+# Spatial join: which cell contains each burglary?
+burglaries_fishnet <- st_join(burglaries, fishnet, join = st_within) |>
   st_drop_geometry() |>
   group_by(uniqueID) |>
-  summarize(num_graffiti = n())
+  summarize(countBurglaries = n())
+
+# Join back to fishnet (cells with 0 burglaries will be NA)
+fishnet <- fishnet |>
+  left_join(burglaries_fishnet, by = "uniqueID") |>
+  mutate(countBurglaries = replace_na(countBurglaries, 0))
+
+# Summary statistics
+cat("\nBurglary count distribution:\n")
+summary(fishnet$countBurglaries)
+cat("\nCells with zero burglaries:", 
+    sum(fishnet$countBurglaries == 0), 
+    "/", nrow(fishnet),
+    "(", round(100 * sum(fishnet$countBurglaries == 0) / nrow(fishnet), 1), "%)\n")
+```
+
+```{r streetlights-aggregation}
+# Spatial join to determine how many streetlights complaints in each cell
+streetlights_fishnet <- st_join(streetlights, fishnet, join = st_within) |>
+  st_drop_geometry() |>
+  group_by(uniqueID) |>
+  summarize(countStreetlights = n())
 
 # Join back to fishnet
 fishnet <- fishnet |>
-  left_join(graffiti_fish, by = "uniqueID") |>
-  mutate(num_graffiti = replace_na(num_graffiti, 0))
+  left_join(streetlights_fishnet, by = "uniqueID") |>
+  mutate(countStreetlights = replace_na(countStreetlights, 0))
 
 # Print Summary Stats
-cat("\nGraffiti count distribution:\n")
-summary(fishnet$num_graffiti)
-cat("\nCells with zero graffiti incidents:", 
-    sum(fishnet$num_graffiti == 0), 
+cat("\nStreetlight count distribution:\n")
+summary(fishnet$countStreetlights)
+cat("\nCells with zero streetlight incidents:", 
+    sum(fishnet$countStreetlights == 0), 
     "/", nrow(fishnet),
-    "(", round(100 * sum(fishnet$num_graffiti == 0) / nrow(fishnet), 1), "%)\n")
+    "(", round(100 * sum(fishnet$countStreetlights == 0) / nrow(fishnet), 1), "%)\n")
 ```
 
 ## 2.3 Visualize the Count Distribution
 
-```{r fishnet-count-histogram}
-# Trim top 5% of graffiti counts
-cutoff <- quantile(fishnet$num_graffiti, 0.95, na.rm = TRUE)
-fishnet_trim <- subset(fishnet, num_graffiti <= cutoff)
+```{r count-distribution}
 
-graffiti_median <- median(fishnet_trim$num_graffiti, na.rm = TRUE)
+# get medians
+burg_med  <- median(fishnet$countBurglaries, na.rm = TRUE)
+street_med <- median(fishnet$countStreetlights, na.rm = TRUE)
 
-ggplot(fishnet_trim, aes(num_graffiti)) +
+# burglary histogram
+p_burg_hist <- ggplot(fishnet, aes(x = countBurglaries)) +
   geom_histogram(bins = 40, fill = "maroon", color = "black") +
-  geom_vline(xintercept = graffiti_median, linetype = 5) +
-  annotate("text",
-           x = graffiti_median,
-           y = Inf,
-           label = "Median",
-           hjust = -0.25,
-           vjust = 3,
-           color = "black",
-           size = 3) +
-  labs(title = "Distribution of Graffiti Counts in Chicago (2017)",
-       subtitle = "Data obtained from removal requests directed to the 311 call center.",
-       x = "Count of Graffiti Incidents",
-       y = "Count",
-       caption = "Top 5% of Counts Trimmed for Easier Visualization") +
-  theme_minimal()
+  geom_vline(xintercept = burg_med, linetype = 5) +
+  annotate(
+    "text",
+    x = burg_med,
+    y = Inf,
+    label = "Median",
+    vjust = 1.5,
+    hjust = -0.1,
+    size = 3
+  ) +
+  labs(
+    title = "Burglaries",
+    subtitle = "For 500m fishnet cells"
+  ) +
+  theme_plotting()
+
+# streetlight histogram 
+p_street_hist <- ggplot(fishnet, aes(x = countStreetlights)) +
+  geom_histogram(bins = 40, fill = "skyblue", color = "black") +
+  geom_vline(xintercept = street_med, linetype = 5) +
+  annotate(
+    "text",
+    x = street_med,
+    y = Inf,
+    label = "Median",
+    vjust = 1.5,
+    hjust = -0.1,
+    size = 3
+  ) +
+  labs(
+    title = "Streetlights",
+    subtitle = "For 500m fishnet cells"
+  ) +
+  theme_plotting()
+
+p_burg_hist + p_street_hist + 
+    plot_annotation(
+    title = "Aggregated Count Distributions in Chicago (2017)"
+  )
 ```
 
-```{r spatial-fishnet-heatmap}
-ggplot() +
-  geom_sf(data = fishnet, aes(fill = num_graffiti), color = NA) +
+```{r spatial-count-distribution}
+#| fig-width: 10
+#| fig-height: 6
+
+p_burg <- ggplot() +
+  geom_sf(data = fishnet, aes(fill = countBurglaries), color = NA) +
   geom_sf(data = chicagoBoundary, fill = NA, color = "white", linewidth = 1) +
   scale_fill_viridis_c(
-    name = "Graffiti",
+    name = "Burglaries",
     option = "plasma",
     trans = "sqrt",
     breaks = c(0, 1, 5, 10, 20, 40)
   ) +
   labs(
-    title = "Graffiti Counts by Grid Cell",
+    title = "Burglary Counts by Grid Cell",
     subtitle = "500m x 500m cells, Chicago 2017"
   ) +
-  theme_void()
+  theme_plotting()
+
+p_street <- ggplot() +
+  geom_sf(data = fishnet, aes(fill = countStreetlights), color = NA) +
+  geom_sf(data = chicagoBoundary, fill = NA, color = "white", linewidth = 1) +
+  scale_fill_viridis_c(
+    name = "Streetlights",
+    option = "plasma",
+    trans = "sqrt",
+    breaks = c(0, 1, 5, 10, 20, 40)
+  ) +
+  labs(
+    title = "Streetlight Counts by Grid Cell",
+    subtitle = "500m x 500m cells, Chicago 2017"
+  ) +
+  theme_plotting()
+
+p_burg + p_street +
+  plot_annotation(
+    title = "Counts Aggregated to 500m Fishnet Cells"
+  )
 ```
+
+::: callout-note
+## Fishnet Grid Creation (500m Aggregation)
+
+**What we did:**  
+
+1. First, we created a fishnet grid of 500m by 500m to overlay over Chicago. Each cell in the grid is of equal size in the fishnet rather than if we overlayed by zip code or district.
+
+2. Secondly, we conducted a spatial join with burglaries and streetlight requests and computed the total count of each variable within each cell in the fishnet grid.
+
+3. Lastly, we plotted spatial maps showing the aggregate counts of burglaries and broken streetlights side by side for comparison. We also included histogram plots to visualize the count distributions for each variable for grid cells as well.
+
+**What we found:**  
+
+Both counts of burglaries and broken streetlights are sparse. The cause of this is due to our cell size only being 500m by 500m. Some cells may cover non-residential areas where burglaries don't occur or areas that do not contain any streetlights such as parks: 
+
+- 781 of 2,458 cells (32%) had **zero** burglaries.  
+    
+- 437 of 2,458cells (18%) had **zero** streetlight requests.
+    
+We also found that the aggregated counts for both burglaries and streetlight requests were right-skewed. This indicates that there are cells that experience abnormally high numbers of burglaries or streetlight outages, compared to the rest of the grid. This right-skew pattern is typical in count data as smaller counts are observed most frequently. The variance seems quite large for both metrics, which is an early indication that a negative binomial model may be preferred over a poisson regression.
+
+There seems to be a wider spread of grid cells experiencing high streetlight outages than burglaries. This makes sense since there are more reports of broken streetlights than burglaries from the data we are using. Generally, there still seems to be some pattern between the two that we look to further explore.
+
+**Why this step is important:**
+
+The modeling decision to use a fishnet grid is necessary for modeling burglaries and streetlights as areas rather than points for a spatial regression. The histogram plots confirmed that both burglaries and broken streetlights fall under count data; in other words, there are no negative or non-integer values for these two variables.
+
+For the fishnet grid, having cells of equal area and identical shape makes our aggregated counts of burglaries and streetlights across cells more directly comparable. If we had used zip codes or districts, there would be an inherent size bias where larger areas experience more burglaries and streetlights. A disadvantage of this approach is that these grids are not representative of real-world social or policy boundaries. We lose out on neighborhood specific qualities that may be beneficial in modeling burglary activity. Also, it may be harder to identify specific districts of need that require target policies to address burglary concerns.
+:::
+
+# Aside: Create a Kernel Density Baseline
+```{r kde-baseline}
+#| message: false
+#| warning: false
+
+# Convert burglaries to ppp (point pattern) format for spatstat
+burglaries_ppp <- as.ppp(
+  st_coordinates(burglaries),
+  W = as.owin(st_bbox(chicagoBoundary))
+)
+
+# Calculate KDE with 1km bandwidth
+kde_burglaries <- density.ppp(
+  burglaries_ppp,
+  sigma = 1000,  # 1km bandwidth
+  edge = TRUE    # Edge correction
+)
+
+# Convert to terra raster (modern approach, not raster::raster)
+kde_raster <- rast(kde_burglaries)
+
+# Extract KDE values to fishnet cells
+fishnet <- fishnet %>%
+  mutate(
+    kde_value = terra::extract(
+      kde_raster,
+      vect(fishnet),
+      fun = mean,
+      na.rm = TRUE
+    )[, 2]  # Extract just the values column
+  )
+```
+
+```{r kde-visualization}
+#| fig-width: 8
+#| fig-height: 6
+
+ggplot() +
+  geom_sf(data = fishnet, aes(fill = kde_value), color = NA) +
+  geom_sf(data = chicagoBoundary, fill = NA, color = "white", linewidth = 1) +
+  scale_fill_viridis_c(
+    name = "KDE Value",
+    option = "plasma"
+  ) +
+  labs(
+    title = "Kernel Density Estimation Baseline",
+    subtitle = "Simple spatial smoothing of burglary locations"
+  ) +
+  theme_plotting()
+```
+::: callout-note
+## KDE Baseline
+
+**What we did:**  
+
+We built a **Kernel Density Estimation (KDE)** with a 1 km kernel bandwidth to serve as our baseline model to reference throughout our analysis. This baseline is simple by taking historical reported burglary data without any other predictor variables. We visualized our baseline model in our plot by smoothing the KDE spatial results over our fishnet grid. The 1 km bandwidth is an optimal choice for balancing capturing noisier, local patterns while providing smooth stablility and generalization.
+
+**What we found:** 
+
+- The KDE baseline smooths out variation between cells, creating more discernable local burglary hotspots in Chicago. As before, we see a large Northern hotspot and two Southern ones.
+
+- Since this model does not take into account any external variables, we don't actually know why these hotspots appear in the data or what caused them. We only know that in Chicago in 2017, these regions had the most reported burglaries.
+
+**Why this step is important:**  
+
+Establishing a simple baseline prior to constructing any sort of a predictive model serves as a crucial check for later evaluating model performance. In our case, a KDE model states that future burglaries are most likely to occur where there have been many past burglaries. Any more complex model should offer more predictive power to outperform our baseline such as factoring in our broken streetlights feature. Our goal is to use our 311 broken streetlights data to better predict future burglaries. Our hope is to use our findings to advocate for targeted policy measures more streetlights, better repair services etc.
+:::
+
 
 # Part 3: Spatial Features
 
 ## 3.1 Calculate k-nearest neighbor features
 ```{r knn-features}
 #| message: false
+#| warning: false
 
-# Calculate mean distance to 3 nearest graffiti sites
+# Calculate mean distance to 3 nearest reports of broken streetlights
 
 # Get coordinates
-graffiti_coords <- st_coordinates(graffiti_sf)
+streetlights_coords <- st_coordinates(streetlights)
 fishnet_coords <- st_coordinates(st_centroid(fishnet))
 
 # Calculate k nearest neighbors and distances
-knn_results <- get.knnx(graffiti_coords, fishnet_coords, k = 3)
+knn_results <- get.knnx(streetlights_coords, fishnet_coords, k = 3)
 
 # Add to fishnet
-fishnet <- fishnet %>%
+fishnet <- fishnet |>
   mutate(
-    graffiti_knn = rowMeans(knn_results$nn.dist)
+    streetlights_knn = rowMeans(knn_results$nn.dist)
   )
 
-cat("✓ Calculated k nearest neighbor distances for graffiti in Chicago\n")
-summary(fishnet$graffiti_knn)
+cat("\nK-NN (K = 3) for closest broken streetlights distribution:\n")
 
+summary(fishnet$streetlights_knn)
 ```
-
 
 ## 3.2 Perform Local Moran's I Analysis
 
@@ -255,7 +559,7 @@ calculate_local_morans <- function(data, variable, k = 5) {
   # Classify clusters
   mean_val <- mean(data[[variable]], na.rm = TRUE)
   
-  data %>%
+  data |>
     mutate(
       local_i = local_moran[, 1],
       p_value = local_moran[, 5],
@@ -274,7 +578,472 @@ calculate_local_morans <- function(data, variable, k = 5) {
 ```
 
 ```{r local-moran-calculation}
+#| message: false
+#| warning: false
+
 # Apply to graffiti
-fishnet <- calculate_local_morans(fishnet, "num_graffiti", k = 5)
+fishnet <- calculate_local_morans(fishnet, "countStreetlights", k = 5)
 ```
 
+## 3.3 Identify Hot Spots & Cold Spots
+
+```{r}
+#| fig-width: 8
+#| fig-height: 6
+
+# Visualize hot spots
+ggplot() +
+  geom_sf(
+    data = fishnet, 
+    aes(fill = moran_class), 
+    color = NA
+  ) +
+  scale_fill_manual(
+    values = c(
+      "High-High" = "#d7191c",
+      "High-Low" = "#fdae61",
+      "Low-High" = "#abd9e9",
+      "Low-Low" = "#2c7bb6",
+      "Not Significant" = "gray90"
+    ),
+    name = "Cluster Type"
+  ) +
+  labs(
+    title = "Local Moran's I: Streetlight Outage Clusters",
+    subtitle = "High-High = Hot spots of disorder"
+  ) +
+  theme_plotting()
+```
+
+```{r dist-to-hotspots}
+#| message: false
+#| warning: false
+
+# Get centroids of "High-High" cells (hot spots)
+hotspots <- fishnet %>%
+  filter(moran_class == "High-High") %>%
+  st_centroid()
+
+# Calculate distance from each cell to nearest hot spot
+if (nrow(hotspots) > 0) {
+  fishnet <- fishnet %>%
+    mutate(
+      dist_to_hotspot = as.numeric(
+        st_distance(st_centroid(fishnet), hotspots %>% st_union())
+      )
+    )
+  cat("  - Number of hot spot cells:", nrow(hotspots), "\n")
+} else {
+  fishnet <- fishnet %>%
+    mutate(dist_to_hotspot = 0)
+  cat("⚠ No significant hot spots found\n")
+}
+```
+
+
+::: callout-note
+## Spatial Features
+
+**What we did:**  
+
+In this section, we engineered spatial features that help us get a better understanding of the distribution of burglary clusters and its relationship to streetlight outages in Chicago.
+
+1. First, we created the variable streetlights_knn, which is the average distance to the nearest three streetlight outage reports for each cell centroid in our fishnet grid.
+
+2. Secondly, we used Local Moran's I to gain a better understanding of the distribution of streetlight outage clusters throughout Chicago, identifying potential hotspots, coldspots, and outliers.
+
+3. Lastly, we constructed a variable dist_to_hotspot as the distance from a cell to the nearest streetlight outage hotspot.
+
+
+**What we found:**  
+
+- The **Local Moran’s I map** shows streetlight outage hotspots (high-high, red), coldspots (low-low, blue), and outliers (low-high, light blue and high-low, orange). The colored sections are statistically significant whereas non-colored sections are due to random chance as they did not pass the permutation test for significance.
+
+  - We see a large cluster of low-low coldspots (blue) in south Chicago where these cells do not experience many streetlight outages, and their surrounding cells also do not observe many outages. In other words, the blue cells and their neighbor cells experience below-average outages compared to all cells in the grid.
+  
+  - There are a considerable amount of smaller high-high hotspots (red) scattered throughout the Central Chicago area. As the name suggests, the red cells experience above average streetlight outages and their neighbors do as well.
+  
+  - There are few low-high or high-low outliers throughout Chicago. Intuitively, this makes sense due to spatial dependence of outages. Streetlight outages are either likely to cluster in the same areas or not occur much at all in the same areas.
+
+- Our engineered spatial features of **streetlights_knn** and **dist_to_hotspot** will provide our model with more detail than just using the aggregate number of streetlight outages in each cell. Exploring the spatial relationships and dependencies between burglaries and streetlight outages can provide our model with a better understanding in making accurate predictions.
+
+**Why this step is important:**  
+
+For our modeling workflow, we need to take into account spatial features as indicators of disorder that can help us in predicting burglaries in Chicago. The fundamental idea is that neighborhoods share similar crime levels in historical data. Creating spatial features can help us model patterns in burglary activity. Incorporating spatial features can better account for spatial dependence, generate more accurate predictions, and capture local spillover effects:
+
+- **streetlights_knn:** This variable supports our intuition that more burglaries may occur in areas that are closer to reported multiple streetlight blackouts where visibility is dampened. Our goal is that this feature is a strong predictor of burglaries in our modeling phase.
+
+- **Local Moran's I:** This method allows us to visualize significant streetlight outage clusters across Chicago. These hotspots are used as a proxy for disorder that can drive up burglary risk in that area, reflective of the Broken Windows theory.
+
+- **dist_to_hotspot**: We take our findings from the Local Moran's I test to engineer this feature to the nearest streetlight outage hotspot. This is another metric to use in conjunction with our knn feature to bolster the spatial predictive power of streetlight outages in our model.
+
+:::
+
+# Part 4: Count Regression Models
+
+## 4.1 Fit Poisson Regression
+```{r join-police-districts}
+# Join district information to fishnet
+fishnet <- st_join(
+  fishnet,
+  policeDistricts,
+  join = st_within,
+  left = TRUE
+) %>%
+  filter(!is.na(District))  # Remove cells outside districts
+```
+
+```{r clean-data}
+# Create clean modeling dataset
+fishnet_model <- fishnet %>%
+  st_drop_geometry() %>%
+  dplyr::select(
+    uniqueID,
+    District,
+    countBurglaries,
+    countStreetlights,
+    streetlights_knn,
+    dist_to_hotspot
+  ) %>%
+  na.omit()  # Remove any remaining NAs
+```
+
+```{r poisson-regression}
+# Fit Poisson regression
+model_poisson <- glm(
+  countBurglaries ~ countStreetlights + streetlights_knn + 
+    dist_to_hotspot,
+  data = fishnet_model,
+  family = "poisson"
+)
+
+# Summary
+summary(model_poisson)
+```
+
+## 4.2 Fit Negative Binomial Regression
+
+```{r overdispersion-check}
+# Calculate dispersion parameter
+dispersion <- sum(residuals(model_poisson, type = "pearson")^2) / 
+              model_poisson$df.residual
+
+cat("Dispersion parameter:", round(dispersion, 2), "\n")
+cat("Rule of thumb: >1.5 suggests overdispersion\n")
+
+if (dispersion > 1.5) {
+  cat("⚠ Overdispersion detected! Consider Negative Binomial model.\n")
+} else {
+  cat("✓ Dispersion looks okay for Poisson model.\n")
+}
+```
+
+```{r negative-binomial}
+# Fit Negative Binomial model
+model_nb <- glm.nb(
+  countBurglaries ~ countStreetlights + streetlights_knn + 
+    dist_to_hotspot,
+  data = fishnet_model
+)
+
+# Summary
+summary(model_nb)
+```
+
+## 4.3 Model Comparison (AIC)
+
+```{r model-comparison}
+# Compare AIC (lower is better)
+cat("\nModel Comparison:\n")
+cat("Poisson AIC:", round(AIC(model_poisson), 1), "\n")
+cat("Negative Binomial AIC:", round(AIC(model_nb), 1), "\n")
+```
+
+::: callout-note
+## Count Regression Models: Poisson vs. Negative Binomial
+
+**What we did:**  
+
+- First, we conducted a spatial join between our fishnet dataset with police boundaries to use in part 5 for spatial cross-validation. We also created a seperate dataset for modeling that selected relevant columns while dropping shape geometry and remaining nulls.
+
+- We chose two regression models for count data, Poisson and Negative Binomial, to model burglaries in our fishnet grid. We checked for overdispersion as a clear indicator that the Negative Binomial model is more suitable than the Poisson. 
+
+- Our predictor variables for both regression models were:
+
+  - The number of reported streetlight outages (countStreetlights)
+  
+  - The average distance to the three nearest streetlight outages (streetlights_knn)
+  
+  - The distance to the nearest streetlight hotspot (dist_to_hotspot)
+  
+- Lastly, we used Akaike Information Criteria (AIC) as a final evaluation metric to compare our models.
+
+**What we found:**  
+
+- For both models, we found that the spatial regressors streetlight_knn and dist_to_hotspot were statistically significant at any reasonable confidence level with a negative effect on burglary counts. In other words, burglaries tended to be lower in locations that were further away from nearby streetlight outages or outage hotspots.
+
+- Conversely, streetlight counts were not statistically significant for the Negative Binomial model with a positive effect on predicted burglary counts. This supports our intuition that proximity to streetlight outages (spatial features) are much better predictors to use in our models than simple counts. If this variable were significant, it would suggest that more streetlight outages in a cell leads to a higher predicted burglary count.
+
+- We computed the overdispersion parameter to be 3.59, greater than our 1.5 threshold, suggesting a presence of overdispersion in our model. This violates the key assumption that variance = mean in a Poisson model, suggesting that the Negative Binomial model is the better choice. This is expected with crime data, which tends to have high variation.
+
+- We compared AIC scores across both models and found that the Negative Binomial model produces a better fit with a lower score of 7750.8 (Poisson with 9559.4). This confirms our initial findings from the overdispersion check that the Negative Binomial is the preferred model. This makes sense since the Negative Binomial model incorporates a dispersion parameter to capture excess variance in the modeling.
+
+**Why this step is important:**  
+
+From our count modeling phase, we gain a better understanding of the importance of spatial features in building a predictive model. We are also able to test our hypothesis of overdispersion to build our intuition that Negative Binomial models are better suited in most cases for crime-based count data. It also builds good evaluation practice in our modeling workflow using metrics such as AIC to compare goodness of fit to confirm our findings from the overdispersion test.
+:::
+
+# Part 5: Spatial Cross-Validation
+
+```{r spatial-cv}
+# Get unique districts
+districts <- unique(fishnet_model$District)
+cv_results <- tibble()
+
+for (i in seq_along(districts)) {
+  
+  test_district <- districts[i]
+  
+  # Split data
+  train_data <- fishnet_model %>% filter(District != test_district)
+  test_data <- fishnet_model %>% filter(District == test_district)
+  
+  # Fit model on training data
+  model_cv <- glm.nb(
+    countBurglaries ~ countStreetlights + streetlights_knn + 
+      dist_to_hotspot,
+    data = train_data
+  )
+  
+  # Predict on test data
+  test_data <- test_data %>%
+    mutate(
+      prediction = predict(model_cv, test_data, type = "response")
+    )
+  
+  # Calculate metrics
+  mae <- mean(abs(test_data$countBurglaries - test_data$prediction))
+  rmse <- sqrt(mean((test_data$countBurglaries - test_data$prediction)^2))
+  
+  # Store results
+  cv_results <- bind_rows(
+    cv_results,
+    tibble(
+      fold = i,
+      test_district = test_district,
+      n_test = nrow(test_data),
+      mae = mae,
+      rmse = rmse
+    )
+  )
+}
+
+# Overall results
+cat("Spatial CV - Mean MAE:", round(mean(cv_results$mae), 2), "\n")
+cat("Spatial CV - Mean RMSE:", round(mean(cv_results$rmse), 2), "\n")
+```
+
+```{r spatial-cv-results}
+#| message: false
+#| warning: false
+
+# Show results
+cv_results %>%
+  arrange(desc(mae)) %>%
+  kable(
+    digits = 2,
+    caption = "LOGO CV Results by District"
+  ) %>%
+  kable_styling(bootstrap_options = c("striped", "hover"))
+```
+
+::: callout-note
+## Leave-One-Group-Out (LOGO) Spatial Cross-Validation (CV)
+
+**What we did:**  
+
+Our next step in our analysis is LOGO spatial cross-validation, looping over all police districts in Chicago. At each iteration (or fold), we train our Negative Binomial regression on all districts except one. We treat the heldout district as our test data to compute metrics of Mean Absolute Error (MAE) and Residual Mean Squared Error (RMSE) to evaluate how well our model did at predicting on the district that was not observed during training. We outputted our results from the spatial cross-validation above in order of decreasing MAE. 
+
+A quick note, the choice for cross-validation on district rather than cell is an important decision made to prevent information leakage. If we were to use a regular Leave-One-Out (LOO) cross-validation for cells, then we would not truly be testing the model's ability to generalize to unseen data. There would likely not be enough cell-to-cell differentiation, leading to less meaningful results than if we had tied it back to real-world police districts.
+
+**What we found:**  
+
+- We found that MAE ranged from 1.84 to 6.16 and RMSE ranged from 2.17 to 8.20 respectively across all districts. We can interpret the mean MAE as we are off by 2.54 burglaries on average for each police district. Similarly, a mean RMSE of 3.33 places a higher penalty on larger errors. Since these metrics are relatively close in magnitude for most districts, we know that we did not have a lot of very bad predictions.
+
+- There does seem to be a clear pattern or trend in MAE/RMSE with respect to test district size.
+
+- The test districts with high MAE/RMSE is indicative that our Negative Binomial model performed worse at predicting burglaries here. There could be a few different explanations as to why this is the case. Likely, it is some combination of policing and reporting biases that occur in these districts that cannot be explained by our engineered spatial features of streetlights alone. 
+
+- The model performed better on districts with low MAE/RMSE indicate that these districts correlate strongly with our streetlight spatial features. It also seems they are less affected by potential external biases left out of our modeling process.
+
+- It is worth noting that district 3 is a significant outlier where the model performed much worse on this district compared to the rest. After some brief research, this is a small district in Southeast Chicago where there seems to be the most missing data for burglary counts. Either this district is primarily non-residential buildings or reporting practices by the police are insufficient.
+
+**Why this step is important:**  
+
+- Spatial cross-validation is an essential step in building our predictive model to evaluate how well it generalizes to unseen districts. It gives us more valuable information on how the model performs on specific neighborhoods for more realistic policy interventions than non-spatial cross-validation. It also mitigates risk of adjacent/nearby correlated grid cells that cause spatial data leakage.
+
+- By clearly displaying the MAE/RMSE for each heldout district, we can see where our model fails and where it succeeds. This is a key building block for observing spatial dependence in our data as well as our model's limitations as we saw with the lack of data for District 3.
+:::
+
+# Part 6: Model Evaluation
+
+```{r final-model}
+# Fit final model on all data
+final_model <- glm.nb(
+  countBurglaries ~ countStreetlights + streetlights_knn + 
+    dist_to_hotspot,
+  data = fishnet_model
+)
+
+# Add predictions back to fishnet
+fishnet <- fishnet %>%
+  mutate(
+    prediction_nb = predict(final_model, fishnet_model, type = "response")[match(uniqueID, fishnet_model$uniqueID)]
+  )
+
+# Also add KDE predictions (normalize to same scale as counts)
+kde_sum <- sum(fishnet$kde_value, na.rm = TRUE)
+count_sum <- sum(fishnet$countBurglaries, na.rm = TRUE)
+fishnet <- fishnet %>%
+  mutate(
+    prediction_kde = (kde_value / kde_sum) * count_sum
+  )
+```
+
+```{r plot-model-evaluation}
+#| fig-width: 12
+#| fig-height: 4
+
+# Create three maps
+p1 <- ggplot() +
+  geom_sf(data = fishnet, aes(fill = countBurglaries), color = NA) +
+  scale_fill_viridis_c(name = "Count", option = "plasma", limits = c(0, 15)) +
+  labs(title = "Actual Burglaries") +
+  theme_plotting()
+
+p2 <- ggplot() +
+  geom_sf(data = fishnet, aes(fill = prediction_nb), color = NA) +
+  scale_fill_viridis_c(name = "Predicted", option = "plasma", limits = c(0, 15)) +
+  labs(title = "Model Predictions (Neg. Binomial)") +
+  theme_plotting()
+
+p3 <- ggplot() +
+  geom_sf(data = fishnet, aes(fill = prediction_kde), color = NA) +
+  scale_fill_viridis_c(name = "Predicted", option = "plasma", limits = c(0, 15)) +
+  labs(title = "KDE Baseline Predictions") +
+  theme_plotting()
+
+p1 + p2 + p3 +
+  plot_annotation(
+    title = "Actual vs. Predicted Burglaries",
+    subtitle = "Does our complex model outperform simple KDE?"
+  )
+```
+
+```{r model-evaluation-metrics}
+#| message: false
+#| warning: false
+
+# Calculate performance metrics
+comparison <- fishnet %>%
+  st_drop_geometry() %>%
+  filter(!is.na(prediction_nb), !is.na(prediction_kde)) %>%
+  summarize(
+    model_mae = mean(abs(countBurglaries - prediction_nb)),
+    model_rmse = sqrt(mean((countBurglaries - prediction_nb)^2)),
+    kde_mae = mean(abs(countBurglaries - prediction_kde)),
+    kde_rmse = sqrt(mean((countBurglaries - prediction_kde)^2))
+  )
+
+comparison %>%
+  pivot_longer(everything(), names_to = "metric", values_to = "value") %>%
+  separate(metric, into = c("approach", "metric"), sep = "_") %>%
+  pivot_wider(names_from = metric, values_from = value) %>%
+  kable(
+    digits = 2,
+    caption = "Model Performance Comparison"
+  ) %>%
+  kable_styling(bootstrap_options = c("striped", "hover"))
+```
+
+```{r plot-errors}
+#| fig-width: 10
+#| fig-height: 5
+
+# Calculate errors
+fishnet <- fishnet %>%
+  mutate(
+    error_nb = countBurglaries - prediction_nb,
+    error_kde = countBurglaries - prediction_kde,
+    abs_error_nb = abs(error_nb),
+    abs_error_kde = abs(error_kde)
+  )
+
+# Map errors
+p1 <- ggplot() +
+  geom_sf(data = fishnet, aes(fill = error_nb), color = NA) +
+  scale_fill_gradient2(
+    name = "Error",
+    low = "#2166ac", mid = "white", high = "#b2182b",
+    midpoint = 0,
+    limits = c(-10, 10)
+  ) +
+  labs(title = "Model Errors (Actual - Predicted)") +
+  theme_plotting()
+
+p2 <- ggplot() +
+  geom_sf(data = fishnet, aes(fill = abs_error_nb), color = NA) +
+  scale_fill_viridis_c(name = "Abs. Error", option = "magma") +
+  labs(title = "Absolute Model Errors") +
+  theme_plotting()
+
+p1 + p2
+```
+
+```{r model-summary}
+#| message: false
+#| warning: false
+
+# Create nice summary table
+model_summary <- broom::tidy(final_model, exponentiate = TRUE) %>%
+  mutate(
+    across(where(is.numeric), ~round(., 3))
+  )
+
+model_summary %>%
+  kable(
+    caption = "Final Negative Binomial Model Coefficients (Exponentiated)",
+    col.names = c("Variable", "Rate Ratio", "Std. Error", "Z", "P-Value")
+  ) %>%
+  kable_styling(bootstrap_options = c("striped", "hover")) %>%
+  footnote(
+    general = "Rate ratios > 1 indicate positive association with burglary counts."
+  )
+```
+
+::: callout-note
+**What we did:**  
+
+We conclude our analysis by comparing our chosen Negative Binomial model against our baseline KDE model. First, we plotted each model's predictions against the actual burglaries reported in Chicago from 2017. Next, we compared both approaches in terms of performance using MAE and RMSE. Then, we plotted the Negative Binomial model errors and absolute errors side by side. Lastly, we summarized our final model coefficients, printed in the above table.
+
+**What we found:**  
+
+- We found that our Negative Binomial model actually performed worse than the KDE baseline for both metrics of MAE and RSME, meaning that the added complexity of streetlight outages does not benefit our predictions. In other words, crime is better modeled by its own spatial patterns than with factoring in the spatial patterns of streetlight outages.
+
+- From the prediction plots, we see that the Negative Binomial model captures the general structure and patterns of the true reported burglaries better than the KDE baseline. However, we also notice that the burglary hotspots are better captured in the KDE model with a high density of yellow grid cells. This is getting at the root cause of why our KDE baseline has lower error metrics compared to our Negative Binomial model.
+
+- Continuing with our Negative Binomial model evaluation, the maps of the actual and absolute errors reveal why our final model performed worse than our baseline. The Negative Binomial model significantly underpredicted the actual burglary hotspots and slightly overpredicted in cells of lower reported burglary activity, confirming our earlier suspicions of systematic errors in certain Chicago neighborhoods. 
+
+- From the Negative Binomial model coefficients, we again see that the spatial variables are statistically significant whereas the raw aggregated cell counts of streetlight outages are not significant from the p-values. For our predictor variable of streetlight outages, this suggests that it matters more where these occur rather than how many there are when predicting burglary activity. 
+
+- Lastly, The streetlights_knn variable has a rate-ratio (IRR) of 0.996, reflecting that a closer proximity to streetlight outages leads to a higher predicted burglary count. Mathematically speaking, as the average distance to the three nearest outages increases by 1 meter for each grid cell, there is a 0.4% decrease in predicted burglary counts on average. Interestingly, a rate ratio of 1 for dist_to_hotspot likely signifies a scaling issue since this predictor is statistically significant. In other words, a one-meter change in distance to the nearest burglary hotspot is not enough to alter predicted burglary counts. However, a larger change such as increasing the distance by 1000 meters would have a significant decrease in predicted burglary counts.
+
+**Why this step is important:**  
+
+It is important to consider why our Negative Binomial performed worse than the KDE baseline. In a way, the KDE baseline overfit our training data by memorizing patterns of high burglary areas and smoothing over them. While this model may perform better, the KDE is much more susceptible to reflecting overpoliced areas and reporting biases rather than truly predicting burglary activity. 
+
+Another issue with our KDE baseline is the lack of interpretability as a non-parametric model compared to our Negative Binomial model. While the KDE may be able to more accurately predict burglary counts, it does not get at the root cause of why burglary hotspots exist, spatial reporting patterns, etc. It simply just tells us where burglaries have occured in the past.
+
+Conversely, the Negative Binomial model gets at the root cause of what variables can be attributed to causing high burglary areas in Chicago. We saw that a spatial variable measuring the average distance to the nearest three streetlight outages was significant in predicting burglary counts. We saw that streetlight outages alone did not offer enough predictive power in beating our baseline KDE from our error analysis; however, we believe that incorporating similar spatial variables such as abandoned cars, graffiti locations, etc. can further help improve the model. These variables that align with the "broken windows theory" that areas in disarray are more prone to crime could uncover further detail as to understanding and predicting burglary patterns in Chicago.
+
+:::
