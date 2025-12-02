@@ -8,7 +8,11 @@ output:
     toc_float: true
     code_folding: show
     code_download: true
+    number-sections: true
 ---
+
+# Link to Formal Report
+[Assignment 5 Formal Report (PDF)](assignment5-formal-report.pdf)
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(
