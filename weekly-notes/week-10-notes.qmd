@@ -1,0 +1,34 @@
+---
+title: "Week 10 Notes - Space-Time Modeling: Temporal Analysis"
+date: "2025-11-17"
+---
+
+## Key Concepts Learned
+- Panel Data: Data that follows the same units over multiple time periods.
+- Space-Time Interaction: Different patterns by location and time!
+- Bin (uniform time intervals) the data: Aggregate or find patterns at second-level since each observation has unique timestamp.
+  - Smaller bins = more sparse data
+- Time features: rush hour, weekend, holidays, etc.
+- Temporal lags: Past demand predicts future demand.
+  - 1 hour: short term persistence
+  - 3 hour: medium term trend (morning rush)
+  - 12 hour: half-day cycle: am vs pm
+  - 24 hour: Daily periodicity
+- Train on early months/hours etc, then test on later ones
+
+
+
+## Coding Techniques
+- Extract time features: week, wday, hour, floor_date
+- Create lag variable: lag(var, lag_num)
+- Ensure every hour bin exists: expand.grid()
+
+
+## Questions & Challenges
+- None!
+
+## Connections to Policy
+
+
+## Reflection
+

@@ -730,7 +730,7 @@ Cells with zero streetlight incidents: 437 / 2458 ( 17.8 %)</code></pre>
 <p>Both counts of burglaries and broken streetlights are sparse. The cause of this is due to our cell size only being 500m by 500m. Some cells may cover non-residential areas where burglaries don’t occur or areas that do not contain any streetlights such as parks:</p>
 <ul>
 <li><p>781 of 2,458 cells (32%) had <strong>zero</strong> burglaries.</p></li>
-<li><p>437 of 2,458cells (18%) had <strong>zero</strong> streetlight requests.</p></li>
+<li><p>437 of 2,458 cells (18%) had <strong>zero</strong> streetlight requests.</p></li>
 </ul>
 <p>We also found that the aggregated counts for both burglaries and streetlight requests were right-skewed. This indicates that there are cells that experience abnormally high numbers of burglaries or streetlight outages, compared to the rest of the grid. This right-skew pattern is typical in count data as smaller counts are observed most frequently. The variance seems quite large for both metrics, which is an early indication that a negative binomial model may be preferred over a poisson regression.</p>
 <p>There seems to be a wider spread of grid cells experiencing high streetlight outages than burglaries. This makes sense since there are more reports of broken streetlights than burglaries from the data we are using. Generally, there still seems to be some pattern between the two that we look to further explore.</p>

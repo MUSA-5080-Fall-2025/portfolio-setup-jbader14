@@ -1,3 +1,8 @@
+
+*_cache/
+*_freeze/
+*.rdb
+
 .env
 .Renviron
 graffiti.csv
